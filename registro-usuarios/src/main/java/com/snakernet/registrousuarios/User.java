@@ -13,8 +13,8 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String firstName;
-	private String lastName;
+	private String nombre;
+	private String apellido;
 	private String email;
 	private String password;
 	
@@ -25,16 +25,16 @@ public class User {
 		this.id = id;
 	}
 	public String getFirstName() {
-		return firstName;
+		return nombre;
 	}
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public void setFirstName(String nombre) {
+		this.nombre = nombre;
 	}
 	public String getLastName() {
-		return lastName;
+		return apellido;
 	}
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public void setLastName(String apellido) {
+		this.apellido = apellido;
 	}
 	public String getEmail() {
 		return email;

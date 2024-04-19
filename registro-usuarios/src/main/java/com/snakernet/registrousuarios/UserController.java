@@ -16,11 +16,22 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	@CrossOrigin(origins = "http://localhost:5500")
 	@PostMapping("/register")
-	public ResponseEntity<?> registerUser(@RequestBody User user) {
-        User registeredUser = userService.registerUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(registeredUser);
-    }
+    public ResponseEntity<?> registerUser(@RequestBody User user) {
+        System.out.println("Received user: " + user);
 
+        if (user.getEmail() == null || !user.getEmail().endsWith("@educamadrid.org")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                                 .body("Error en el registro: el correo electrónico debe terminar con @educamandid.org");
+        }
+
+        try {
+            User registeredUser = userService.registerUser(user);
+            return ResponseEntity.ok("Registro exitoso");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                 .body("Error en el registro: " + e.getMessage());
+        }
+    }
 }

@@ -13,8 +13,8 @@ public class UserService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	public User registerUser(User user) {
-		user.setPassword(passwordEncoder.encode(user.getPassword()));
-		return userRepository.save(user);
-	}
+	 public User registerUser(User user) {
+	        user.setPassword(passwordEncoder.encode(user.getPassword())); // Codifica la contraseña antes de guardarla
+	        return userRepository.save(user); // Guarda el usuario en la base de datos
+	    }
 }
