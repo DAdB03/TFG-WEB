@@ -1,49 +1,98 @@
 <!DOCTYPE html>
-<html data-bs-theme="light" lang="en" data-bss-forced-theme="light">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+<html data-bs-theme="light" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+    />
     <title>Register - Brand</title>
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
-    <link rel="stylesheet" href="assets/css/Font%20Awesome%205%20Brands.css">
-    <link rel="stylesheet" href="assets/css/Font%20Awesome%205%20Free.css">
-    <link rel="stylesheet" href="assets/css/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/fonts/fontawesome-all.min.css">
-    <link rel="stylesheet" href="assets/css/css/untitled.css">
-</head>
-
-<body class="bg-gradient-primary">
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap"
+    />
+    <link rel="stylesheet" href="assets/css/untitled.css" />
+  </head>
+  <body class="bg-gradient-primary">
     <div class="container">
-        <div class="card border-0 shadow-lg o-hidden my-5">
-            <div class="card-body p-0">
-                <div class="row">
-                    <div class="col-lg-7">
-                        <div class="p-5">
-                            <div class="text-center">
-                                <h4 class="text-dark mb-4">Crear Cuenta</h4>
-                            </div>
-                            <form id="registrationForm" class="user">
-                                <div class="row mb-3">
-                                    <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control form-control-user" type="text" id="exampleFirstName" name="firstName" placeholder="Nombre"></div>
-                                    <div class="col-sm-6"><input class="form-control form-control form-control-user" type="text" id="exampleLastName" name="lastName" placeholder="Apellidos"></div>
-                                </div>
-                                <div class="mb-3"><input class="form-control form-control form-control-user" type="email" id="exampleInputEmail" name="email" placeholder="Direccion de correo electrónico"></div>
-                                <div class="row mb-3">
-                                    <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control form-control-user" type="password" id="examplePasswordInput" name="password" placeholder="Contraseña"></div>
-                                    <div class="col"><input class="form-control form-control form-control-user" type="password" id="examplePasswordInput-1" name="password" placeholder="Confirmar contraseña"></div>
-                                </div><button class="btn btn-primary d-block btn-user w-100" type="button"> Crear Cuenta </button>
-                            </form>
-                            <div class="text-center"><a class="small" href="forgot-password.html">Ha olvidado la contraseña?</a></div>
-                            <div class="text-center"><a class="small" href="login.html">Ya tiene una cuenta? Inicie sesión!</a></div>
-                        </div>
-                    </div>
-                    <div class="col"></div>
+      <div class="card shadow-lg o-hidden border-0 my-5">
+        <div class="card-body p-0">
+          <div class="row">
+            <div class="col-lg-7">
+              <div class="p-5">
+                <div class="text-center">
+                  <h4 class="text-dark mb-4">Crear Cuenta</h4>
                 </div>
+                <form id="registrationForm" class="user">
+                  <div class="row mb-3">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                      <input
+                        class="form-control form-control-user"
+                        type="text"
+                        id="exampleFirstName"
+                        placeholder="Nombre"
+                        name="firstName"
+                      />
+                    </div>
+                    <div class="col-sm-6">
+                      <input
+                        class="form-control form-control-user"
+                        type="text"
+                        id="exampleLastName"
+                        placeholder="Apellidos"
+                        name="lastName"
+                      />
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <input
+                      class="form-control form-control-user"
+                      type="email"
+                      id="exampleInputEmail"
+                      placeholder="Direccion de correo electrónico"
+                      name="email"
+                    />
+                  </div>
+                  <div class="row mb-3">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                      <input
+                        class="form-control form-control-user"
+                        type="password"
+                        id="examplePasswordInput"
+                        placeholder="Contraseña"
+                        name="password"
+                      />
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onclick="submitForm()"
+                    class="btn btn-primary d-block btn-user w-100"
+                  >
+                    Crear Cuenta
+                  </button>
+                </form>
+                <div class="text-center">
+                  <a class="small" href="forgot-password.html"
+                    >Ha olvidado la contraseña?</a
+                  >
+                </div>
+                <div class="text-center">
+                  <a class="small" href="login.html"
+                    >Ya tiene una cuenta? Inicie sesión!</a
+                  >
+                </div>
+              </div>
             </div>
+            <div class="col"></div>
+          </div>
         </div>
-    </div><script>
+      </div>
+    </div>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/theme.js"></script>
+    <script>
       function submitForm() {
         var formData = {
           firstName: document.getElementById("exampleFirstName").value,
@@ -62,7 +111,7 @@
           .then((response) => {
             if (response.ok) {
               // Si la respuesta es exitosa, redirigir a login.html
-              window.location.href = "login.html";
+              window.location.href = "/login.html";
             } else {
               // Si la respuesta no es exitosa, mostrar un error
               return response.text().then((text) => {
@@ -76,9 +125,5 @@
           });
       }
     </script>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/js/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/js/js/theme.js"></script>
-</body>
-
+  </body>
 </html>
