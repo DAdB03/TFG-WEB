@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-bs-theme="light" lang="en" data-bss-forced-theme="light">
+<html data-bs-theme="light" lang="en">
 
 <head>
     <meta charset="utf-8">
@@ -7,18 +7,14 @@
     <title>Profile - Brand</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
-    <link rel="stylesheet" href="assets/css/Font%20Awesome%205%20Brands.css">
-    <link rel="stylesheet" href="assets/css/Font%20Awesome%205%20Free.css">
     <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
-    <link rel="stylesheet" href="assets/css/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/fonts/fontawesome-all.min.css">
-    <link rel="stylesheet" href="assets/css/css/untitled.css">
+    <link rel="stylesheet" href="assets/css/untitled.css">
 </head>
 
 <body id="page-top">
     <div id="wrapper">
         <nav class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark">
-            <div class="container-fluid p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+            <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
                     <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-book-open"></i></div>
                     <div class="sidebar-brand-text mx-3"><span>Brand</span></div>
                 </a>
@@ -30,16 +26,17 @@
                     <li class="nav-item"><a class="nav-link" href="login.html"><i class="far fa-user-circle"></i><span>Login</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="register.html"><i class="fas fa-user-circle"></i><span>Registrarse</span></a></li>
                 </ul>
-                <div class="text-center d-none d-md-inline"><button class="btn border-0 rounded-circle" id="sidebarToggle" type="button"></button></div>
+                <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
             </div>
         </nav>
         <div class="d-flex flex-column" id="content-wrapper">
             <div id="content">
-                <nav class="bg-white navbar navbar-expand shadow mb-4 topbar static-top navbar-light">
+                <nav class="navbar navbar-expand bg-white shadow mb-4 topbar static-top navbar-light">
                     <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
                         <form class="d-none d-sm-inline-block me-auto ms-md-3 my-2 my-md-0 mw-100 navbar-search">
                             <div class="input-group"></div>
-                        </form><ul class="navbar-nav flex-nowrap ms-auto">
+                        </form>
+                        <ul class="navbar-nav flex-nowrap ms-auto">
                             <li class="nav-item dropdown d-sm-none no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><i class="fas fa-search"></i></a>
                                 <div class="dropdown-menu dropdown-menu-end p-3 animated--grow-in" aria-labelledby="searchDropdown">
                                     <form class="me-auto navbar-search w-100">
@@ -142,7 +139,7 @@
                             </div>
                         </div>
                         <div class="col-lg-8">
-                            <div class="row d-none mb-3">
+                            <div class="row mb-3 d-none">
                                 <div class="col">
                                     <div class="card text-white bg-primary shadow">
                                         <div class="card-body">
@@ -176,24 +173,24 @@
                                 <div class="col">
                                     <div class="card shadow mb-3">
                                         <div class="card-header py-3">
-                                            <p class="fw-bold text-primary m-0">User Settings</p>
+                                            <p class="text-primary m-0 fw-bold">User Settings</p>
                                         </div>
                                         <div class="card-body">
                                             <form>
                                                 <div class="row">
                                                     <div class="col">
-                                                        <div class="mb-3"><label class="form-label form-label" for="username"><strong>Nombre de usuario</strong></label><input class="form-control form-control" type="text" id="username" name="username" placeholder="nom.ape"></div>
+                                                        <div class="mb-3"><label class="form-label" for="username"><strong>Nombre de usuario</strong></label><input class="form-control" type="text" id="username" placeholder="nom.ape" name="username"></div>
                                                     </div>
                                                     <div class="col">
-                                                        <div class="mb-3"><label class="form-label form-label" for="email"><strong>Dirección de correo electrónico</strong></label><input class="form-control form-control" type="email" id="email" name="email" placeholder="nom.ape@educa.madrid.org"></div>
+                                                        <div class="mb-3"><label class="form-label" for="email"><strong>Dirección de correo electrónico</strong></label><input class="form-control" type="email" id="email" placeholder="nom.ape@educa.madrid.org" name="email"></div>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col">
-                                                        <div class="mb-3"><label class="form-label form-label" for="first_name"><strong>Nombre</strong></label><input class="form-control form-control" type="text" id="first_name" name="first_name" placeholder="Pedro"></div>
+                                                        <div class="mb-3"><label class="form-label" for="first_name"><strong>Nombre</strong></label><input class="form-control" type="text" id="first_name" placeholder="Pedro" name="first_name"></div>
                                                     </div>
                                                     <div class="col">
-                                                        <div class="mb-3"><label class="form-label form-label" for="last_name"><strong>Apellidos</strong></label><input class="form-control form-control" type="text" id="last_name" name="last_name" placeholder="Cuadrado"></div>
+                                                        <div class="mb-3"><label class="form-label" for="last_name"><strong>Apellidos</strong></label><input class="form-control" type="text" id="last_name" placeholder="Cuadrado" name="last_name"></div>
                                                     </div>
                                                 </div>
                                                 <div class="mb-3"><button class="btn btn-primary btn-sm" type="submit">Guardar cambios</button></div>
@@ -202,17 +199,17 @@
                                     </div>
                                     <div class="card shadow">
                                         <div class="card-header py-3">
-                                            <p class="fw-bold text-primary m-0">Información de contacto</p>
+                                            <p class="text-primary m-0 fw-bold">Información de contacto</p>
                                         </div>
                                         <div class="card-body">
                                             <form>
-                                                <div class="mb-3"><label class="form-label form-label" for="address"><strong>Dirección</strong></label><input class="form-control form-control" type="text" id="address" name="address" placeholder="C/Pilar Lorengar"></div>
+                                                <div class="mb-3"><label class="form-label" for="address"><strong>Dirección</strong></label><input class="form-control" type="text" id="address" placeholder="C/Pilar Lorengar" name="address"></div>
                                                 <div class="row">
                                                     <div class="col">
-                                                        <div class="mb-3"><label class="form-label form-label" for="city"><strong>Ciudad</strong></label><input class="form-control form-control" type="text" id="city" name="city" placeholder="Villaverde"></div>
+                                                        <div class="mb-3"><label class="form-label" for="city"><strong>Ciudad</strong></label><input class="form-control" type="text" id="city" placeholder="Villaverde" name="city"></div>
                                                     </div>
                                                     <div class="col">
-                                                        <div class="mb-3"><label class="form-label form-label" for="country"><strong>Centro educativo</strong></label><input class="form-control form-control" type="text" id="country" name="country" placeholder="IES Ciudad Escolar"></div>
+                                                        <div class="mb-3"><label class="form-label" for="country"><strong>Centro educativo</strong></label><input class="form-control" type="text" id="country" placeholder="IES Ciudad Escolar" name="country"></div>
                                                     </div>
                                                 </div>
                                                 <div class="mb-3"><button class="btn btn-primary btn-sm" type="submit">Guardar cambios</button></div>
@@ -225,15 +222,15 @@
                     </div>
                     <div class="card shadow mb-5">
                         <div class="card-header py-3">
-                            <p class="fw-bold text-primary m-0">Forum Settings</p>
+                            <p class="text-primary m-0 fw-bold">Forum Settings</p>
                         </div>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-6">
                                     <form>
-                                        <div class="mb-3"><label class="form-label form-label" for="signature"><strong>Signature</strong><br></label><textarea class="form-control form-control" id="signature" name="signature" rows="4"></textarea></div>
+                                        <div class="mb-3"><label class="form-label" for="signature"><strong>Signature</strong><br></label><textarea class="form-control" id="signature" rows="4" name="signature"></textarea></div>
                                         <div class="mb-3">
-                                            <div class="form-check form-switch"><input type="checkbox" class="form-check-input" id="formCheck-1"><label class="form-label form-check-label" for="formCheck-1"><strong>Notify me about new replies</strong></label></div>
+                                            <div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="formCheck-1"><label class="form-check-label" for="formCheck-1"><strong>Notify me about new replies</strong></label></div>
                                         </div>
                                         <div class="mb-3"><button class="btn btn-primary btn-sm" type="submit">Save Settings</button></div>
                                     </form>
@@ -248,11 +245,10 @@
                     <div class="text-center my-auto copyright"><span></span></div>
                 </div>
             </footer>
-        </div><a class="d-inline border rounded scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+        </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
     </div>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/js/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/js/js/theme.js"></script>
+    <script src="assets/js/theme.js"></script>
 </body>
 
 </html>
