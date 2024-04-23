@@ -33,7 +33,7 @@
                                 <div class="row mb-3">
                                     <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control form-control-user" type="password" id="examplePasswordInput" name="password" placeholder="Contraseña"></div>
                                     <div class="col"><input class="form-control form-control form-control-user" type="password" id="examplePasswordInput-1" name="passwordConfirm" placeholder="Confirmar contraseña"></div>
-                                </div><button class="btn btn-primary d-block btn-user w-100" type="button"> Crear Cuenta </button>
+                                </div><button class="btn btn-primary d-block btn-user w-100" type="button" onclick="submitForm()"> Crear Cuenta </button>
                             </form>
                             <div class="text-center"><a class="small" href="forgot-password.html">Ha olvidado la contraseña?</a></div>
                             <div class="text-center"><a class="small" href="login.html">Ya tiene una cuenta? Inicie sesión!</a></div>
@@ -62,7 +62,7 @@
           .then((response) => {
             if (response.ok) {
               // Si la respuesta es exitosa, redirigir a login.html
-              window.location.href = "login.html";
+              window.location.href = "/login.html";
             } else {
               // Si la respuesta no es exitosa, mostrar un error
               return response.text().then((text) => {
