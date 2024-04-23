@@ -17,12 +17,19 @@ public class UserController {
 	private UserService userService;
 
 	@PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody User user) {
+	public ResponseEntity<?> registerUser(@RequestBody User user) {
         System.out.println("Received user: " + user);
 
         if (user.getEmail() == null || !user.getEmail().endsWith("@educamadrid.org")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                                 .body("Error en el registro: el correo electrónico debe terminar con @educamandid.org");
+                                 .body("Error en el registro: el correo electrónico debe terminar con @educamadrid.org");
+        }
+
+        // Verifica si el correo electrónico ya existe
+        User existingUser = userService.findByEmail(user.getEmail());
+        if (existingUser != null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                                 .body("Error en el registro: el correo electrónico ya está registrado.");
         }
 
         try {
