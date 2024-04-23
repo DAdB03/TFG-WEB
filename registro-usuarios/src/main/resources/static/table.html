@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-bs-theme="light" lang="en">
+<html data-bs-theme="light" lang="en" data-bss-forced-theme="light">
 
 <head>
     <meta charset="utf-8">
@@ -7,14 +7,18 @@
     <title>Table - Brand</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
+    <link rel="stylesheet" href="assets/css/Font%20Awesome%205%20Brands.css">
+    <link rel="stylesheet" href="assets/css/Font%20Awesome%205%20Free.css">
     <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
-    <link rel="stylesheet" href="assets/css/untitled.css">
+    <link rel="stylesheet" href="assets/css/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="assets/css/css/untitled.css">
 </head>
 
 <body id="page-top">
     <div id="wrapper">
         <nav class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark">
-            <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+            <div class="container-fluid p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
                     <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-book-open"></i></div>
                     <div class="sidebar-brand-text mx-3"><span>Brand</span></div>
                 </a>
@@ -26,17 +30,16 @@
                     <li class="nav-item"><a class="nav-link" href="login.html"><i class="far fa-user-circle"></i><span>Login</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="register.html"><i class="fas fa-user-circle"></i><span>Registrarse</span></a></li>
                 </ul>
-                <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
+                <div class="text-center d-none d-md-inline"><button class="btn border-0 rounded-circle" id="sidebarToggle" type="button"></button></div>
             </div>
         </nav>
         <div class="d-flex flex-column" id="content-wrapper">
             <div id="content">
-                <nav class="navbar navbar-expand bg-white shadow mb-4 topbar static-top navbar-light">
+                <nav class="bg-white navbar navbar-expand shadow mb-4 topbar static-top navbar-light">
                     <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
                         <form class="d-none d-sm-inline-block me-auto ms-md-3 my-2 my-md-0 mw-100 navbar-search">
                             <div class="input-group"></div>
-                        </form>
-                        <ul class="navbar-nav flex-nowrap ms-auto">
+                        </form><ul class="navbar-nav flex-nowrap ms-auto">
                             <li class="nav-item dropdown d-sm-none no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><i class="fas fa-search"></i></a>
                                 <div class="dropdown-menu dropdown-menu-end p-3 animated--grow-in" aria-labelledby="searchDropdown">
                                     <form class="me-auto navbar-search w-100">
@@ -129,20 +132,20 @@
                     <h3 class="text-dark mb-4">Alumnado</h3>
                     <div class="card shadow">
                         <div class="card-header py-3">
-                            <p class="text-primary m-0 fw-bold"></p>
+                            <p class="fw-bold text-primary m-0"></p>
                         </div>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-6 text-nowrap">
-                                    <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"><label class="form-label">Mostrar<select class="d-inline-block form-select form-select-sm">
+                                    <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"><label class="form-label form-label">Mostrar<select class="form-select-sm d-inline-block form-select">
                                                 <option value="10" selected="">10</option>
                                                 <option value="25">25</option>
                                                 <option value="50">50</option>
                                                 <option value="100">100</option>
-                                            </select>&nbsp;</label></div>
+                                            </select></label></div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="text-md-end dataTables_filter" id="dataTable_filter"><label class="form-label"><input type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Search"></label></div>
+                                    <div class="text-md-end dataTables_filter" id="dataTable_filter"><label class="form-label form-label"><input class="form-control-sm form-control" type="search" aria-controls="dataTable" placeholder="Search"></label></div>
                                 </div>
                             </div>
                             <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
@@ -159,7 +162,7 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td><img class="rounded-circle me-2" width="30" height="30" src="assets/img/avatars/avatar1.jpeg">Airi Satou</td>
+                                            <td><img class="rounded-circle me-2" height="30" src="assets/img/avatars/avatar1.jpeg" width="30">Airi Satou</td>
                                             <td>Accountant</td>
                                             <td>IES Ciudad escolar</td>
                                             <td>Jose Sala</td>
@@ -167,7 +170,7 @@
                                             <td>DAM</td>
                                         </tr>
                                         <tr>
-                                            <td><img class="rounded-circle me-2" width="30" height="30" src="assets/img/avatars/avatar2.jpeg">Angelica Ramos</td>
+                                            <td><img class="rounded-circle me-2" height="30" src="assets/img/avatars/avatar2.jpeg" width="30">Angelica Ramos</td>
                                             <td>Chief Executive Officer(CEO)</td>
                                             <td>IES Ciudad escolar</td>
                                             <td>Jose Sala</td>
@@ -175,7 +178,7 @@
                                             <td>DAM</td>
                                         </tr>
                                         <tr>
-                                            <td><img class="rounded-circle me-2" width="30" height="30" src="assets/img/avatars/avatar3.jpeg">Ashton Cox</td>
+                                            <td><img class="rounded-circle me-2" height="30" src="assets/img/avatars/avatar3.jpeg" width="30">Ashton Cox</td>
                                             <td>Junior Technical Author</td>
                                             <td>IES Ciudad escolar</td>
                                             <td>Jose Sala</td>
@@ -183,7 +186,7 @@
                                             <td>DAW</td>
                                         </tr>
                                         <tr>
-                                            <td><img class="rounded-circle me-2" width="30" height="30" src="assets/img/avatars/avatar4.jpeg">Bradley Greer</td>
+                                            <td><img class="rounded-circle me-2" height="30" src="assets/img/avatars/avatar4.jpeg" width="30">Bradley Greer</td>
                                             <td>Software Engineer</td>
                                             <td>IES Ciudad escolar</td>
                                             <td>Jose Sala</td>
@@ -191,7 +194,7 @@
                                             <td>ASIR</td>
                                         </tr>
                                         <tr>
-                                            <td><img class="rounded-circle me-2" width="30" height="30" src="assets/img/avatars/avatar5.jpeg">Brenden Wagner</td>
+                                            <td><img class="rounded-circle me-2" height="30" src="assets/img/avatars/avatar5.jpeg" width="30">Brenden Wagner</td>
                                             <td>Software Engineer</td>
                                             <td>IES Ciudad escolar</td>
                                             <td>Jose Sala</td>
@@ -199,7 +202,7 @@
                                             <td>ASIR</td>
                                         </tr>
                                         <tr>
-                                            <td><img class="rounded-circle me-2" width="30" height="30" src="assets/img/avatars/avatar1.jpeg">Brielle Williamson</td>
+                                            <td><img class="rounded-circle me-2" height="30" src="assets/img/avatars/avatar1.jpeg" width="30">Brielle Williamson</td>
                                             <td>Integration Specialist</td>
                                             <td>IES Ciudad escolar</td>
                                             <td>Agustín G</td>
@@ -207,7 +210,7 @@
                                             <td>SMR</td>
                                         </tr>
                                         <tr>
-                                            <td><img class="rounded-circle me-2" width="30" height="30" src="assets/img/avatars/avatar2.jpeg">Bruno Nash<br></td>
+                                            <td><img class="rounded-circle me-2" height="30" src="assets/img/avatars/avatar2.jpeg" width="30">Bruno Nash<br></td>
                                             <td>Software Engineer</td>
                                             <td>IES Ciudad escolar</td>
                                             <td>Agustín G</td>
@@ -215,7 +218,7 @@
                                             <td>DAM</td>
                                         </tr>
                                         <tr>
-                                            <td><img class="rounded-circle me-2" width="30" height="30" src="assets/img/avatars/avatar3.jpeg">Caesar Vance</td>
+                                            <td><img class="rounded-circle me-2" height="30" src="assets/img/avatars/avatar3.jpeg" width="30">Caesar Vance</td>
                                             <td>Pre-Sales Support</td>
                                             <td>IES Ciudad escolar</td>
                                             <td>Agustín G</td>
@@ -223,7 +226,7 @@
                                             <td>DAM</td>
                                         </tr>
                                         <tr>
-                                            <td><img class="rounded-circle me-2" width="30" height="30" src="assets/img/avatars/avatar4.jpeg">Cara Stevens</td>
+                                            <td><img class="rounded-circle me-2" height="30" src="assets/img/avatars/avatar4.jpeg" width="30">Cara Stevens</td>
                                             <td>Sales Assistant</td>
                                             <td>IES Ciudad escolar</td>
                                             <td>Jose Sala</td>
@@ -231,7 +234,7 @@
                                             <td>DAW</td>
                                         </tr>
                                         <tr>
-                                            <td><img class="rounded-circle me-2" width="30" height="30" src="assets/img/avatars/avatar5.jpeg">Cedric Kelly</td>
+                                            <td><img class="rounded-circle me-2" height="30" src="assets/img/avatars/avatar5.jpeg" width="30">Cedric Kelly</td>
                                             <td>Senior JavaScript Developer</td>
                                             <td>IES Ciudad escolar</td>
                                             <td>Jose Sala</td>
@@ -243,8 +246,8 @@
                                         <tr>
                                             <td><strong>Name</strong></td>
                                             <td><strong>Position</strong></td>
-                                            <td><strong><br><strong>Centro educativo</strong><br><br></strong></td>
-                                            <td><strong><br><strong>Tutor Asignado</strong><br><br></strong></td>
+                                            <td><br><strong>Centro educativo</strong><br><br></td>
+                                            <td><br><strong>Tutor Asignado</strong><br><br></td>
                                             <td><strong>Start date</strong></td>
                                             <td><strong>Salary</strong></td>
                                         </tr>
@@ -258,11 +261,11 @@
                                 <div class="col-md-6">
                                     <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
                                         <ul class="pagination">
-                                            <li class="page-item disabled"><a class="page-link" aria-label="Previous" href="#"><span aria-hidden="true">«</span></a></li>
+                                            <li class="page-item disabled"><a class="page-link" href="#" aria-label="Previous"></a></li>
                                             <li class="page-item active"><a class="page-link" href="#">1</a></li>
                                             <li class="page-item"><a class="page-link" href="#">2</a></li>
                                             <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                            <li class="page-item"><a class="page-link" aria-label="Next" href="#"><span aria-hidden="true">»</span></a></li>
+                                            <li class="page-item"><a class="page-link" href="#" aria-label="Next"></a></li>
                                         </ul>
                                     </nav>
                                 </div>
@@ -276,10 +279,11 @@
                     <div class="text-center my-auto copyright"><span></span></div>
                 </div>
             </footer>
-        </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+        </div><a class="d-inline border rounded scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
     </div>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/js/theme.js"></script>
+    <script src="assets/js/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/js/theme.js"></script>
 </body>
 
 </html>
