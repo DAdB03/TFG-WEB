@@ -29,7 +29,7 @@ public class SecurityConfig {
 				// Authorization configuration
 				.authorizeHttpRequests(authz -> authz
 						.requestMatchers("/", "/index.html", "/login.html", "/register.html", "/home.html",
-								"/assets/**", "/users/register")
+								"/assets/**", "/users/register", "users/login")
 						.permitAll() // Ensure all these paths are accessible without authentication
 						.anyRequest().authenticated())
 

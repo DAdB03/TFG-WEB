@@ -26,7 +26,7 @@
                                     <div class="text-center">
                                         <h4 class="text-dark mb-4">Bienvenido!</h4>
                                     </div>
-                                    <form class="user">
+                                    <form class="user" onsubmit="login(event)">
                                         <div class="mb-3"><input class="form-control form-control form-control-user" type="email" aria-describedby="emailHelp" id="exampleInputEmail" name="email" placeholder="Introduzca correo electrónico..."></div>
                                         <div class="mb-3"><input class="form-control form-control form-control-user" type="password" id="exampleInputPassword" name="password" placeholder="Contraseña"></div>
                                         <div class="mb-3">
@@ -47,6 +47,29 @@
             </div>
         </div>
     </div>
+    <script>
+        function login(event) {
+            event.preventDefault();
+            var email = document.getElementById("exampleInputEmail").value;
+            var password = document.getElementById("exampleInputPassword").value;
+    
+            fetch("/users/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({email: email, password: password}),
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = "/index.html";
+                } else {
+                    alert("Credenciales inválidas. Por favor, intente de nuevo.");
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/js/theme.js"></script>
