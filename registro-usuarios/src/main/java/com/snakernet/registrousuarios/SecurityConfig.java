@@ -6,9 +6,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -18,29 +20,18 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig {
 
 	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http
-				// CORS configuration
-				.cors(cors -> cors.configurationSource(corsConfigurationSource()))
-
-				// CSRF configuration
-				.csrf(csrf -> csrf.disable()) // Disable CSRF, adjust as necessary for your application
-
-				// Authorization configuration
+	public SecurityFilterChain filterChain(HttpSecurity http, JwtUtil jwtUtil, UserDetailsService userDetailsService) throws Exception {
+		JwtRequestFilter jwtRequestFilter = new JwtRequestFilter(jwtUtil, userDetailsService);
+		 
+		http.cors(cors -> cors.configurationSource(corsConfigurationSource())).csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(authz -> authz
-						.requestMatchers("/", "/index.html", "/login.html", "/register.html", "/home.html",
-								"/assets/**", "/users/register", "users/login")
-						.permitAll() // Ensure all these paths are accessible without authentication
-						.anyRequest().authenticated())
-
-				// Form login configuration
-				.formLogin(form -> form.loginPage("/login.html") // Set the login page
-						.defaultSuccessUrl("/index.html", true) // Redirect to index.html upon successful login
-						.permitAll()) // Ensure the login page is accessible without authentication
-
-				// Logout configuration
-				.logout(logout -> logout.logoutSuccessUrl("/index.html") // Redirect to index.html on logout
-						.permitAll());
+						.requestMatchers("/", "/index.html", "/login.html", "/register.html", "/profile.html",
+								"/assets/**", "/users/register", "/users/login")
+						.permitAll().anyRequest().authenticated())
+				.formLogin(form -> form.loginPage("/login.html").defaultSuccessUrl("/index.html", true).permitAll())
+				.logout(logout -> logout.logoutSuccessUrl("/index.html").permitAll())
+				.httpBasic(httpBasic -> httpBasic.disable())
+				.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
 	}

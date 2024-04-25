@@ -1,5 +1,7 @@
 package com.snakernet.registrousuarios;
 
+import java.util.Collections;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,8 @@ public class UserController {
 	@Autowired
     private PasswordEncoder passwordEncoder;
 	
+	@Autowired
+    private JwtUtil jwtUtil;
 
 	@PostMapping("/register")
 	public ResponseEntity<?> registerUser(@RequestBody User user) {
@@ -46,17 +50,17 @@ public class UserController {
 	    }
 	}
 
-    @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody User loginRequest) {
-        User user = userService.findByEmail(loginRequest.getEmail());
-        if (user != null && passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-        	System.out.println("AAAA");
-            return ResponseEntity.ok("Login exitoso. Redireccionando a index.html...");
-        } else {
-        	System.out.println("bbbbb");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
-        }
-    }
+	@PostMapping("/login")
+	public ResponseEntity<?> loginUser(@RequestBody User loginRequest) {
+	    User user = userService.findByEmail(loginRequest.getEmail());
+	    if (user != null && passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+	        String token = jwtUtil.generateToken(user.getEmail());
+	        System.out.println("Generated Token: " + token);
+	        return ResponseEntity.ok(Collections.singletonMap("jwtToken", token));
+	    } else {
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
+	    }
+	}
     
     
 }

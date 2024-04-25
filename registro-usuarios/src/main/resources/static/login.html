@@ -27,18 +27,18 @@
                                         <h4 class="text-dark mb-4">Bienvenido!</h4>
                                     </div>
                                     <form class="user" onsubmit="login(event)">
-                                        <div class="mb-3"><input class="form-control form-control form-control-user" type="email" aria-describedby="emailHelp" id="exampleInputEmail" name="email" placeholder="Introduzca correo electrónico..."></div>
-                                        <div class="mb-3"><input class="form-control form-control form-control-user" type="password" id="exampleInputPassword" name="password" placeholder="Contraseña"></div>
+                                        <div class="mb-3"><input class="form-control form-control-user" type="email" aria-describedby="emailHelp" id="exampleInputEmail" name="email" placeholder="Introduzca correo electrónico..."></div>
+                                        <div class="mb-3"><input class="form-control form-control-user" type="password" id="exampleInputPassword" name="password" placeholder="Contraseña"></div>
                                         <div class="mb-3">
                                             <div class="custom-control custom-checkbox small">
                                                 <div class="form-check"><input type="checkbox" class="form-check-input custom-control-input" id="formCheck-1"><label class="form-label form-check-label custom-control-label" for="formCheck-1">Recuerdame</label></div>
                                             </div>
-                                        </div><button class="btn btn-primary d-block btn-user w-100" type="submit">Iniciar Sesion</button>
-                                        <hr>
+                                        </div>
+                                        <button class="btn btn-primary d-block btn-user w-100" type="submit">Iniciar Sesion</button>
                                         <hr>
                                     </form>
-                                    <div class="text-center"><a class="small" href="forgot-password.html">Has olvidado tu contraseña??</a></div>
-                                    <div class="text-center"><a class="small" href="register.html"></a></div>
+                                    <div class="text-center"><a class="small" href="forgot-password.html">Has olvidado tu contraseña?</a></div>
+                                    <div class="text-center"></div>
                                 </div>
                             </div>
                         </div>
@@ -60,9 +60,11 @@
                 },
                 body: JSON.stringify({email: email, password: password}),
             })
-            .then(response => {
-                if (response.ok) {
-                    window.location.href = "/index.html";
+            .then(response => response.json()) // Asegúrate de que el servidor responde con JSON
+            .then(data => {
+                if (data.jwtToken) { // Asumimos que el servidor responde con un objeto que incluye jwtToken
+                    localStorage.setItem('jwtToken', data.jwtToken); // Guarda el token en localStorage
+                    window.location.href = "/index.html"; // Redirige a index.html o a otra página principal
                 } else {
                     alert("Credenciales inválidas. Por favor, intente de nuevo.");
                 }
