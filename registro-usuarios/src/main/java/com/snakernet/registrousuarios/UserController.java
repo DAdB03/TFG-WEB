@@ -31,9 +31,6 @@ public class UserController {
 	    if (user.getEmail() == null || !user.getEmail().endsWith("@educamadrid.org")) {
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 	        					 .body("Error en el registro: el correo electrónico debe terminar con @educamadrid.org");
-	    } else if (!passwordEncoder.matches(user.getPassword(), user.getConfirm_password())) {
-	    	return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-	    						 .body("Las contraseñas no coinciden.");
 	    }
 
 	    // Check if the user already exists

@@ -52,7 +52,7 @@
             event.preventDefault();
             var email = document.getElementById("exampleInputEmail").value;
             var password = document.getElementById("exampleInputPassword").value;
-    
+        
             fetch("/users/login", {
                 method: "POST",
                 headers: {
@@ -61,24 +61,28 @@
                 body: JSON.stringify({email: email, password: password}),
             })
             .then(response => {
-                if(response.ok) {
-                    response.json();
+                if (response.ok) {
+                    return response.json();
                 } else {
-                    response.text().then(text => alert(text));
-                }})
+                    return response.text().then(text => {
+                        throw new Error(text); // Lanzamos un error para que entre al catch si no es una respuesta ok
+                    });
+                }
+            })
             .then(data => {
-                if (data.jwtToken) {
+                if (data && data.jwtToken) { // Agregado data && para verificar que data no sea undefined
                     localStorage.setItem('jwtToken', data.jwtToken);
-                    window.location.href = "/index.html";
+                    window.location.href = "/index.html"; // Redirigir al usuario al index
                 } else {
-                    response.text().then(text => alert(text));
-                    alert("Credenciales inválidas. Por favor, intente de nuevo.");
+                    alert("No se pudo iniciar sesión correctamente. Por favor, intente de nuevo.");
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
+                alert(error.message); // Mostrar el mensaje de error
             });
         }
+        
 
     </script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>

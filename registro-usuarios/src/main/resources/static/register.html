@@ -1,87 +1,198 @@
 <!DOCTYPE html>
 <html data-bs-theme="light" lang="en" data-bss-forced-theme="light">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+    />
     <title>Register - Brand</title>
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
-    <link rel="stylesheet" href="assets/css/Font%20Awesome%205%20Brands.css">
-    <link rel="stylesheet" href="assets/css/Font%20Awesome%205%20Free.css">
-    <link rel="stylesheet" href="assets/css/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/fonts/fontawesome-all.min.css">
-    <link rel="stylesheet" href="assets/css/css/untitled.css">
-</head>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap"
+    />
+    <link rel="stylesheet" href="assets/css/Font%20Awesome%205%20Brands.css" />
+    <link rel="stylesheet" href="assets/css/Font%20Awesome%205%20Free.css" />
+    <link rel="stylesheet" href="assets/css/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="assets/css/fonts/fontawesome-all.min.css" />
+    <link rel="stylesheet" href="assets/css/css/untitled.css" />
+  </head>
 
-<body class="bg-gradient-primary">
+  <body class="bg-gradient-primary">
     <div class="container">
-        <div class="card border-0 shadow-lg o-hidden my-5">
-            <div class="card-body p-0">
-                <div class="row">
-                    <div class="col-lg-7">
-                        <div class="p-5">
-                            <div class="text-center">
-                                <h4 class="text-dark mb-4">Crear Cuenta</h4>
-                            </div>
-                            <form id="registrationForm" class="user" onsubmit="register(event)">
-                                <div class="row mb-3">
-                                    <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control form-control-user" type="text" id="first_name" name="firstName" placeholder="Nombre"></div>
-                                    <div class="col-sm-6"><input class="form-control form-control form-control-user" type="text" id="last_name" name="lastName" placeholder="Apellidos"></div>
-                                </div>
-                                <div class="mb-3"><input class="form-control form-control form-control-user" type="email" id="email_input" name="email" placeholder="Direccion de correo electrónico"></div>
-                                <div class="row mb-3">
-                                    <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control form-control-user" type="password" id="password_input" name="password" placeholder="Contraseña"></div>
-                                    <div class="col"><input class="form-control form-control form-control-user" type="password" id="confirm_password_input" name="passwordConfirm" placeholder="Confirmar contraseña"></div>
-                                </div><button class="btn btn-primary d-block btn-user w-100" type="submit"> Crear Cuenta </button>
-                            </form>
-                            <div class="text-center"><a class="small" href="forgot-password.html">Ha olvidado la contraseña?</a></div>
-                            <div class="text-center"><a class="small" href="login.html">Ya tiene una cuenta? Inicie sesión!</a></div>
-                        </div>
-                    </div>
-                    <div class="col"></div>
+      <div class="card border-0 shadow-lg o-hidden my-5">
+        <div class="card-body p-0">
+          <div class="row">
+            <div class="col-lg-7">
+              <div class="p-5">
+                <div class="text-center">
+                  <h4 class="text-dark mb-4">Crear Cuenta</h4>
                 </div>
+                <form
+                  id="registrationForm"
+                  class="user"
+                  onsubmit="checkPasswords(event)"
+                >
+                  <div class="row mb-3">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                      <input
+                        class="form-control form-control form-control-user"
+                        type="text"
+                        id="first_name"
+                        name="firstName"
+                        placeholder="Nombre"
+                      />
+                    </div>
+                    <div class="col-sm-6">
+                      <input
+                        class="form-control form-control form-control-user"
+                        type="text"
+                        id="last_name"
+                        name="lastName"
+                        placeholder="Apellidos"
+                      />
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <input
+                      class="form-control form-control form-control-user"
+                      type="email"
+                      id="email_input"
+                      name="email"
+                      placeholder="Direccion de correo electrónico"
+                    />
+                  </div>
+                  <div class="row mb-3">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                      <input
+                        class="form-control form-control form-control-user"
+                        type="password"
+                        id="password_input"
+                        name="password"
+                        placeholder="Contraseña"
+                      />
+                    </div>
+                    <div class="col">
+                      <input
+                        class="form-control form-control form-control-user"
+                        type="password"
+                        id="passwordConfirm"
+                        name="passwordConfirm"
+                        placeholder="Confirmar contraseña"
+                      />
+                    </div>
+                  </div>
+                  <button
+                    class="btn btn-primary d-block btn-user w-100"
+                    type="submit"
+                  >
+                    Crear Cuenta
+                  </button>
+                </form>
+                <div class="text-center">
+                  <a class="small" href="forgot-password.html"
+                    >Ha olvidado la contraseña?</a
+                  >
+                </div>
+                <div class="text-center">
+                  <a class="small" href="login.html"
+                    >Ya tiene una cuenta? Inicie sesión!</a
+                  >
+                </div>
+              </div>
             </div>
+            <div class="col"></div>
+          </div>
         </div>
-    </div><script>
+      </div>
+    </div>
+    <script>
+      function checkPasswords(event) {
+        event.preventDefault();
+
+        var password = document.getElementById("password_input").value;
+        var passwordConfirm = document.getElementById("passwordConfirm").value;
+
+        if (password !== passwordConfirm) {
+          alert(
+            "Las contraseñas no coinciden. Por favor, verifica e intenta de nuevo."
+          );
+          return;
+        }
+
+        // Si las contraseñas coinciden, llamar a la función register
+        register();
+      }
+
       function register(event) {
-          event.preventDefault(); // Evita el envío normal del formulario
-    
-          var formData = {
-              firstName: document.getElementById("first_name").value,
-              lastName: document.getElementById("last_name").value,
-              email: document.getElementById("email_input").value,
-              password: document.getElementById("password_input").value,
-              passwordConfirm: document.getElementById("confirm_password_input").value
-          };
-    
-          fetch("/users/register", {
-              method: "POST",
-              headers: {
-                  "Content-Type": "application/json",
-              },
-              body: JSON.stringify(formData)
+        event.preventDefault(); // Evita el envío normal del formulario
+
+        var formData = {
+          firstName: document.getElementById("first_name").value,
+          lastName: document.getElementById("last_name").value,
+          email: document.getElementById("email_input").value,
+          password: document.getElementById("password_input").value,
+        };
+
+        fetch("/users/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        })
+          .then((response) => {
+            if (response.ok) {
+              window.location.href = "/login.html"; // Redirige a la página de login si el registro es exitoso
+            } else {
+              // Procesa la respuesta para mostrar el mensaje de error
+              response.text().then((text) => alert(text));
+            }
           })
-          .then(response => {
-              if (response.ok) {
-                  window.location.href = "/login.html"; // Redirige a la página de login si el registro es exitoso
-              } else {
-                  // Procesa la respuesta para mostrar el mensaje de error
-                  response.text().then(text => alert(text));
-              }
-          })
-          .catch(error => {
-              console.error('Error:', error);
-              alert("Error al registrar: " + error.message); // Muestra un mensaje de error en caso de fallo en la red o servidor
+          .catch((error) => {
+            console.error("Error:", error);
+            alert("Error al registrar: " + error.message); // Muestra un mensaje de error en caso de fallo en la red o servidor
           });
       }
-    
+      function register() {
+        var formData = {
+          firstName: document.getElementById("first_name").value,
+          lastName: document.getElementById("last_name").value,
+          email: document.getElementById("email_input").value,
+          password: document.getElementById("password_input").value,
+        };
+
+        fetch("/users/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        })
+          .then((response) => {
+            if (response.ok) {
+              window.location.href = "/login.html"; // Redirige a la página de login si el registro es exitoso
+            } else {
+              // Procesa la respuesta para mostrar el mensaje de error
+              return response.text().then((text) => {
+                throw new Error(text);
+              });
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            alert("Error al registrar: " + error.message); // Muestra un mensaje de error en caso de fallo en la red o servidor
+          });
+      }
+
       // Agrega el listener al botón de registro para manejar el click
-      document.getElementById("registerButton").addEventListener("click", register);
+      document
+        .getElementById("registerButton")
+        .addEventListener("click", register);
     </script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/js/theme.js"></script>
-</body>
-
+  </body>
 </html>

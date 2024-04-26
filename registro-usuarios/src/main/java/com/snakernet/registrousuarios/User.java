@@ -17,7 +17,6 @@ public class User {
 	private String apellido;
 	private String email;
 	private String password;
-	private String confirm_password;
 	private Integer id_role;
 	
 	public Long getId() {
@@ -50,12 +49,6 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getConfirm_password() {
-		return confirm_password;
-	}
-	public void setConfirm_password(String confirm_password) {
-		this.confirm_password = confirm_password;
-	}
 	public Integer getId_role() {
 		return id_role;
 	}
@@ -65,7 +58,7 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", email=" + email + ", password="
-				+ password + ", confirm_password=" + confirm_password + ", id_role=" + id_role + "]";
+				+ password + ", id_role=" + id_role + "]";
 	}
 	
 }
