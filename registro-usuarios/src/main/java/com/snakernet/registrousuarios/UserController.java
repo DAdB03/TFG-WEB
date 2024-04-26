@@ -54,11 +54,11 @@ public class UserController {
 	public ResponseEntity<?> loginUser(@RequestBody User loginRequest) {
 	    User user = userService.findByEmail(loginRequest.getEmail());
 	    if (user != null && passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-	        String token = jwtUtil.generateToken(user.getEmail());
+	        String token = jwtUtil.generateToken(user);
 	        System.out.println("Generated Token: " + token);
 	        return ResponseEntity.ok(Collections.singletonMap("jwtToken", token));
 	    } else {
-	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuario o Contraseña Incorrectos");
 	    }
 	}
     

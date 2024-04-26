@@ -17,11 +17,21 @@ public class JwtUtil {
 	@Value("${jwt.secret}")
 	String secretKey; // Debe ser base64 encoded si es necesario
 
-	public String generateToken(String username) {
-		Key key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
-		return Jwts.builder().setSubject(username).setIssuedAt(new Date())
-				.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 horas de validez
-				.signWith(key).compact();
+	public String generateToken(User user) {
+	    // Convertir la clave secreta codificada en Base64 a una clave de firma Key
+	    Key key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
+
+	    // Preparar los claims del token
+	    Claims claims = Jwts.claims().setSubject(user.getId().toString());
+	    claims.put("roleID", user.getId_role()); // Almacenar el ID del rol en el token
+
+	    // Construir y retornar el token JWT
+	    return Jwts.builder()
+	               .setClaims(claims) // Asignar los claims personalizados
+	               .setIssuedAt(new Date()) // Marca de tiempo de cuándo se emitió el token
+	               .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 horas de validez
+	               .signWith(key) // Firmar el token con la clave HMAC
+	               .compact();
 	}
 
 	public Claims extractClaims(String token) {
