@@ -26,13 +26,13 @@
                             </div>
                             <form id="registrationForm" class="user" onsubmit="register(event)">
                                 <div class="row mb-3">
-                                    <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control form-control-user" type="text" id="exampleFirstName" name="firstName" placeholder="Nombre"></div>
-                                    <div class="col-sm-6"><input class="form-control form-control form-control-user" type="text" id="exampleLastName" name="lastName" placeholder="Apellidos"></div>
+                                    <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control form-control-user" type="text" id="first_name" name="firstName" placeholder="Nombre"></div>
+                                    <div class="col-sm-6"><input class="form-control form-control form-control-user" type="text" id="last_name" name="lastName" placeholder="Apellidos"></div>
                                 </div>
-                                <div class="mb-3"><input class="form-control form-control form-control-user" type="email" id="exampleInputEmail" name="email" placeholder="Direccion de correo electrónico"></div>
+                                <div class="mb-3"><input class="form-control form-control form-control-user" type="email" id="email_input" name="email" placeholder="Direccion de correo electrónico"></div>
                                 <div class="row mb-3">
-                                    <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control form-control-user" type="password" id="examplePasswordInput" name="password" placeholder="Contraseña"></div>
-                                    <div class="col"><input class="form-control form-control form-control-user" type="password" id="examplePasswordInput-1" name="passwordConfirm" placeholder="Confirmar contraseña"></div>
+                                    <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control form-control-user" type="password" id="password_input" name="password" placeholder="Contraseña"></div>
+                                    <div class="col"><input class="form-control form-control form-control-user" type="password" id="confirm_password_input" name="passwordConfirm" placeholder="Confirmar contraseña"></div>
                                 </div><button class="btn btn-primary d-block btn-user w-100" type="submit"> Crear Cuenta </button>
                             </form>
                             <div class="text-center"><a class="small" href="forgot-password.html">Ha olvidado la contraseña?</a></div>
@@ -48,10 +48,11 @@
           event.preventDefault(); // Evita el envío normal del formulario
     
           var formData = {
-              firstName: document.getElementById("exampleFirstName").value,
-              lastName: document.getElementById("exampleLastName").value,
-              email: document.getElementById("exampleInputEmail").value,
-              password: document.getElementById("examplePasswordInput").value
+              firstName: document.getElementById("first_name").value,
+              lastName: document.getElementById("last_name").value,
+              email: document.getElementById("email_input").value,
+              password: document.getElementById("password_input").value,
+              passwordConfirm: document.getElementById("confirm_password_input").value
           };
     
           fetch("/users/register", {

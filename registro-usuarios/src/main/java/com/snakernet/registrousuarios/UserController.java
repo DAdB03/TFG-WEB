@@ -27,10 +27,13 @@ public class UserController {
 	@PostMapping("/register")
 	public ResponseEntity<?> registerUser(@RequestBody User user) {
 	    System.out.println("Received user: " + user);
-
+	    user.toString();
 	    if (user.getEmail() == null || !user.getEmail().endsWith("@educamadrid.org")) {
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-	                             .body("Error en el registro: el correo electrónico debe terminar con @educamadrid.org");
+	        					 .body("Error en el registro: el correo electrónico debe terminar con @educamadrid.org");
+	    } else if (!passwordEncoder.matches(user.getPassword(), user.getConfirm_password())) {
+	    	return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+	    						 .body("Las contraseñas no coinciden.");
 	    }
 
 	    // Check if the user already exists
