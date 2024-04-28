@@ -17,10 +17,14 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userService.findByEmail(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("No se pudo encontrar el usuario con email: " + username);
+        Long userId;
+        try {
+            userId = Long.parseLong(username);  // Intenta convertir el username a Long
+        } catch (NumberFormatException e) {
+            throw new UsernameNotFoundException("Formato de ID inválido: " + username);
         }
+
+        User user = userService.findById(userId).orElseThrow(() -> new UsernameNotFoundException("No se pudo encontrar el usuario con ID: " + userId));
 
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
                 Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));  // Usar ROLE_ como prefijo si estás configurando autorizaciones basadas en roles

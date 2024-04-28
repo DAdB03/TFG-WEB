@@ -18,6 +18,7 @@ public class User {
 	private String email;
 	private String password;
 	private Integer id_role;
+	private String ImageUrl;
 	
 	public Long getId() {
 		return id;
@@ -55,10 +56,11 @@ public class User {
 	public void setId_role(Integer id_role) {
 		this.id_role = id_role;
 	}
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", email=" + email + ", password="
-				+ password + ", id_role=" + id_role + "]";
+	public String getImageUrl() {
+		return ImageUrl;
+	}
+	public void setImageUrl(String img_url) {
+		this.ImageUrl = img_url;
 	}
 	
 }

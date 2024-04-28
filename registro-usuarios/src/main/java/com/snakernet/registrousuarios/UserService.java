@@ -1,5 +1,7 @@
 package com.snakernet.registrousuarios;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,10 @@ public class UserService {
 
 	public User findByEmail(String email) {
 		return userRepository.findByEmail(email); // Utiliza el método del repositorio
+	}
+	
+	public Optional<User> findById(Long id) {
+	    return userRepository.findById(id);
 	}
 
 	public User registerUser(User user) {
