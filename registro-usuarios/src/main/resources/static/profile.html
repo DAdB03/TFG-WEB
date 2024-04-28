@@ -91,7 +91,7 @@
                     <div class="row mb-3">
                         <div class="col-lg-4">
                             <div class="card mb-3">
-                                <div class="card-body text-center shadow"><img class="rounded-circle mb-3 mt-4" src="assets/img/ELPEDRO.png" width="160" height="160">
+                                <div class="card-body text-center shadow"><img class="rounded-circle mb-3 mt-4" id="profileImage" src="assets/img/ELPEDRO.png" width="160" height="160">
                                     <div class="mb-3"><button class="btn btn-primary btn-sm" type="button">Cambia imagen</button></div>
                                 </div>
                             </div>
@@ -104,25 +104,34 @@
                                             <p class="fw-bold text-primary m-0">User Settings</p>
                                         </div>
                                         <div class="card-body">
-                                            <form>
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <div class="mb-3"><label class="form-label form-label" for="username"><strong>Nombre de usuario</strong></label><input class="form-control form-control" type="text" id="username" name="username" placeholder="nom.ape"></div>
-                                                    </div>
-                                                    <div class="col">
-                                                        <div class="mb-3"><label class="form-label form-label" for="email"><strong>Dirección de correo electrónico</strong></label><input class="form-control form-control" type="email" id="email" name="email" placeholder="nom.ape@educa.madrid.org"></div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="mb-3">
+                                                        <label class="form-label"><strong>Nombre de usuario</strong></label>
+                                                        <p id="username" class="form-control-plaintext">Cargando...</p>
                                                     </div>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <div class="mb-3"><label class="form-label form-label" for="first_name"><strong>Nombre</strong></label><input class="form-control form-control" type="text" id="first_name" name="first_name" placeholder="Pedro"></div>
-                                                    </div>
-                                                    <div class="col">
-                                                        <div class="mb-3"><label class="form-label form-label" for="last_name"><strong>Apellidos</strong></label><input class="form-control form-control" type="text" id="last_name" name="last_name" placeholder="Cuadrado"></div>
+                                                <div class="col">
+                                                    <div class="mb-3">
+                                                        <label class="form-label"><strong>Dirección de correo electrónico</strong></label>
+                                                        <p id="email" class="form-control-plaintext">Cargando...</p>
                                                     </div>
                                                 </div>
-                                                <div class="mb-3"><button class="btn btn-primary btn-sm" type="submit">Guardar cambios</button></div>
-                                            </form>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="mb-3">
+                                                        <label class="form-label"><strong>Nombre</strong></label>
+                                                        <p id="first_name" class="form-control-plaintext">Cargando...</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="mb-3">
+                                                        <label class="form-label"><strong>Apellidos</strong></label>
+                                                        <p id="last_name" class="form-control-plaintext">Cargando...</p>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="card shadow">
@@ -163,7 +172,6 @@
             if (token) {
                 fetchUserData(token);
             } else {
-                // Redirect to login page or show login/register options
                 window.location.href = '/login.html';
             }
         });
@@ -192,6 +200,13 @@
                     if (data) {
                         document.getElementById('userName').textContent = data.firstName + ' ' + data.lastName;
                         document.getElementById('userImage').src = data.imageUrl || 'assets/img/default.png';
+                        // Actualizando los datos de usuario en los campos
+                        document.getElementById('username').textContent = data.username || 'No disponible';
+                        document.getElementById('email').textContent = data.email || 'No disponible';
+                        document.getElementById('first_name').textContent = data.firstName || 'No disponible';
+                        document.getElementById('last_name').textContent = data.lastName || 'No disponible';
+                        // Imagen
+                        document.getElementById('profileImage').src = data.imageUrl || 'assets/img/default.png';
                     }
                 })
                 .catch(error => {
@@ -203,7 +218,6 @@
                 document.getElementById('userName').textContent = "Error loading data"; // Mostrar mensaje de error en la UI
             }
         }
-        
     
         function getUserIdFromToken(token) {
             try {

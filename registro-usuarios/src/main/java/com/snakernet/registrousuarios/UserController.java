@@ -72,7 +72,7 @@ public class UserController {
 		System.out.println("USER-----------");
 		User user = userService.findById(id).orElseThrow(
 				() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado con ID: " + id));
-		UserDto userDto = new UserDto(user.getFirstName(), user.getLastName(), user.getImageUrl());
+		UserDto userDto = new UserDto(user.getFirstName(), user.getLastName(), user.getImageUrl(), user.getEmail());
 		return ResponseEntity.ok(userDto);
 	}
 
