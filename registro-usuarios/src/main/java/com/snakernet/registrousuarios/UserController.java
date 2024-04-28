@@ -44,7 +44,7 @@ public class UserController {
 		}
 
 		try {
-			userService.registerUser(user); // directly calling the service method without assigning the result
+			userService.registerUser(user);
 			return ResponseEntity.ok("Registro exitoso");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -66,10 +66,9 @@ public class UserController {
 	}
 
 	// Obtener información del usuario
-	@GetMapping("/auth/{id}") // Corregido para incluir una barra antes de {id}
+	@GetMapping("/auth/{id}")
 	@PreAuthorize("isAuthenticated()") // Asegura que solo usuarios autenticados puedan acceder
 	public ResponseEntity<?> getUserInfo(@PathVariable Long id) {
-		System.out.println("USER-----------");
 		User user = userService.findById(id).orElseThrow(
 				() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado con ID: " + id));
 		UserDto userDto = new UserDto(user.getFirstName(), user.getLastName(), user.getImageUrl(), user.getEmail());
