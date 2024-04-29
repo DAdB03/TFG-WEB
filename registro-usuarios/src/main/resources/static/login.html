@@ -37,7 +37,10 @@
                                         <button class="btn btn-primary d-block btn-user w-100" type="submit">Iniciar Sesion</button>
                                         <hr>
                                     </form>
-                                    <div class="text-center"><a class="small" href="forgot-password.html">Has olvidado tu contraseña?</a></div>
+                                    <div class="text-center" style="padding-top: 15px">
+                                        <p id="error" class="error-message"></p>
+                                     </div>
+                                  <!--  <div class="text-center"><a class="small" href="forgot-password.html">Has olvidado tu contraseña?</a></div> -->
                                     <div class="text-center"></div>
                                     <div class="text-center">
                                         <a class="small" href="register.html"
@@ -82,10 +85,11 @@
                     alert("No se pudo iniciar sesión correctamente. Por favor, intente de nuevo.");
                 }
             })
-            .catch(error => {
-                console.error('Error:', error);
-                alert(error.message); // Mostrar el mensaje de error
-            });
+            .catch((error) => {
+            console.error("Error:", error);
+            document.getElementById('error').textContent = error.message;
+            document.getElementById('error').style.display= "block";
+          });
         }
         
 

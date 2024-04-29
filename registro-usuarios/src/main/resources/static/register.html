@@ -83,6 +83,11 @@
                       />
                     </div>
                   </div>
+                  <div class="text-center">
+                    <a class="small"
+                      ></a
+                    >
+                  </div>
                   <button
                     class="btn btn-primary d-block btn-user w-100"
                     type="submit"
@@ -90,10 +95,8 @@
                     Crear Cuenta
                   </button>
                 </form>
-                <div class="text-center">
-                  <a class="small" href="forgot-password.html"
-                    >Ha olvidado la contraseña?</a
-                  >
+                <div class="text-center" style="padding-top: 15px">
+                   <p id="error" class="error-message"></p>
                 </div>
                 <div class="text-center">
                   <a class="small" href="login.html"
@@ -125,36 +128,6 @@
         register();
       }
 
-      function register(event) {
-        event.preventDefault(); // Evita el envío normal del formulario
-
-        var formData = {
-          firstName: document.getElementById("first_name").value,
-          lastName: document.getElementById("last_name").value,
-          email: document.getElementById("email_input").value,
-          password: document.getElementById("password_input").value,
-        };
-
-        fetch("/users/register", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        })
-          .then((response) => {
-            if (response.ok) {
-              window.location.href = "/login.html"; // Redirige a la página de login si el registro es exitoso
-            } else {
-              // Procesa la respuesta para mostrar el mensaje de error
-              response.text().then((text) => alert(text));
-            }
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-            alert("Error al registrar: " + error.message); // Muestra un mensaje de error en caso de fallo en la red o servidor
-          });
-      }
       function register() {
         var formData = {
           firstName: document.getElementById("first_name").value,
@@ -182,7 +155,8 @@
           })
           .catch((error) => {
             console.error("Error:", error);
-            alert("Error al registrar: " + error.message); // Muestra un mensaje de error en caso de fallo en la red o servidor
+            document.getElementById('error').textContent = error.message;
+            document.getElementById('error').style.display= "block";
           });
       }
 
