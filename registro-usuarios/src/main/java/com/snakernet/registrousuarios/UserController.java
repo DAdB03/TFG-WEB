@@ -21,6 +21,8 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private InfoUsuarioService infoUsuarioService;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -71,7 +73,10 @@ public class UserController {
 	public ResponseEntity<?> getUserInfo(@PathVariable Long id) {
 		User user = userService.findById(id).orElseThrow(
 				() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado con ID: " + id));
-		UserDto userDto = new UserDto(user.getFirstName(), user.getLastName(), user.getImageUrl(), user.getEmail());
+		
+		UserInfo infoUsuario = infoUsuarioService.findByUsuarioId(id);
+		
+		UserDto userDto = new UserDto(user.getUsuario() ,user.getFirstName(), user.getLastName(), infoUsuario.getImageUrl(), user.getEmail());
 		return ResponseEntity.ok(userDto);
 	}
 

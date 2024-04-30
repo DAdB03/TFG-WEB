@@ -13,12 +13,12 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	private String usuario;
 	private String nombre;
 	private String apellido;
 	private String email;
 	private String password;
 	private Integer id_role;
-	private String ImageUrl;
 	
 	public Long getId() {
 		return id;
@@ -56,11 +56,11 @@ public class User {
 	public void setId_role(Integer id_role) {
 		this.id_role = id_role;
 	}
-	public String getImageUrl() {
-		return ImageUrl;
+	public String getUsuario() {
+		return usuario;
 	}
-	public void setImageUrl(String img_url) {
-		this.ImageUrl = img_url;
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
 	}
 	
 }
