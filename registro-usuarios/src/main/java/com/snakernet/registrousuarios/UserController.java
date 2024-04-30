@@ -76,7 +76,7 @@ public class UserController {
 		
 		UserInfo infoUsuario = infoUsuarioService.findByUsuarioId(id);
 		
-		UserDto userDto = new UserDto(user.getUsuario() ,user.getFirstName(), user.getLastName(), infoUsuario.getImageUrl(), user.getEmail());
+		UserDto userDto = new UserDto(user.getUsuario() ,user.getFirstName(), user.getLastName(), infoUsuario.getImageUrl(), user.getEmail(), infoUsuario.getCentro(), infoUsuario.getCiudad(), infoUsuario.getDireccion());
 		return ResponseEntity.ok(userDto);
 	}
 

@@ -6,13 +6,19 @@ public class UserDto {
     private String lastName;
     private String imageUrl;
     private String email;
+    private String address;
+    private String centro;
+    private String city;
 
-    public UserDto(String username, String firstName, String lastName, String imageUrl, String email) {
+    public UserDto(String username, String firstName, String lastName, String imageUrl, String email, String centro, String ciudad, String address) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.imageUrl = imageUrl;
         this.email = email;
         this.username = username;
+        this.centro = centro;
+        this.city = ciudad;
+        this.address = address;
     }
 
     public String getFirstName() {
@@ -41,5 +47,29 @@ public class UserDto {
 
 	public void setUsername(String user) {
 		this.username = user;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String direccion) {
+		this.address = direccion;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String ciudad) {
+		this.city = ciudad;
+	}
+
+	public String getCentro() {
+		return centro;
+	}
+
+	public void setCentro(String centro) {
+		this.centro = centro;
 	}
 }
