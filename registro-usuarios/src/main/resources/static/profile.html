@@ -172,7 +172,7 @@
             if (token) {
                 fetchUserData(token);
             } else {
-                window.location.href = '/login.html';
+                redirectToLogin();
             }
         });
     
@@ -191,6 +191,8 @@
                     console.log("Server response:", response); // Debug: Muestra la respuesta del servidor
                     if (response.ok) {
                         return response.json();
+                    } else if (response.status === 401) {
+                        redirectToLogin(); // Redirigir al inicio de sesión si el token expiró
                     } else {
                         throw new Error(`Failed to fetch user data: ${response.status} ${response.statusText}`);
                     }
@@ -211,7 +213,8 @@
                 })
                 .catch(error => {
                     console.error('Error fetching user data:', error);
-                    document.getElementById('userName').textContent = "Error loading data"; // Mostrar mensaje de error en la UI
+                    document.getElementById('userName').textContent = "Error loading data";
+                    redirectToLogin();
                 });
             } else {
                 console.error('No user ID found in token');
@@ -234,11 +237,16 @@
             }
         }
     
-        function logout() {
-            localStorage.removeItem('jwtToken');
+        function redirectToLogin() {
             window.location.href = '/login.html';
         }
+    
+        function logout() {
+            localStorage.removeItem('jwtToken');
+            redirectToLogin();
+        }
     </script>
+    
     
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bootstrap/js/bootstrap.min.js"></script>
