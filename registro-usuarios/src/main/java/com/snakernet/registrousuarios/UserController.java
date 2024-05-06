@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
@@ -23,6 +25,10 @@ public class UserController {
 	private UserService userService;
 	@Autowired
 	private InfoUsuarioService infoUsuarioService;
+	@Autowired
+	private InfoUsuarioRepository infoUsuarioRepository;
+	@Autowired
+	private ImageStorageService imageStorageService;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -73,11 +79,26 @@ public class UserController {
 	public ResponseEntity<?> getUserInfo(@PathVariable Long id) {
 		User user = userService.findById(id).orElseThrow(
 				() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado con ID: " + id));
-		
+
 		UserInfo infoUsuario = infoUsuarioService.findByUsuarioId(id);
-		
-		UserDto userDto = new UserDto(user.getUsuario() ,user.getFirstName(), user.getLastName(), infoUsuario.getImageUrl(), user.getEmail(), infoUsuario.getCentro(), infoUsuario.getCiudad(), infoUsuario.getDireccion());
+
+		UserDto userDto = new UserDto(user.getUsuario(), user.getFirstName(), user.getLastName(),
+				infoUsuario.getImageUrl(), user.getEmail(), infoUsuario.getCentro(), infoUsuario.getCiudad(),
+				infoUsuario.getDireccion());
 		return ResponseEntity.ok(userDto);
 	}
 
+	@PostMapping("/auth/update-image/{userId}")
+	public ResponseEntity<?> updateUserImage(@PathVariable Long userId, @RequestParam("image") MultipartFile file) {
+	    try {
+	    	System.out.println("Image Call");
+	        String imageUrl = imageStorageService.storeFile(file);
+	        UserInfo userInfo = infoUsuarioRepository.findByUsuarioId(userId);
+	        userInfo.setImageUrl(imageUrl);
+	        infoUsuarioRepository.save(userInfo);
+	        return ResponseEntity.ok(Collections.singletonMap("message", "Image updated successfully!"));
+	    } catch (Exception e) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+	    }
+	}
 }

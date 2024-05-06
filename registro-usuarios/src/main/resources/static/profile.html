@@ -124,9 +124,13 @@
                     <div class="row mb-3">
                         <div class="col-lg-4">
                             <div class="card mb-3">
-                                <div class="card-body text-center shadow"><img class="rounded-circle mb-3 mt-4" id="profileImage" src="assets/img/default.png" width="160" height="160">
+                                <div class="card-body text-center shadow">
+                                    <img class="rounded-circle mb-3 mt-4" id="profileImage" src="assets/img/default.png" width="160" height="160">
                                     <div class="mb-3">
-                                        <button class="btn btn-primary btn-sm" type="button">Cambiar imagen</button>
+                                        <form id="imageForm">
+                                            <input type="file" id="imageInput" class="form-control-file" accept="image/*" style="display: none;"/>
+                                            <button type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('imageInput').click();">Cambiar imagen</button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -300,6 +304,31 @@
             localStorage.removeItem('jwtToken');
             redirectToLogin();
         }
+
+        document.getElementById('imageInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const formData = new FormData();
+                formData.append('image', file);
+
+                fetch(`/users/auth/update-image/${getUserIdFromToken(localStorage.getItem('jwtToken'))}`, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        "Authorization": `Bearer ${localStorage.getItem('jwtToken')}`,
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.imageUrl) {
+                        document.getElementById('profileImage').src = data.imageUrl;
+                        document.getElementById('userImage').src = data.imageUrl;
+                        alert('Imagen actualizada correctamente.');
+                    }
+                })
+                .catch(error => console.error('Error uploading image:', error));
+            }
+        });
     </script>
 
 
