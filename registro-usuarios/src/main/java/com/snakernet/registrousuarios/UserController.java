@@ -28,7 +28,7 @@ public class UserController {
 	@Autowired
 	private InfoUsuarioRepository infoUsuarioRepository;
 	@Autowired
-	private ImageStorageService imageStorageService;
+	private FtpStorageService imageStorageService;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -87,18 +87,19 @@ public class UserController {
 				infoUsuario.getDireccion());
 		return ResponseEntity.ok(userDto);
 	}
-
+	
 	@PostMapping("/auth/update-image/{userId}")
-	public ResponseEntity<?> updateUserImage(@PathVariable Long userId, @RequestParam("image") MultipartFile file) {
-	    try {
-	    	System.out.println("Image Call");
-	        String imageUrl = imageStorageService.storeFile(file);
-	        UserInfo userInfo = infoUsuarioRepository.findByUsuarioId(userId);
-	        userInfo.setImageUrl(imageUrl);
-	        infoUsuarioRepository.save(userInfo);
-	        return ResponseEntity.ok(Collections.singletonMap("message", "Image updated successfully!"));
-	    } catch (Exception e) {
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-	    }
-	}
+    public ResponseEntity<?> updateUserImage(@PathVariable Long userId, @RequestParam("image") MultipartFile file) {
+        try {
+            System.out.println("Image Call");
+            String imageUrl = imageStorageService.storeFile(file);  // Almacena la imagen usando SMB
+            UserInfo userInfo = infoUsuarioRepository.findByUsuarioId(userId);
+            userInfo.setImageUrl(imageUrl);  // Actualiza la URL de la imagen en la base de datos
+            infoUsuarioRepository.save(userInfo);  // Guarda los cambios en la base de datos
+            return ResponseEntity.ok(Collections.singletonMap("message", "Image updated successfully!"));
+        } catch (Exception e) {
+            System.out.println("Error updating image: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }
