@@ -119,18 +119,33 @@
                                 <div class="shadow dropdown-list dropdown-menu dropdown-menu-end" aria-labelledby="alertsDropdown"></div>
                             </li>
                             <div class="d-none d-sm-block topbar-divider"></div>
-                            <li class="nav-item dropdown no-arrow">
-                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="d-none d-lg-inline me-2 text-gray-600 small">Pedro Cuadrado</span><img class="border rounded-circle img-profile" src="assets/img/ELPEDRO.png"></a>
-                                    <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="#"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a><a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Settings</a><a class="dropdown-item" href="#"><i class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity log</a>
-                                        <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
-                                    </div>
+                            <li class="nav-item dropdown no-arrow" id="userProfileDropdown">
+                                <!-- Placeholder for user name and image -->
+                                <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown"
+                                    href="#">
+                                    <span class="d-none d-lg-inline me-2 text-gray-600 small"
+                                        id="userName">Cargando...</span>
+                                    <img class="border rounded-circle img-profile" id="userImage"
+                                        src="assets/img/default.png">
+                                </a>
+                                <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
+                                    <a class="dropdown-item" href="#"><i
+                                            class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a>
+                                    <a class="dropdown-item" href="#"><i
+                                            class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Settings</a>
+                                    <a class="dropdown-item" href="#"><i
+                                            class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity
+                                        log</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#" onclick="logout()"><i
+                                            class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
                                 </div>
                             </li>
                         </ul>
                     </div>
                 </nav>
                 <div class="container-fluid">
-                    <h3 class="text-dark mb-4">Alumnado</h3>
+                    <h3 class="text-dark mb-4">Usuarios</h3>
                     <div class="card shadow">
                         <div class="card-header py-3">
                             <p class="fw-bold text-primary m-0"></p>
@@ -162,95 +177,16 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td><img class="rounded-circle me-2" height="30" src="assets/img/avatars/avatar1.jpeg" width="30">Airi Satou</td>
-                                            <td>Accountant</td>
-                                            <td>IES Ciudad escolar</td>
-                                            <td>Jose Sala</td>
-                                            <td>2008/11/28</td>
-                                            <td>DAM</td>
-                                        </tr>
-                                        <tr>
-                                            <td><img class="rounded-circle me-2" height="30" src="assets/img/avatars/avatar2.jpeg" width="30">Angelica Ramos</td>
-                                            <td>Chief Executive Officer(CEO)</td>
-                                            <td>IES Ciudad escolar</td>
-                                            <td>Jose Sala</td>
-                                            <td>2009/10/09<br></td>
-                                            <td>DAM</td>
-                                        </tr>
-                                        <tr>
-                                            <td><img class="rounded-circle me-2" height="30" src="assets/img/avatars/avatar3.jpeg" width="30">Ashton Cox</td>
-                                            <td>Junior Technical Author</td>
-                                            <td>IES Ciudad escolar</td>
-                                            <td>Jose Sala</td>
-                                            <td>2009/01/12<br></td>
-                                            <td>DAW</td>
-                                        </tr>
-                                        <tr>
-                                            <td><img class="rounded-circle me-2" height="30" src="assets/img/avatars/avatar4.jpeg" width="30">Bradley Greer</td>
-                                            <td>Software Engineer</td>
-                                            <td>IES Ciudad escolar</td>
-                                            <td>Jose Sala</td>
-                                            <td>2012/10/13<br></td>
-                                            <td>ASIR</td>
-                                        </tr>
-                                        <tr>
-                                            <td><img class="rounded-circle me-2" height="30" src="assets/img/avatars/avatar5.jpeg" width="30">Brenden Wagner</td>
-                                            <td>Software Engineer</td>
-                                            <td>IES Ciudad escolar</td>
-                                            <td>Jose Sala</td>
-                                            <td>2011/06/07<br></td>
-                                            <td>ASIR</td>
-                                        </tr>
-                                        <tr>
-                                            <td><img class="rounded-circle me-2" height="30" src="assets/img/avatars/avatar1.jpeg" width="30">Brielle Williamson</td>
-                                            <td>Integration Specialist</td>
-                                            <td>IES Ciudad escolar</td>
-                                            <td>Agustín G</td>
-                                            <td>2012/12/02<br></td>
-                                            <td>SMR</td>
-                                        </tr>
-                                        <tr>
-                                            <td><img class="rounded-circle me-2" height="30" src="assets/img/avatars/avatar2.jpeg" width="30">Bruno Nash<br></td>
-                                            <td>Software Engineer</td>
-                                            <td>IES Ciudad escolar</td>
-                                            <td>Agustín G</td>
-                                            <td>2011/05/03<br></td>
-                                            <td>DAM</td>
-                                        </tr>
-                                        <tr>
-                                            <td><img class="rounded-circle me-2" height="30" src="assets/img/avatars/avatar3.jpeg" width="30">Caesar Vance</td>
-                                            <td>Pre-Sales Support</td>
-                                            <td>IES Ciudad escolar</td>
-                                            <td>Agustín G</td>
-                                            <td>2011/12/12<br></td>
-                                            <td>DAM</td>
-                                        </tr>
-                                        <tr>
-                                            <td><img class="rounded-circle me-2" height="30" src="assets/img/avatars/avatar4.jpeg" width="30">Cara Stevens</td>
-                                            <td>Sales Assistant</td>
-                                            <td>IES Ciudad escolar</td>
-                                            <td>Jose Sala</td>
-                                            <td>2011/12/06<br></td>
-                                            <td>DAW</td>
-                                        </tr>
-                                        <tr>
-                                            <td><img class="rounded-circle me-2" height="30" src="assets/img/avatars/avatar5.jpeg" width="30">Cedric Kelly</td>
-                                            <td>Senior JavaScript Developer</td>
-                                            <td>IES Ciudad escolar</td>
-                                            <td>Jose Sala</td>
-                                            <td>2012/03/29<br></td>
-                                            <td>DAW</td>
-                                        </tr>
+                                        <!-- Las filas aquí serán pobladas dinámicamente por el script JS -->
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <td><strong>Name</strong></td>
-                                            <td><strong>Position</strong></td>
-                                            <td><br><strong>Centro educativo</strong><br><br></td>
-                                            <td><br><strong>Tutor Asignado</strong><br><br></td>
-                                            <td><strong>Start date</strong></td>
-                                            <td><strong>Salary</strong></td>
+                                            <td><strong>Nombre</strong></td>
+                                            <td><strong>Cargo/Estado</strong></td>
+                                            <td><strong>Centro educativo</strong></td>
+                                            <td><strong>Tutor Asignado</strong></td>
+                                            <td><strong>Fecha inicio</strong></td>
+                                            <td><strong>Cursando</strong></td>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -282,6 +218,154 @@
             </footer>
         </div><a class="d-inline border rounded scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const token = localStorage.getItem('jwtToken');
+            if (token) {
+                fetchUserData(token);
+                fetchUsers(token)
+            } else {
+                redirectToLogin();
+            }
+        });
+
+        function fetchUserData(token) {
+            const userId = getUserIdFromToken(token);
+            console.log("UserID from token:", userId); // Debug: Verifica que el ID se extrae correctamente
+            if (userId) {
+                fetch(`/users/auth/${userId}`, {
+                    method: 'GET',
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    }
+                })
+                    .then(response => {
+                        console.log("Server response:", response); // Debug: Muestra la respuesta del servidor
+                        if (response.ok) {
+                            return response.json();
+                        } else if (response.status === 401) {
+                            redirectToLogin(); // Redirigir al inicio de sesión si el token expiró
+                        } else {
+                            throw new Error(`Failed to fetch user data: ${response.status} ${response.statusText}`);
+                        }
+                    })
+                    .then(data => {
+                        console.log("User data received:", data); // Debug: Muestra los datos recibidos
+                        if (data) {
+                            document.getElementById('userName').textContent = data.firstName + ' ' + data.lastName;
+                            document.getElementById('userImage').src = data.imageUrl || 'assets/img/default.png';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching user data:', error);
+                        document.getElementById('userName').textContent = "Error loading data";
+                        redirectToLogin();
+                    });
+            } else {
+                console.error('No user ID found in token');
+                document.getElementById('userName').textContent = "Error loading data"; // Mostrar mensaje de error en la UI
+            }
+        }
+
+        function fetchUsers(token) {
+            fetch(`/users/table/list`, {  // Ajusta la URL según la ruta que expones en tu servidor
+                method: 'GET',
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(response => {
+                console.log("Server response:", response); // Debug: Muestra la respuesta del servidor
+                if (response.ok) {
+                    return response.json();
+                } else if (response.status === 401) {
+                    redirectToLogin(); // Redirigir al inicio de sesión si el token expiró
+                } else {
+                    throw new Error(`Failed to fetch user data: ${response.status} ${response.statusText}`);
+                }
+            })
+            .then(users => {
+                console.log("User data received:", users); // Debug: Muestra los datos recibidos
+                console.log("User data received:", JSON.stringify(users, null, 2));
+                updateTable(users);
+            })
+            .catch(error => {
+                console.error('Error fetching user data:', error);
+            });
+        }
+
+        function updateTable(users) {
+            const tableBody = document.getElementById('dataTable').getElementsByTagName('tbody')[0];
+            tableBody.innerHTML = ''; // Limpiar las filas existentes
+            users.forEach(user => {
+                let row = tableBody.insertRow();
+
+                // Crear celda para el nombre y la imagen
+                let cell1 = row.insertCell(0);
+                // Asegúrate de que userinfo y imageUrl existan, de lo contrario, usa una imagen por defecto
+                let imageUrl = user.userInfo.imageUrl || 'assets/img/default.png';
+                cell1.innerHTML = `<img class="rounded-circle me-2" height="30" src="${imageUrl}" width="30">${user.firstName} ${user.lastName}`;
+
+                // Crear celda para el usuario
+                let cell2 = row.insertCell(1);
+                cell2.textContent = user.usuario || 'No disponible';
+
+                // Crear celda para el centro educativo
+                let cell3 = row.insertCell(2);
+                cell3.textContent = user.userInfo.centro || 'No disponible';
+
+                // Crear celda para el email
+                let cell4 = row.insertCell(3);
+                cell4.textContent = user.email || 'No disponible';
+
+                // Crear celda para la dirección
+                let cell5 = row.insertCell(4);
+                cell5.textContent = user.userInfo.direccion || 'No disponible';
+
+                // Crear celda para la ciudad
+                let cell6 = row.insertCell(5);
+                cell6.textContent = user.userInfo.ciudad || 'No disponible';
+            });
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+        function getUserIdFromToken(token) {
+            try {
+                const base64Url = token.split('.')[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function (c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''));
+                const decodedToken = JSON.parse(jsonPayload);
+                return decodedToken.sub; // Assuming 'sub' contains user ID
+            } catch (e) {
+                console.error('Error decoding token:', e);
+                return null;
+            }
+        }
+
+        function redirectToLogin() {
+            //window.location.href = '/login.html';
+        }
+
+        function logout() {
+            localStorage.removeItem('jwtToken');
+            redirectToLogin();
+        }
+    </script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/js/theme.js"></script>

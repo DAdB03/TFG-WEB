@@ -1,6 +1,7 @@
 package com.snakernet.registrousuarios;
 
 import java.util.Collections;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -73,7 +74,6 @@ public class UserController {
 		}
 	}
 
-	// Obtener información del usuario
 	@GetMapping("/auth/{id}")
 	@PreAuthorize("isAuthenticated()") // Asegura que solo usuarios autenticados puedan acceder
 	public ResponseEntity<?> getUserInfo(@PathVariable Long id) {
@@ -87,19 +87,27 @@ public class UserController {
 				infoUsuario.getDireccion());
 		return ResponseEntity.ok(userDto);
 	}
-	
+
 	@PostMapping("/auth/update-image/{userId}")
-    public ResponseEntity<?> updateUserImage(@PathVariable Long userId, @RequestParam("image") MultipartFile file) {
-        try {
-            System.out.println("Image Call");
-            String imageUrl = imageStorageService.storeFile(file);  // Almacena la imagen usando SMB
-            UserInfo userInfo = infoUsuarioRepository.findByUsuarioId(userId);
-            userInfo.setImageUrl(imageUrl);  // Actualiza la URL de la imagen en la base de datos
-            infoUsuarioRepository.save(userInfo);  // Guarda los cambios en la base de datos
-            return ResponseEntity.ok(Collections.singletonMap("message", "Image updated successfully!"));
-        } catch (Exception e) {
-            System.out.println("Error updating image: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
+	public ResponseEntity<?> updateUserImage(@PathVariable Long userId, @RequestParam("image") MultipartFile file) {
+		try {
+			System.out.println("Image Call");
+			String imageUrl = imageStorageService.storeFile(file); // Almacena la imagen usando SMB
+			UserInfo userInfo = infoUsuarioRepository.findByUsuarioId(userId);
+			userInfo.setImageUrl(imageUrl); // Actualiza la URL de la imagen en la base de datos
+			infoUsuarioRepository.save(userInfo); // Guarda los cambios en la base de datos
+			return ResponseEntity.ok(Collections.singletonMap("message", "Image updated successfully!"));
+		} catch (Exception e) {
+			System.out.println("Error updating image: " + e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
+	}
+
+	@GetMapping("/table/list")
+	public ResponseEntity<List<User>> obtenerTodosLosUsuarios() {
+		List<User> usuarios = userService.listarTodosLosUsuarios();
+		System.out.println("Listar todos");
+		System.out.println(usuarios);
+		return ResponseEntity.ok(usuarios);
+	}
 }

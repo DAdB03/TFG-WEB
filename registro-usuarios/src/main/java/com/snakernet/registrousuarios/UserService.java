@@ -1,5 +1,6 @@
 package com.snakernet.registrousuarios;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,4 +28,8 @@ public class UserService {
 		user.setPassword(passwordEncoder.encode(user.getPassword())); // Codifica la contraseña antes de guardarla
 		return userRepository.save(user); // Guarda el usuario en la base de datos
 	}
+	
+	public List<User> listarTodosLosUsuarios() {
+        return userRepository.findAll();
+    }
 }

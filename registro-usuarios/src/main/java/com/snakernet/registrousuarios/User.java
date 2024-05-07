@@ -1,9 +1,13 @@
 package com.snakernet.registrousuarios;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -20,6 +24,19 @@ public class User {
 	private String password;
 	private Integer id_role;
 	
+	@OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
+	@JsonManagedReference
+    private UserInfo userInfo;
+	
+	public UserInfo getUserInfo() {
+        return userInfo;
+    }
+	
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
+        userInfo.setUsuario(this);
+    }
+    
 	public Long getId() {
 		return id;
 	}
