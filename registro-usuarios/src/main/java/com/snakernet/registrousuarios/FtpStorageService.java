@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,8 +13,10 @@ import org.springframework.web.multipart.MultipartFile;
 public class FtpStorageService {
     private final String server = "snakernet.net"; // Cambia esto por tu servidor FTP
     private final int port = 21; // Puerto estándar de FTP, cambia si es necesario
-    private final String username = "usertfc"; // Usuario FTP
-    private final String password = "SMBAdmin1"; // Contraseña FTP
+    @Value("${ftp.user}")
+    String username;
+    @Value("${ftp.pass}")
+    String password;
     private final String uploadPath = "/web/web_porfolio/uploads"; // Ruta en el servidor FTP
     
     public String storeFile(MultipartFile file) throws IOException {
