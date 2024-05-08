@@ -153,10 +153,11 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-6 text-nowrap">
-                                    <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"><label class="form-label form-label">Mostrar<select class="form-select-sm d-inline-block form-select">
-                                                <option value="10" selected="">10</option>
-                                                <option value="25">25</option>
-                                                <option value="50">50</option>
+                                    <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"><label class="form-label form-label">Mostrar 
+                                        <select class="form-select-sm d-inline-block form-select" id="pageSizeSelect">
+                                                <option value="2">2</option>
+                                                <option value="5" selected="">5</option>
+                                                <option value="10">10</option>
                                                 <option value="100">100</option>
                                             </select></label></div>
                                 </div>
@@ -169,11 +170,11 @@
                                     <thead>
                                         <tr>
                                             <th>Nombre</th>
-                                            <th>Cargo/Estado</th>
+                                            <th>Usuario</th>
                                             <th>Centro educativo</th>
-                                            <th>Tutor Asignado</th>
-                                            <th>Fecha inicio</th>
-                                            <th>Cursando</th>
+                                            <th>Correo</th>
+                                            <th>Role</th>
+                                            <th>None</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -182,11 +183,11 @@
                                     <tfoot>
                                         <tr>
                                             <td><strong>Nombre</strong></td>
-                                            <td><strong>Cargo/Estado</strong></td>
+                                            <td><strong>Usuario</strong></td>
                                             <td><strong>Centro educativo</strong></td>
-                                            <td><strong>Tutor Asignado</strong></td>
-                                            <td><strong>Fecha inicio</strong></td>
-                                            <td><strong>Cursando</strong></td>
+                                            <td><strong>Correo</strong></td>
+                                            <td><strong>Role</strong></td>
+                                            <td><strong>None</strong></td>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -223,7 +224,7 @@
             const token = localStorage.getItem('jwtToken');
             if (token) {
                 fetchUserData(token);
-                fetchUsers(token)
+                fetchUsers(token, 10);
             } else {
                 redirectToLogin();
             }
@@ -268,8 +269,14 @@
             }
         }
 
-        function fetchUsers(token) {
-            fetch(`/users/table/list`, {  // Ajusta la URL según la ruta que expones en tu servidor
+        document.getElementById('pageSizeSelect').addEventListener('change', function() {
+            const token = localStorage.getItem('jwtToken');
+            let selectedSize = this.value;
+            fetchUsers(token, selectedSize);
+        });
+
+        function fetchUsers(token, pageSize = 5) {  // Valor por defecto de 5
+            fetch(`/users/table/list?pageSize=${pageSize}`, {  // Envía el tamaño de página como parámetro de consulta
                 method: 'GET',
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -287,9 +294,9 @@
                 }
             })
             .then(users => {
-                console.log("User data received:", users); // Debug: Muestra los datos recibidos
-                console.log("User data received:", JSON.stringify(users, null, 2));
+                console.log("User data received:", JSON.stringify(users, null, 2)); // Debug: Muestra los datos recibidos en formato legible
                 updateTable(users);
+                updateTableInfo(1, users.length);
             })
             .catch(error => {
                 console.error('Error fetching user data:', error);
@@ -328,19 +335,8 @@
                 let cell6 = row.insertCell(5);
                 cell6.textContent = user.userInfo.ciudad || 'No disponible';
             });
+
         }
-
-
-
-
-
-
-
-
-
-
-
-
 
         function getUserIdFromToken(token) {
             try {
@@ -354,6 +350,13 @@
             } catch (e) {
                 console.error('Error decoding token:', e);
                 return null;
+            }
+        }
+
+        function updateTableInfo(startIndex, endIndex) {
+            const infoElement = document.getElementById('dataTable_info');
+            if (infoElement) {
+                infoElement.textContent = `Mostrando ${startIndex} a ${endIndex}`;
             }
         }
 
