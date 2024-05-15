@@ -30,6 +30,7 @@
                     <li class="nav-item"><a class="nav-link" href="table.html"><i class="fas fa-table"></i><span>Tabla</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="login.html"><i class="far fa-user-circle"></i><span>Login</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="register.html"><i class="fas fa-user-circle"></i><span>Registrarse</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="FaQ.html"><i class="fas fa-user-circle"></i><span>FaQ</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn border-0 rounded-circle" id="sidebarToggle" type="button"></button></div>
             </div>
@@ -328,30 +329,6 @@
             redirectToLogin();
         }
 
-        document.getElementById('imageInput').addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const formData = new FormData();
-                formData.append('image', file);
-
-                fetch(`/users/auth/update-image/${getUserIdFromToken(localStorage.getItem('jwtToken'))}`, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        "Authorization": `Bearer ${localStorage.getItem('jwtToken')}`,
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.imageUrl) {
-                        document.getElementById('profileImage').src = data.imageUrl;
-                        document.getElementById('userImage').src = data.imageUrl;
-                        alert('Imagen actualizada correctamente.');
-                    }
-                })
-                .catch(error => console.error('Error uploading image:', error));
-            }
-        });
     </script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/theme.js"></script>
