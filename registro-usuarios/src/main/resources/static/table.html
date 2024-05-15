@@ -123,7 +123,7 @@
                             <li class="nav-item dropdown no-arrow">
                                 <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="d-none d-lg-inline me-2 text-gray-600 small" id="userName">Cargando...</span><img class="border rounded-circle img-profile" src="" id="userImage"></a>
                                     <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="#"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a><a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Settings</a><a class="dropdown-item" href="#"><i class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity log</a>
-                                        <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
+                                        <div class="dropdown-divider"></div><a class="dropdown-item" href="#" onclick="logout()"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
                                     </div>
                                 </div>
                             </li>
@@ -334,16 +334,16 @@
                 // Crear celda para el nombre y la imagen
                 let cell1 = row.insertCell(0);
                 // Asegúrate de que userinfo y imageUrl existan, de lo contrario, usa una imagen por defecto
-                let imageUrl = user.userInfo.imageUrl || 'assets/img/default.png';
+                let imageUrl = user.imageUrl || 'assets/img/default.png';
                 cell1.innerHTML = `<img class="rounded-circle me-2" height="30" src="${imageUrl}" width="30">${user.firstName} ${user.lastName}`;
 
                 // Crear celda para el usuario
                 let cell2 = row.insertCell(1);
-                cell2.textContent = user.usuario || 'No disponible';
+                cell2.textContent = user.username || 'No disponible';
 
                 // Crear celda para el centro educativo
                 let cell3 = row.insertCell(2);
-                cell3.textContent = user.userInfo.centro || 'No disponible';
+                cell3.textContent = user.centro || 'No disponible';
 
                 // Crear celda para el email
                 let cell4 = row.insertCell(3);
@@ -351,11 +351,11 @@
 
                 // Crear celda para la dirección
                 let cell5 = row.insertCell(4);
-                cell5.textContent = user.userInfo.direccion || 'No disponible';
+                cell5.textContent = user.roleName || 'No disponible';
 
                 // Crear celda para la ciudad
                 let cell6 = row.insertCell(5);
-                cell6.textContent = user.userInfo.ciudad || 'No disponible';
+                cell6.textContent = user.city || 'No disponible';
             });
 
         }
@@ -383,7 +383,7 @@
         }
 
         function redirectToLogin() {
-            //window.location.href = '/login.html';
+            window.location.href = '/login.html';
         }
 
         function logout() {

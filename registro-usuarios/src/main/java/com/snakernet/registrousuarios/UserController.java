@@ -2,6 +2,7 @@ package com.snakernet.registrousuarios;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,8 +28,6 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
-	@Autowired
-	private InfoUsuarioService infoUsuarioService;
 	@Autowired
 	private InfoUsuarioRepository infoUsuarioRepository;
 	@Autowired
@@ -66,30 +65,26 @@ public class UserController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<?> loginUser(@RequestBody User loginRequest) {
-		User user = userService.findByEmail(loginRequest.getEmail());
-		if (user != null && passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-			String token = jwtUtil.generateToken(user);
-			System.out.println("Generated Token: " + token);
-			return ResponseEntity.ok(Collections.singletonMap("jwtToken", token));
-		} else {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuario o Contraseña Incorrectos");
-		}
-	}
+    public ResponseEntity<?> loginUser(@RequestBody User loginRequest) {
+        User user = userService.findByEmail(loginRequest.getEmail());
+        if (user != null && passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+            String token = jwtUtil.generateToken(user);
+            System.out.println("Generated Token: " + token);
+            return ResponseEntity.ok(Collections.singletonMap("jwtToken", token));
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuario o Contraseña Incorrectos");
+        }
+    }
 
 	@GetMapping("/auth/{id}")
-	@PreAuthorize("isAuthenticated()") // Asegura que solo usuarios autenticados puedan acceder
-	public ResponseEntity<?> getUserInfo(@PathVariable Long id) {
-		User user = userService.findById(id).orElseThrow(
-				() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado con ID: " + id));
+    @PreAuthorize("isAuthenticated()") // Asegura que solo usuarios autenticados puedan acceder
+    public ResponseEntity<?> getUserInfo(@PathVariable Long id) {
+        User user = userService.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado con ID: " + id));
 
-		UserInfo infoUsuario = infoUsuarioService.findByUsuarioId(id);
-
-		UserDto userDto = new UserDto(user.getUsuario(), user.getFirstName(), user.getLastName(),
-				infoUsuario.getImageUrl(), user.getEmail(), infoUsuario.getCentro(), infoUsuario.getCiudad(),
-				infoUsuario.getDireccion());
-		return ResponseEntity.ok(userDto);
-	}
+        UserDto userDto = new UserDto(user);
+        return ResponseEntity.ok(userDto);
+    }
 
 	@PostMapping("/auth/update-image/{userId}")
 	public ResponseEntity<?> updateUserImage(@PathVariable Long userId, @RequestParam("image") MultipartFile file) {
@@ -107,12 +102,15 @@ public class UserController {
 	}
 
 	@GetMapping("/table/list")
-    public ResponseEntity<List<User>> obtenerTodosLosUsuarios(
+    public ResponseEntity<List<UserDto>> obtenerTodosLosUsuarios(
             @RequestParam(defaultValue = "0") int page,  // Página actual, comenzando desde 0
             @RequestParam(defaultValue = "5") int pageSize) {  // Cantidad de elementos por página
 
         Pageable pageable = PageRequest.of(page, pageSize);
         Page<User> usuarios = userService.listarTodosLosUsuarios(pageable);
-        return ResponseEntity.ok(usuarios.getContent());
+        
+        // Convertir la lista de usuarios a DTOs
+        List<UserDto> userDTOs = usuarios.getContent().stream().map(UserDto::new).collect(Collectors.toList());
+        return ResponseEntity.ok(userDTOs);
     }
 }
