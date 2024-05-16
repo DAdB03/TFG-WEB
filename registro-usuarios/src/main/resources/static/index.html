@@ -13,6 +13,12 @@
     <link rel="stylesheet" href="assets/css/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/fonts/fontawesome-all.min.css">
     <link rel="stylesheet" href="assets/css/css/untitled.css">
+    <style>
+        .highlight-green {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
 </head>
 
 <body id="page-top">
@@ -130,7 +136,8 @@
                             </li>
                         </ul>
                     </div>
-                </nav> <div class="container-fluid">
+                </nav> 
+                <div class="container-fluid">
                     <div class="d-sm-flex justify-content-between align-items-center mb-4">
                         <h3 class="text-dark mb-0">Tablero</h3>
                     </div>
@@ -156,7 +163,13 @@
                                             <div class="text-uppercase fw-bold text-success text-xs mb-1"><span>EMT Transporte</span></div>
                                             <div class="fw-bold text-dark h5 mb-0"><span>Directo&nbsp;</span></div>
                                         </div>
-                                        <div class="col-auto"><i class="fas fa-bus fa-2x text-gray-300"></i></div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-bus fa-2x text-gray-300"></i>
+                                            <button id="refresh-btn" class="btn btn-light btn-sm ms-2"><i class="fas fa-sync-alt"></i></button>
+                                        </div>
+                                    </div>
+                                    <div id="transport-info" class="mt-3">
+                                        <!-- Aquí se mostrará la información del transporte -->
                                     </div>
                                 </div>
                             </div>
@@ -264,6 +277,11 @@
             } else {
                 redirectToLogin();
             }
+
+            // Agregar evento de clic al botón de refrescar
+            document.getElementById('refresh-btn').addEventListener('click', function () {
+                fetchTransportData();
+            });
         });
 
         function fetchUserData(token) {
@@ -325,11 +343,6 @@
             }
         }
 
-        function redirectToLogin() {
-            window.location.href = '/login.html';
-            showOrHideNavItems(null);
-        }
-
         function logout() {
             localStorage.removeItem('jwtToken');
             redirectToLogin();
@@ -351,9 +364,98 @@
                 tableNavItem2.style.display = 'none';
             }
         }
+
+        // Código para manejar las solicitudes a la API y mostrar la información del transporte
+        document.addEventListener('DOMContentLoaded', function () {
+            const email = 'diego.alonso@baanaloo.com';
+            const password = 'Dadbadb2016';
+        
+            // URL de login
+            const loginUrl = 'https://openapi.emtmadrid.es/v2/mobilitylabs/user/login/';
+            
+            // Login y obtener el accessToken
+            fetch(loginUrl, {
+                method: 'GET',
+                headers: {
+                    'email': email,
+                    'password': password
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const accessToken = data.data[0].accessToken;
+                console.log('AccessToken:', accessToken);  // Para verificar que obtuviste el token
+        
+                // Guardar el token en localStorage
+                localStorage.setItem('emtAccessToken', accessToken);
+        
+                // Obtener los datos del transporte
+                fetchTransportData();
+            })
+            .catch(error => console.error('Error during login:', error));
+        });
+
+        function fetchTransportData() {
+            const accessToken = localStorage.getItem('emtAccessToken');
+        
+            if (!accessToken) {
+                console.error('No access token found');
+                return;
+            }
+        
+            // URL para obtener la información del transporte
+            const transportUrl = 'https://openapi.emtmadrid.es/v2/transport/busemtmad/stops/5085/arrives/';
+        
+            // JSON para el body de la solicitud POST
+            const bodyData = {
+                "cultureInfo": "ES",
+                "Text_StopRequired_YN": "Y",
+                "Text_EstimationsRequired_YN": "Y",
+                "Text_IncidencesRequired_YN": "N"
+            };
+        
+            // Hacer la solicitud POST con el accessToken
+            fetch(transportUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'accessToken': accessToken
+                },
+                body: JSON.stringify(bodyData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Transport Data:', data);  // Para verificar los datos recibidos
+        
+                // Procesar los datos y mostrarlos en el HTML
+                const transportInfoDiv = document.getElementById('transport-info');
+                transportInfoDiv.innerHTML = '';  // Limpiar contenido anterior
+        
+                const arrivalsByLine = {};
+        
+                // Agrupar las llegadas por línea
+                data.data[0].Arrive.forEach(arrival => {
+                    const line = arrival.line;
+                    const minutes = Math.floor(arrival.estimateArrive / 60);
+        
+                    if (!arrivalsByLine[line]) {
+                        arrivalsByLine[line] = [];
+                    }
+                    arrivalsByLine[line].push(minutes);
+                });
+        
+                // Mostrar las llegadas agrupadas por línea
+                for (const [line, times] of Object.entries(arrivalsByLine)) {
+                    const infoElement = document.createElement('p');
+                    infoElement.textContent = `Línea ${line} .. ${times.join(', ')} minutos`;
+                    infoElement.classList.add('highlight-green');
+                    transportInfoDiv.appendChild(infoElement);
+                }
+            })
+            .catch(error => console.error('Error fetching transport data:', error));
+        }
     </script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/theme.js"></script>
 </body>
-
 </html>
