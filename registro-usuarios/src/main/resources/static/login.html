@@ -12,6 +12,25 @@
     <link rel="stylesheet" href="assets/css/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/fonts/fontawesome-all.min.css">
     <link rel="stylesheet" href="assets/css/css/untitled.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
+    <style>
+        .input-group .form-control {
+            border-right: none;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        .input-group .btn {
+            border-left: none;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            border-color: #ced4da;
+            color: #495057;
+            background-color: #fff;
+        }
+        .input-group .btn:hover {
+            background-color: #e9ecef;
+        }
+    </style>
 </head>
 
 <body class="bg-gradient-primary">
@@ -27,8 +46,15 @@
                                         <h4 class="text-dark mb-4">Bienvenido!</h4>
                                     </div>
                                     <form class="user" onsubmit="login(event)">
-                                        <div class="mb-3"><input class="form-control form-control-user" type="email" aria-describedby="emailHelp" id="exampleInputEmail" name="email" placeholder="Introduzca correo electrónico..."></div>
-                                        <div class="mb-3"><input class="form-control form-control-user" type="password" id="exampleInputPassword" name="password" placeholder="Contraseña"></div>
+                                        <div class="mb-3">
+                                            <input class="form-control form-control-user" type="email" aria-describedby="emailHelp" id="exampleInputEmail" name="email" placeholder="Introduzca correo electrónico...">
+                                        </div>
+                                        <div class="mb-3 input-group">
+                                            <input class="form-control form-control-user" type="password" id="exampleInputPassword" name="password" placeholder="Contraseña">
+                                            <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                                <i class="bi bi-eye"></i>
+                                            </button>
+                                        </div>
                                         <div class="mb-3">
                                             <div class="custom-control custom-checkbox small">
                                                 <div class="form-check"><input type="checkbox" class="form-check-input custom-control-input" id="formCheck-1"><label class="form-label form-check-label custom-control-label" for="formCheck-1">Recuerdame</label></div>
@@ -39,7 +65,7 @@
                                     </form>
                                     <div class="text-center" style="padding-top: 15px">
                                         <p id="error" class="error-message"></p>
-                                     </div>
+                                    </div>
                                     <div class="text-center">
                                         <a class="small" href="register.html">Todavia no tiene cuenta? Registrese!</a>
                                     </div>
@@ -69,14 +95,14 @@
                     return response.json();
                 } else {
                     return response.text().then(text => {
-                        throw new Error(text); // Lanzamos un error para que entre al catch si no es una respuesta ok
+                        throw new Error(text);
                     });
                 }
             })
             .then(data => {
-                if (data && data.jwtToken) { // Agregado data && para verificar que data no sea undefined
+                if (data && data.jwtToken) {
                     localStorage.setItem('jwtToken', data.jwtToken);
-                    window.location.href = "/index.html"; // Redirigir al usuario al index
+                    window.location.href = "/index.html";
                 } else {
                     alert("No se pudo iniciar sesión correctamente. Por favor, intente de nuevo.");
                 }
@@ -87,6 +113,20 @@
                 document.getElementById('error').style.display= "block";
             });
         }
+
+        document.getElementById('togglePassword').addEventListener('click', function (e) {
+            const passwordInput = document.getElementById('exampleInputPassword');
+            const icon = e.currentTarget.querySelector('i');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('bi-eye');
+                icon.classList.add('bi-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('bi-eye-slash');
+                icon.classList.add('bi-eye');
+            }
+        });
     </script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bootstrap/js/bootstrap.min.js"></script>

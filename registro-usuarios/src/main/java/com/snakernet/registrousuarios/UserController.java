@@ -43,28 +43,49 @@ public class UserController {
 
 	@PostMapping("/register")
 	public ResponseEntity<?> registerUser(@RequestBody User user) {
-		System.out.println("Received user: " + user);
-		user.toString();
-		if (user.getEmail() == null || !user.getEmail().endsWith("@educamadrid.org")) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body("Error en el registro: el correo electrónico debe terminar con @educamadrid.org");
-		}
+	    System.out.println("Received user: " + user);
+	    user.toString();
 
-		// Check if the user already exists
-		User existingUser = userService.findByEmail(user.getEmail());
-		if (existingUser != null) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuario ya existe. Por favor, inicie sesión.");
-		}
+	    if (user.getEmail() == null || !user.getEmail().endsWith("@educamadrid.org")) {
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+	                .body("Error en el registro: el correo electrónico debe terminar con @educamadrid.org");
+	    }
 
-		try {
-			userService.registerUser(user);
-			return ResponseEntity.ok("Registro exitoso");
-		} catch (Exception e) {
-			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.body("Error en el registro: " + e.getMessage());
-		}
+	    // Validar contraseña
+	    String password = user.getPassword();
+	    if (!isValidPassword(password)) {
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+	                .body("Error en el registro: la contraseña debe contener al menos un número, un carácter especial, una letra mayúscula y tener al menos 8 caracteres de longitud");
+	    }
+
+	    // Check if the user already exists
+	    User existingUser = userService.findByEmail(user.getEmail());
+	    if (existingUser != null) {
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuario ya existe. Por favor, inicie sesión.");
+	    }
+
+	    try {
+	        userService.registerUser(user);
+	        return ResponseEntity.ok("Registro exitoso");
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+	                .body("Error en el registro: " + e.getMessage());
+	    }
 	}
+
+	private boolean isValidPassword(String password) {
+	    if (password == null || password.length() < 8) {
+	        return false;
+	    }
+
+	    boolean hasNumber = password.chars().anyMatch(Character::isDigit);
+	    boolean hasSpecialChar = password.chars().anyMatch(ch -> !Character.isLetterOrDigit(ch));
+	    boolean hasUppercase = password.chars().anyMatch(Character::isUpperCase);
+
+	    return hasNumber && hasSpecialChar && hasUppercase;
+	}
+
 
 	@PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody User loginRequest) {
