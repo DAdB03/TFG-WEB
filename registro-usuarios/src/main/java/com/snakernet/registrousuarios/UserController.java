@@ -32,6 +32,8 @@ public class UserController {
 	private InfoUsuarioRepository infoUsuarioRepository;
 	@Autowired
 	private FtpStorageService imageStorageService;
+	@Autowired
+	private InfoUsuarioService infoUsuarioService;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -82,7 +84,10 @@ public class UserController {
         User user = userService.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado con ID: " + id));
 
-        UserDto userDto = new UserDto(user);
+        UserInfo infoUsuario = infoUsuarioService.findByUsuarioId(id);
+
+        UserDto userDto = new UserDto(user.getUsuario(), user.getFirstName(), user.getLastName(), infoUsuario.getImageUrl(), user.getEmail(),
+        		user.getUserInfo().getCentro(), user.getUserInfo().getCiudad(), user.getUserInfo().getDireccion(), user.getRole().getName());
         return ResponseEntity.ok(userDto);
     }
 

@@ -19,8 +19,8 @@
 <body id="page-top">
     <div id="wrapper">
         <nav class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark">
-            <div class="container-fluid p-0"><a   href="index.html"
-                    class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+            <div class="container-fluid p-0"><a href="index.html"
+                    class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0">
                     <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-book-open"></i></div>
                     <div class="sidebar-brand-text mx-3"><span>ChatHub</span></div>
                 </a>
@@ -28,17 +28,12 @@
                 <ul class="navbar-nav text-light" id="accordionSidebar">
                     <li class="nav-item"></li>
                     <li class="nav-item"><a class="nav-link" href="index.html"><i class="fas fa-home"></i><span>Inicio</span></a></li>
-                    <li class="nav-item" sec:authorize="hasRole('ROLE_Director')"><a class="nav-link active" href="profile.html"><i
-                                class="fas fa-user"></i><span>Perfil</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="table.html"><i
-                                class="fas fa-table"></i><span>Tabla</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="login.html"><i
-                                class="far fa-user-circle"></i><span>Login</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="register.html"><i
-                                class="fas fa-user-circle"></i><span>Registrarse</span></a></li>
+                    <li class="nav-item" sec:authorize="hasRole('ROLE_Director')"><a class="nav-link active" href="profile.html"><i class="fas fa-user"></i><span>Perfil</span></a></li>
+                    <li class="nav-item" sec:authorize="hasRole('ROLE_Director')"><a class="nav-link" href="table.html"><i class="fas fa-table"></i><span>Tabla</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html"><i class="far fa-user-circle"></i><span>Login</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="register.html"><i class="fas fa-user-circle"></i><span>Registrarse</span></a></li>
                 </ul>
-                <div class="text-center d-none d-md-inline"><button class="btn border-0 rounded-circle"
-                        id="sidebarToggle" type="button"></button></div>
+                <div class="text-center d-none d-md-inline"><button class="btn border-0 rounded-circle" id="sidebarToggle" type="button"></button></div>
             </div>
         </nav>
         <div class="d-flex flex-column" id="content-wrapper">
@@ -176,15 +171,13 @@
                                             <div class="row">
                                                 <div class="col">
                                                     <div class="mb-3">
-                                                        <label class="form-label"><strong>Nombre de
-                                                                usuario</strong></label>
+                                                        <label class="form-label"><strong>Nombre de usuario</strong></label>
                                                         <p id="username" class="form-control-plaintext">Cargando...</p>
                                                     </div>
                                                 </div>
                                                 <div class="col">
                                                     <div class="mb-3">
-                                                        <label class="form-label"><strong>Dirección de correo
-                                                                electrónico</strong></label>
+                                                        <label class="form-label"><strong>Dirección de correo electrónico</strong></label>
                                                         <p id="email" class="form-control-plaintext">Cargando...</p>
                                                     </div>
                                                 </div>
@@ -193,8 +186,7 @@
                                                 <div class="col">
                                                     <div class="mb-3">
                                                         <label class="form-label"><strong>Nombre</strong></label>
-                                                        <p id="first_name" class="form-control-plaintext">Cargando...
-                                                        </p>
+                                                        <p id="first_name" class="form-control-plaintext">Cargando...</p>
                                                     </div>
                                                 </div>
                                                 <div class="col">
@@ -220,8 +212,7 @@
                                                 </div>
                                                 <div class="col">
                                                     <div class="mb-3">
-                                                        <label class="form-label"
-                                                            for="city"><strong>Ciudad</strong></label>
+                                                        <label class="form-label" for="city"><strong>Ciudad</strong></label>
                                                         <p id="city" class="form-control-plaintext">Cargando...</p>
                                                     </div>
                                                 </div>
@@ -229,10 +220,8 @@
                                             <div class="row">
                                                 <div class="col">
                                                     <div class="mb-3">
-                                                        <label class="form-label"
-                                                            for="centroe"><strong>Centro educativo</strong></label>
-                                                        <p id="centroe" class="form-control-plaintext">Cargando...
-                                                        </p>
+                                                        <label class="form-label" for="centroe"><strong>Centro educativo</strong></label>
+                                                        <p id="centroe" class="form-control-plaintext">Cargando...</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -272,39 +261,39 @@
                         "Content-Type": "application/json"
                     }
                 })
-                    .then(response => {
-                        console.log("Server response:", response); // Debug: Muestra la respuesta del servidor
-                        if (response.ok) {
-                            return response.json();
-                        } else if (response.status === 401) {
-                            redirectToLogin(); // Redirigir al inicio de sesión si el token expiró
-                        } else {
-                            throw new Error(`Failed to fetch user data: ${response.status} ${response.statusText}`);
-                        }
-                    })
-                    .then(data => {
-                        console.log("User data received:", data); // Debug: Muestra los datos recibidos
-                        if (data) {
-                            document.getElementById('userName').textContent = data.firstName + ' ' + data.lastName;
-                            document.getElementById('userImage').src = data.imageUrl || 'assets/img/default.png';
-                            // Actualizando los datos de usuario
-                            document.getElementById('username').textContent = data.username || 'No disponible';
-                            document.getElementById('email').textContent = data.email || 'No disponible';
-                            document.getElementById('first_name').textContent = data.firstName || 'No disponible';
-                            document.getElementById('last_name').textContent = data.lastName || 'No disponible';
-                            // Actualizando info de contacto
-                            document.getElementById('city').textContent = data.city || 'No disponible';
-                            document.getElementById('centroe').textContent = data.centro || 'No disponible';
-                            document.getElementById('address').textContent = data.address || 'No disponible';
-                            // Imagen
-                            document.getElementById('profileImage').src = data.imageUrl || 'assets/img/default.png';
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error fetching user data:', error);
-                        document.getElementById('userName').textContent = "Error loading data";
-                        redirectToLogin();
-                    });
+                .then(response => {
+                    console.log("Server response:", response); // Debug: Muestra la respuesta del servidor
+                    if (response.ok) {
+                        return response.json();
+                    } else if (response.status === 401) {
+                        redirectToLogin(); // Redirigir al inicio de sesión si el token expiró
+                    } else {
+                        throw new Error(`Failed to fetch user data: ${response.status} ${response.statusText}`);
+                    }
+                })
+                .then(data => {
+                    console.log("User data received:", data); // Debug: Muestra los datos recibidos
+                    if (data) {
+                        document.getElementById('userName').textContent = data.firstName + ' ' + data.lastName;
+                        document.getElementById('userImage').src = data.imageUrl || 'assets/img/default.png';
+                        // Actualizando los datos de usuario
+                        document.getElementById('username').textContent = data.username || 'No disponible';
+                        document.getElementById('email').textContent = data.email || 'No disponible';
+                        document.getElementById('first_name').textContent = data.firstName || 'No disponible';
+                        document.getElementById('last_name').textContent = data.lastName || 'No disponible';
+                        // Actualizando info de contacto
+                        document.getElementById('city').textContent = data.city || 'No disponible';
+                        document.getElementById('centroe').textContent = data.centro || 'No disponible';
+                        document.getElementById('address').textContent = data.address || 'No disponible';
+                        // Imagen
+                        document.getElementById('profileImage').src = data.imageUrl || 'assets/img/default.png';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching user data:', error);
+                    document.getElementById('userName').textContent = "Error loading data";
+                    redirectToLogin();
+                });
             } else {
                 console.error('No user ID found in token');
                 document.getElementById('userName').textContent = "Error loading data"; // Mostrar mensaje de error en la UI
@@ -361,8 +350,8 @@
             }
         });
     </script>
-<script src="assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="assets/js/theme.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/theme.js"></script>
 </body>
 
 </html>

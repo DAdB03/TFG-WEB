@@ -19,26 +19,26 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfig {
 
-	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http, JwtUtil jwtUtil, UserDetailsService userDetailsService) throws Exception {
-		JwtRequestFilter jwtRequestFilter = new JwtRequestFilter(jwtUtil, userDetailsService);
-		 
-		http.cors(cors -> cors.configurationSource(corsConfigurationSource())).csrf(csrf -> csrf.disable())
-				.authorizeHttpRequests(authz -> authz
-						.requestMatchers("/", "/index.html", "/login.html", "/register.html", "/profile.html", "/table.html", "FaQ.html",
-								"/assets/**", "/users/register", "/users/login", "/users/auth/{id}", "/users/auth/update-image/{userId}", "/uploads/**",
-								"/users/table/list")
-						.permitAll()
-						.requestMatchers("/table.html").hasRole("Director")  
-		                .requestMatchers("/profile.html").hasRole("Alumno")   
-						.anyRequest().authenticated())
-				.formLogin(form -> form.loginPage("/login.html").defaultSuccessUrl("/index.html", true).permitAll())
-				.logout(logout -> logout.logoutSuccessUrl("/index.html").permitAll())
-				.httpBasic(httpBasic -> httpBasic.disable())
-				.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+	 @Bean
+	    public SecurityFilterChain filterChain(HttpSecurity http, JwtUtil jwtUtil, UserDetailsService userDetailsService) throws Exception {
+	        JwtRequestFilter jwtRequestFilter = new JwtRequestFilter(jwtUtil, userDetailsService);
+	         
+	        http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
+	            .csrf(csrf -> csrf.disable())
+	            .authorizeHttpRequests(authz -> authz
+	                .requestMatchers("/", "/index.html", "/login.html", "/register.html", "/assets/**", "/users/register", "/users/login", "/uploads/**", "/users/auth/{id}", "/profile.html", "/table.html", "/users/auth/update-image/{userId}", "/uploads/**", "/users/table/list")
+	                .permitAll()
+	                .requestMatchers("/FaQ.html").permitAll()
+	                .requestMatchers("/table.html").hasRole("Director")
+	                .requestMatchers("/profile.html").hasAnyRole("Director", "Alumno")
+	                .anyRequest().authenticated())
+	            .formLogin(form -> form.loginPage("/login.html").defaultSuccessUrl("/index.html", true).permitAll())
+	            .logout(logout -> logout.logoutSuccessUrl("/index.html").permitAll())
+	            .httpBasic(httpBasic -> httpBasic.disable())
+	            .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
-		return http.build();
-	}
+	        return http.build();
+	    }
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -58,3 +58,5 @@ public class SecurityConfig {
 		return source;
 	}
 }
+
+// .requestMatchers("/", "/index.html", "/login.html", "/register.html", "/assets/**", "/users/register", "/users/login", "/users/auth/{id}", ,)
