@@ -156,6 +156,9 @@
                                             <input type="file" id="imageInput" class="form-control-file" accept="image/*" style="display: none;"/>
                                             <button type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('imageInput').click();">Cambiar imagen</button>
                                         </form>
+                                    </div>  
+                                    <div class="text-center" style="padding-top: 15px">
+                                        <p id="error" class="error-message"></p>
                                     </div>
                                 </div>
                             </div>
@@ -340,13 +343,15 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.imageUrl) {
-                        document.getElementById('profileImage').src = data.imageUrl;
-                        document.getElementById('userImage').src = data.imageUrl;
                         location.reload(true);
-                        alert('Imagen actualizada correctamente.');
+                        //alert('Imagen actualizada correctamente.');
                     }
                 })
-                .catch(error => console.error('Error uploading image:', error));
+                .catch((error) => {
+                console.error("Error:", error);
+                document.getElementById('error').textContent = error.message;
+                document.getElementById('error').style.display= "block";
+            });
             }
         });
     </script>

@@ -120,10 +120,10 @@ public class UserController {
 			UserInfo userInfo = infoUsuarioRepository.findByUsuarioId(userId);
 			userInfo.setImageUrl(imageUrl); // Actualiza la URL de la imagen en la base de datos
 			infoUsuarioRepository.save(userInfo); // Guarda los cambios en la base de datos
-			return ResponseEntity.ok(Collections.singletonMap("message", "Image updated successfully!"));
+			return ResponseEntity.ok(userInfo);
 		} catch (Exception e) {
-			System.out.println("Error updating image: " + e.getMessage());
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+			 System.out.println("Error updating image: " + e.getMessage());
+		        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating image: " + e.getMessage());
 		}
 	}
 
