@@ -417,7 +417,9 @@
                 })
                 .catch(error => console.error('Error during login:', error));
         });
-
+        function redirectToLogin() {
+            window.location.href = '/login.html';
+        }
         function fetchTransportData(stopId, elementId, stopNameElementId) {
             const accessToken = localStorage.getItem('emtAccessToken');
 
