@@ -33,6 +33,12 @@
             color: blue;
             margin-left: 5px;
         }
+
+        /* Agrega esta regla CSS para limitar el tamaño del componente de incidencias */
+        #collapseIncidents {
+            max-height: 400px;
+            overflow-y: auto;
+        }
     </style>
 </head>
 
@@ -74,7 +80,7 @@
                                 </div>
                             </li>
                             <li class="nav-item dropdown no-arrow mx-1" id="alertgen">
-                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter">3+</span><i class="fas fa-bell fa-fw"></i></a>
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter">3+</span><i class="fas fa-exclamation-circle"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
                                         <h6 class="dropdown-header">alerts center</h6><a class="dropdown-item d-flex align-items-center" href="#">
                                             <div class="me-3">
@@ -162,17 +168,32 @@
                                 <div class="card-body">
                                     <div class="row align-items-center no-gutters">
                                         <div class="col me-2">
-                                            <div class="text-uppercase fw-bold text-primary text-xs mb-1"><span>Eventos del Centro</span></div>
-                                            <div class="fw-bold text-dark h5 mb-0"><span></span></div>
+                                            <div class="text-uppercase fw-bold text-primary text-xs mb-1"><span>Incidencias recientes</span></div>
+                                            <div class="fw-bold text-dark h5 mb-0">
+                                                <div class="accordion-item mb-3">
+                                                    <h2 class="accordion-header" id="incidentsSection">
+                                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseIncidents" aria-expanded="false" aria-controls="collapseIncidents">
+                                                            <i></i>&nbsp;&nbsp;Más información&nbsp;&nbsp;<i class="fas fa-chevron-down"></i>
+                                                        </button>
+                                                    </h2>
+                                                    <div id="collapseIncidents" class="accordion-collapse collapse" aria-labelledby="incidentsSection" data-bs-parent="#center-events">
+                                                        <div class="accordion-body">
+                                                            <div class="accordion" id="incidentsAccordion">
+                                                                <!-- Aquí se mostrarán las incidencias -->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="col-auto"><i class="fas fa-calendar fa-2x text-gray-300"></i></div>
+                                        <div class="col-auto"><i class="fas fa-exclamation-circle fa-2x text-gray-300"></i></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6 col-xl-4 mb-4">
                             <div class="card shadow border-start-success py-2">
-                                <div class="card-body" >
+                                <div class="card-body">
                                     <div class="row align-items-center no-gutters">
                                         <div class="col me-2">
                                             <div class="text-uppercase fw-bold text-success text-xs mb-1"><span>EMT Transporte</span></div>
@@ -298,7 +319,7 @@
             if (token) {
                 fetchUserData(token);
             } else {
-                redirectToLogin();
+           //     redirectToLogin();
             }
 
             // Cargar datos de transporte al abrir el contenido
@@ -414,12 +435,19 @@
                     // Obtener los datos del transporte para ambas paradas
                     fetchTransportData(5085, 'transport-info-5085', 'stopName-5085');
                     fetchTransportData(4834, 'transport-info-4834', 'stopName-4834');
+
+                    // Realizar solicitudes de incidencias para las líneas
+                    fetchIncidentsData(123);
+                    fetchIncidentsData(85);
+                    fetchIncidentsData(130);
                 })
                 .catch(error => console.error('Error during login:', error));
         });
+
         function redirectToLogin() {
             window.location.href = '/login.html';
         }
+
         function fetchTransportData(stopId, elementId, stopNameElementId) {
             const accessToken = localStorage.getItem('emtAccessToken');
 
@@ -496,7 +524,7 @@
                         times.forEach((time, index) => {
                             const minutes = Math.floor(time / 60);
                             const timeSpan = document.createElement('span');
-                            if (minutes <=1) {
+                            if (minutes <= 1) {
                                 timeSpan.textContent = `AHORA`;
                                 timeSpan.classList.add('highlight-red');
                             } else {
@@ -518,6 +546,53 @@
                     }
                 })
                 .catch(error => console.error('Error fetching transport data:', error));
+        }
+
+        function fetchIncidentsData(lineId) {
+            const accessToken = localStorage.getItem('emtAccessToken');
+
+            if (!accessToken) {
+                console.error('No access token found');
+                return;
+            }
+
+            // URL para obtener la información de las incidencias
+            const incidentsUrl = `https://openapi.emtmadrid.es/v1/transport/busemtmad/lines/incidents/${lineId}/`;
+
+            // Hacer la solicitud GET con el accessToken
+            fetch(incidentsUrl, {
+                    method: 'GET',
+                    headers: {
+                        'accessToken': accessToken
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Incidents Data:', data); // Para verificar los datos recibidos
+
+                    // Mostrar los datos recibidos en el div "center-events"
+                    const eventsDiv = document.getElementById('incidentsAccordion');
+                    data.data[0].item.forEach((item, index) => {
+                        const incidentElement = document.createElement('div');
+                        incidentElement.className = 'accordion-item mb-3';
+                        incidentElement.innerHTML = `
+                            <h2 class="accordion-header" id="heading${lineId}-${index}">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${lineId}-${index}" aria-expanded="false" aria-controls="collapse${lineId}-${index}">
+                                    ${item.title}
+                                </button>
+                            </h2>
+                            <div id="collapse${lineId}-${index}" class="accordion-collapse collapse" aria-labelledby="heading${lineId}-${index}" data-bs-parent="#incidentsAccordion">
+                                <div class="accordion-body">
+                                    <p>${item.description}</p>
+                                    <p><strong>Fecha de publicación:</strong> ${item.pubDate}</p>
+                                    <p><strong>Duración:</strong> ${item.rssAfectaDesde} - ${item.rssAfectaHasta}</p>
+                                </div>
+                            </div>
+                        `;
+                        eventsDiv.appendChild(incidentElement);
+                    });
+                })
+                .catch(error => console.error('Error fetching incidents data:', error));
         }
     </script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
