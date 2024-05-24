@@ -47,7 +47,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                     }
                 }
             } catch (ExpiredJwtException e) {
-            	System.out.println("Token expirado");
+                System.out.println("Token expirado");
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token expired");
                 return;
             }

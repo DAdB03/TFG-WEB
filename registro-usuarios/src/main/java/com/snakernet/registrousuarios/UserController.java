@@ -46,7 +46,7 @@ public class UserController {
 	    System.out.println("Received user: " + user);
 	    user.toString();
 
-	    if (user.getEmail() == null || !user.getEmail().endsWith("@educamadrid.org")) {
+	    if (user.getEmail() == null || !user.getEmail().endsWith("@educa.madrid.org")) {
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 	                .body("Error en el registro: el correo electrónico debe terminar con @educamadrid.org");
 	    }
