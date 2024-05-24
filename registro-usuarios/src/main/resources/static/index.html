@@ -40,23 +40,12 @@
             overflow-y: auto;
         }
 
-        .text-container {
-            display: flex;
-            flex-direction: column;
-        }
-    
-        #userName {
-            display: block; /* Asegura que se muestren en líneas separadas */
-            text-align: center; /* Centra el texto */
-            margin-right: 15px;
-        }
-    
-        #userRole {
-            display: block; /* Asegura que se muestren en líneas separadas */
-            font-size: 0.8em; /* Tamaño más pequeño */
-            color: rgba(128, 128, 128, 0.7); /* Color gris y un poco difuminado */
-            text-align: right; /* Alinea a la derecha */
-            margin-right: 15px;
+        /* Estilos para el chat */
+        #chat-content {
+            overflow-y: auto;
+            max-height: 300px;
+            border: 1px solid #ddd;
+            padding: 10px;
         }
     </style>
 </head>
@@ -73,9 +62,7 @@
                     <li class="nav-item"></li>
                     <li class="nav-item"><a class="nav-link" href="index.html"><i class="fas fa-home"></i><span>Inicio</span></a></li>
                     <li class="nav-item" id="tableNavItem2"><a class="nav-link" href="profile.html"><i class="fas fa-user"></i><span>Perfil</span></a></li>
-                    <li class="nav-item" id="tableNavItem"><a class="nav-link" href="table.html"><i class="fas fa-table"></i><span>Tabla</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="login.html"><i class="far fa-user-circle"></i><span>Login</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="register.html"><i class="fas fa-user-circle"></i><span>Registrarse</span></a></li>
+                    <li class="nav-item" id="tableNavItem"><a class="nav-link" href="table.html"><i class="fas fa-table"></i><span>Usuarios</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="FaQ.html"><i class="fas fa-user-circle"></i><span>FaQ</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn border-0 rounded-circle" id="sidebarToggle" type="button"></button></div>
@@ -168,20 +155,9 @@
                             </li>
                             <div class="d-none d-sm-block topbar-divider"></div>
                             <li class="nav-item dropdown no-arrow">
-                                <div class="nav-item dropdown no-arrow">
-                                    <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="/login.html">
-                                        <div class="text-container">
-                                            <span class="d-none d-lg-inline text-gray-600 small" id="userName">&nbsp;Daniel Rodriguez</span>
-                                            <span class="d-none d-lg-inline text-gray-600 extra-small" id="userRole">&nbsp;</span>
-                                        </div>
-                                        <img class="border rounded-circle img-profile" src="assets/img/logoEduca.jpg" id="userImage">
-                                    </a>
-                                    <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
-                                        <a class="dropdown-item" href="#"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a>
-                                        <a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Settings</a>
-                                        <a class="dropdown-item" href="#"><i class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity log</a>
-                                        <div class="dropdown-divider" onclick="logout()"></div>
-                                        <a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="/login.html"><span class="d-none d-lg-inline me-2 text-gray-600 small" id="userName">&nbsp;Login</span><img class="border rounded-circle img-profile" src="assets/img/logoEduca.jpg" id="userImage"></a>
+                                    <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="#"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a><a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Settings</a><a class="dropdown-item" href="#"><i class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity log</a>
+                                        <div class="dropdown-divider" onclick="logout()"></div><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
                                     </div>
                                 </div>
                             </li>
@@ -250,22 +226,19 @@
                         </div>
                         <div class="col-md-6 col-xl-4 mb-4">
                             <div class="card shadow border-start-info py-2">
-                                <div class="card-body">
-                                    <div class="row align-items-center no-gutters">
+                                <div class="card-body d-flex flex-column">
+                                    <div class="row align-items-center no-gutters mb-3">
                                         <div class="col me-2">
-                                            <div class="text-uppercase fw-bold text-info text-xs mb-1"><span>Tareas pendientes</span></div>
-                                            <div class="row g-0 align-items-center">
-                                                <div class="col-auto">
-                                                    <div class="fw-bold text-dark h5 mb-0 me-3"><span>50%</span></div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="progress progress-sm">
-                                                        <div class="progress-bar bg-info" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:50%;"><span class="visually-hidden">50%</span></div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <div class="text-uppercase fw-bold text-info text-xs mb-1"><span>Chat</span></div>
                                         </div>
-                                        <div class="col-auto"><i class="fas fa-clipboard-list fa-2x text-gray-300"></i></div>
+                                        <div class="col-auto"><i class="fas fa-comments fa-2x text-gray-300"></i></div>
+                                    </div>
+                                    <div id="chat-content" class="flex-grow-1 mb-3" style="overflow-y: auto; max-height: 300px; border: 1px solid #ddd; padding: 10px;">
+                                        <!-- Aquí se mostrarán los mensajes -->
+                                    </div>
+                                    <div class="input-group">
+                                        <input id="chat-input" type="text" class="form-control" placeholder="Escribe un mensaje...">
+                                        <button id="chat-send-btn" class="btn btn-primary" type="button">Enviar</button>
                                     </div>
                                 </div>
                             </div>
@@ -349,7 +322,7 @@
             if (token) {
                 fetchUserData(token);
             } else {
-                redirectToLogin();
+           //     redirectToLogin();
             }
 
             // Cargar datos de transporte al abrir el contenido
@@ -387,7 +360,6 @@
                             }
                             element.textContent = data.firstName + ' ' + data.lastName;
                             document.getElementById('userImage').src = data.imageUrl || 'assets/img/default.png';
-                            document.getElementById('userRole').textContent = data.roleName || 'Role';
                             showOrHideNavItems(data.roleName);
                         }
                     })
@@ -419,7 +391,7 @@
 
         function logout() {
             localStorage.removeItem('jwtToken');
-            location.reload(true);
+            redirectToLogin();
         }
 
         function showOrHideNavItems(role) {
@@ -625,6 +597,87 @@
                 })
                 .catch(error => console.error('Error fetching incidents data:', error));
         }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const chatContent = document.getElementById('chat-content');
+            const chatInput = document.getElementById('chat-input');
+            const chatSendBtn = document.getElementById('chat-send-btn');
+
+            // Función para agregar un mensaje al chat
+            function addMessageToChat(message, user, time, isUser = true) {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('p-2', 'my-2', 'rounded', isUser ? 'bg-primary' : 'bg-light', isUser ? 'text-white' : 'text-dark');
+                messageElement.style.maxWidth = '70%';
+                messageElement.style.alignSelf = isUser ? 'flex-end' : 'flex-start';
+
+                const timeElement = document.createElement('div');
+                timeElement.textContent = time;
+                timeElement.classList.add('small', 'text-muted');
+
+                const userElement = document.createElement('div');
+                userElement.textContent = user;
+                userElement.classList.add('fw-bold');
+
+                const textElement = document.createElement('div');
+                textElement.textContent = message;
+
+                messageElement.appendChild(timeElement);
+                messageElement.appendChild(userElement);
+                messageElement.appendChild(textElement);
+
+                chatContent.appendChild(messageElement);
+                chatContent.scrollTop = chatContent.scrollHeight; // Desplazar hacia abajo al agregar un mensaje
+            }
+
+            // Función para generar mensajes de ejemplo
+            function generateExampleMessages() {
+                const exampleMessages = [
+                    { time: '10:00 AM', user: 'Usuario 1', message: 'Hola, ¿cómo estás?' },
+                    { time: '10:05 AM', user: 'Usuario 2', message: 'Bien, ¿y tú?' },
+                    { time: '10:10 AM', user: 'Usuario 1', message: 'Estoy bien, gracias.' },
+                    { time: '10:15 AM', user: 'Usuario 2', message: '¿Qué planes tienes para hoy?' },
+                    { time: '10:20 AM', user: 'Usuario 1', message: 'Tengo una reunión a las 11:00 AM.' },
+                    { time: '10:25 AM', user: 'Usuario 2', message: '¡Buena suerte en tu reunión!' },
+                    { time: '10:30 AM', user: 'Usuario 1', message: 'Gracias. ¿Y tú?' },
+                    { time: '10:35 AM', user: 'Usuario 2', message: 'Tengo que terminar un proyecto.' },
+                    { time: '10:40 AM', user: 'Usuario 1', message: 'Espero que todo salga bien.' },
+                    { time: '10:45 AM', user: 'Usuario 2', message: 'Gracias. ¡Nos vemos luego!' },
+                    { time: '10:50 AM', user: 'Usuario 1', message: '¡Adiós!' },
+                    // Añade más mensajes para probar el desplazamiento
+                    { time: '11:00 AM', user: 'Usuario 3', message: 'Hola a todos.' },
+                    { time: '11:05 AM', user: 'Usuario 4', message: 'Hola, ¿cómo estás?' },
+                    { time: '11:10 AM', user: 'Usuario 3', message: 'Estoy bien, ¿y tú?' },
+                    { time: '11:15 AM', user: 'Usuario 4', message: 'Bien, gracias.' },
+                    { time: '11:20 AM', user: 'Usuario 3', message: '¿Qué planes tienes para hoy?' },
+                    { time: '11:25 AM', user: 'Usuario 4', message: 'Tengo que trabajar en un proyecto.' },
+                    { time: '11:30 AM', user: 'Usuario 3', message: '¡Buena suerte con eso!' },
+                    { time: '11:35 AM', user: 'Usuario 4', message: 'Gracias. ¡Nos vemos luego!' },
+                    { time: '11:40 AM', user: 'Usuario 3', message: '¡Adiós!' }
+                ];
+
+                exampleMessages.forEach(msg => addMessageToChat(msg.message, msg.user, msg.time, msg.user === 'Usuario 1' || msg.user === 'Usuario 3'));
+            }
+
+            // Manejar el envío de mensajes
+            chatSendBtn.addEventListener('click', function () {
+                const message = chatInput.value.trim();
+                if (message) {
+                    addMessageToChat(message, 'Tú', new Date().toLocaleTimeString(), true);
+                    chatInput.value = '';
+                    // Aquí puedes agregar la lógica para enviar el mensaje al servidor si es necesario
+                }
+            });
+
+            // Permitir enviar el mensaje al presionar Enter
+            chatInput.addEventListener('keypress', function (event) {
+                if (event.key === 'Enter') {
+                    chatSendBtn.click();
+                }
+            });
+
+            // Generar mensajes de ejemplo al cargar la página
+            generateExampleMessages();
+        });
     </script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/theme.js"></script>
