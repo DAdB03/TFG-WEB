@@ -1,5 +1,7 @@
 package com.snakernet.registrousuarios;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -13,7 +15,7 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 @Service
 public class PublicChatHandeler extends TextWebSocketHandler {
 
-	private final CopyOnWriteArrayList<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
+    private final CopyOnWriteArrayList<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
 
     @Autowired
     private PublicChatService messageService;
@@ -25,7 +27,8 @@ public class PublicChatHandeler extends TextWebSocketHandler {
         // Enviar mensajes antiguos al usuario recién conectado
         List<PublicMessage> messages = messageService.getAllMessages();
         for (PublicMessage message : messages) {
-            session.sendMessage(new TextMessage(message.getUsername() + ": " + message.getContent()));
+            String formattedTime = message.getHora().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+            session.sendMessage(new TextMessage(message.getUsername() + ": " + message.getContent() + " [" + formattedTime + "]"));
         }
     }
 
@@ -44,11 +47,12 @@ public class PublicChatHandeler extends TextWebSocketHandler {
         // Guardar mensaje en la base de datos
         messageService.saveMessage(username, content);
 
-        // Enviar mensaje a todos los usuarios conectados excepto el remitente
+        // Enviar mensaje a todos los usuarios conectados
+        LocalDateTime now = LocalDateTime.now();
+        String formattedTime = now.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+        TextMessage formattedMessage = new TextMessage(username + ": " + content + " [" + formattedTime + "]");
         for (WebSocketSession webSocketSession : sessions) {
-            if (!webSocketSession.equals(session)) {
-                webSocketSession.sendMessage(message);
-            }
+            webSocketSession.sendMessage(formattedMessage);
         }
     }
 }

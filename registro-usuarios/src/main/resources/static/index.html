@@ -692,17 +692,26 @@
             const chatContent = document.getElementById('chat-content');
             const chatInput = document.getElementById('chat-input');
             const chatSendBtn = document.getElementById('chat-send-btn');
+            const shownMessages = new Set(); // Conjunto para almacenar los mensajes mostrados
 
             // WebSocket connection
-            let socket = new WebSocket("ws://snakernet.net:8080/publicappchat");
+            let socket = new WebSocket("ws://snakernet.net:8080/ws/publicappchat");
 
             socket.onmessage = function(event) {
+                // Assuming the server sends messages in the format: username: message [time]
                 let messageData = event.data.split(': ');
                 let user = messageData[0];
-                let message = messageData[1];
-                let time = new Date().toLocaleTimeString();
+                let messageAndTime = messageData[1].split(' [');
+                let message = messageAndTime[0];
+                let time = messageAndTime[1].slice(0, -1); // Remove the closing bracket
 
-                addMessageToChat(message, user, time, user === username);
+                let fullMessage = user + ": " + message + " [" + time + "]";
+
+                // Solo agregar y mostrar el mensaje si no se ha mostrado antes
+                if (!shownMessages.has(fullMessage)) {
+                    shownMessages.add(fullMessage);
+                    addMessageToChat(message, user, time, user === username);
+                }
             }
 
             chatSendBtn.addEventListener('click', sendMessage);
@@ -717,10 +726,13 @@
                 let message = chatInput.value;
 
                 if (message.trim() !== "") {
-                    let fullMessage = user + ": " + message;
+                    let time = new Date().toLocaleTimeString();
+                    let fullMessage = user + ": " + message + " [" + time + "]";
                     socket.send(fullMessage);
                     chatInput.value = '';
-                    let time = new Date().toLocaleTimeString();
+
+                    // Agregar y mostrar el mensaje inmediatamente
+                    shownMessages.add(fullMessage);
                     addMessageToChat(message, user, time, true);
                 }
             }
@@ -753,21 +765,28 @@
         }
 
         // Manejar el envío de mensajes
-        chatSendBtn.addEventListener('click', function () {
-            const message = chatInput.value.trim();
-            if (message) {
-                addMessageToChat(message, 'Tú', new Date().toLocaleTimeString(), true);
-                chatInput.value = '';
-                // Aquí puedes agregar la lógica para enviar el mensaje al servidor si es necesario
-            }
+        document.addEventListener('DOMContentLoaded', function () {
+            const chatSendBtn = document.getElementById('chat-send-btn');
+            const chatInput = document.getElementById('chat-input');
+
+            chatSendBtn.addEventListener('click', function () {
+                const message = chatInput.value.trim();
+                if (message) {
+                    addMessageToChat(message, 'Tú', new Date().toLocaleTimeString(), true);
+                    chatInput.value = '';
+                    // Aquí puedes agregar la lógica para enviar el mensaje al servidor si es necesario
+                }
+            });
+
+            // Permitir enviar el mensaje al presionar Enter
+            chatInput.addEventListener('keypress', function (event) {
+                if (event.key === 'Enter') {
+                    chatSendBtn.click();
+                }
+            });
         });
 
-        // Permitir enviar el mensaje al presionar Enter
-        chatInput.addEventListener('keypress', function (event) {
-            if (event.key === 'Enter') {
-                chatSendBtn.click();
-            }
-        });
+
 
     </script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
