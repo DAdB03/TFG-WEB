@@ -48,7 +48,7 @@ public class UserController {
 
 	    if (user.getEmail() == null || !user.getEmail().endsWith("@educa.madrid.org")) {
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-	                .body("Error en el registro: el correo electrónico debe terminar con @educamadrid.org");
+	                .body("Error en el registro: el correo electrónico debe terminar con @educa.madrid.org");
 	    }
 
 	    // Validar contraseña

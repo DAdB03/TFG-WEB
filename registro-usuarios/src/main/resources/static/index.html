@@ -47,6 +47,83 @@
             border: 1px solid #ddd;
             padding: 10px;
         }
+        .text-container {
+            display: flex;
+            flex-direction: column;
+        }
+    
+        #userName {
+            display: block; /* Asegura que se muestren en líneas separadas */
+            text-align: center; /* Centra el texto */
+            margin-right: 15px;
+        }
+    
+        #userRole {
+            display: block; /* Asegura que se muestren en líneas separadas */
+            font-size: 0.8em; /* Tamaño más pequeño */
+            color: rgba(128, 128, 128, 0.7); /* Color gris y un poco difuminado */
+            text-align: right; /* Alinea a la derecha */
+            margin-right: 15px;
+        }
+
+        .message-right {
+            align-self: flex-end;
+            text-align: right;
+            margin-left: auto;
+        }
+
+        .message-left {
+            align-self: flex-start;
+            text-align: left;
+            margin-right: auto;
+        }
+
+        #chat-content {
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            border: 1px solid #ddd;
+            overflow-y: auto;
+            max-height: 300px;
+        }
+
+        .p-2 {
+            padding: 0.5rem !important;
+        }
+
+        .my-2 {
+            margin-top: 0.5rem !important;
+            margin-bottom: 0.5rem !important;
+        }
+
+        .rounded {
+            border-radius: 0.25rem !important;
+        }
+
+        .bg-primary {
+            background-color: #4064d4 !important;
+        }
+
+        .bg-light {
+            background-color: #f8f9fa !important;
+        }
+
+        .text-white {
+            color: #ffffff !important;
+        }
+
+        .text-dark {
+            color: #343a40 !important;
+        }
+
+        .fw-bold {
+            font-weight: bold !important;
+        }
+
+        .small {
+            font-size: 0.875rem !important;
+            color: #161718 !important;
+        }
     </style>
 </head>
 
@@ -64,6 +141,7 @@
                     <li class="nav-item" id="tableNavItem2"><a class="nav-link" href="profile.html"><i class="fas fa-user"></i><span>Perfil</span></a></li>
                     <li class="nav-item" id="tableNavItem"><a class="nav-link" href="table.html"><i class="fas fa-table"></i><span>Usuarios</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="FaQ.html"><i class="fas fa-user-circle"></i><span>FaQ</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="Chat.html"><i class="fas fa-user-circle"></i><span>Chat</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn border-0 rounded-circle" id="sidebarToggle" type="button"></button></div>
             </div>
@@ -155,9 +233,16 @@
                             </li>
                             <div class="d-none d-sm-block topbar-divider"></div>
                             <li class="nav-item dropdown no-arrow">
-                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="/login.html"><span class="d-none d-lg-inline me-2 text-gray-600 small" id="userName">&nbsp;Login</span><img class="border rounded-circle img-profile" src="assets/img/logoEduca.jpg" id="userImage"></a>
-                                    <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="#"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a><a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Settings</a><a class="dropdown-item" href="#"><i class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity log</a>
-                                        <div class="dropdown-divider" onclick="logout()"></div><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
+                                <div class="nav-item dropdown no-arrow">
+                                    <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="/login.html">
+                                        <div class="text-container">
+                                            <span class="d-none d-lg-inline text-gray-600 small" id="userName">&nbsp;Daniel Rodriguez</span>
+                                            <span class="d-none d-lg-inline text-gray-600 extra-small" id="userRole">&nbsp;</span>
+                                        </div>
+                                        <img class="border rounded-circle img-profile" src="assets/img/logoEduca.jpg" id="userImage">
+                                    </a>
+                                    <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
+                                        <a class="dropdown-item" href="#" onclick="logout()"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
                                     </div>
                                 </div>
                             </li>
@@ -317,6 +402,7 @@
         </div><a class="d-inline border rounded scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
     </div>
     <script>
+        var usertag = "";
         document.addEventListener('DOMContentLoaded', function () {
             const token = localStorage.getItem('jwtToken');
             if (token) {
@@ -360,7 +446,11 @@
                             }
                             element.textContent = data.firstName + ' ' + data.lastName;
                             document.getElementById('userImage').src = data.imageUrl || 'assets/img/default.png';
+                            document.getElementById('userRole').textContent = data.roleName || 'Role';
                             showOrHideNavItems(data.roleName);
+                            usertag = data.username;
+                            console.error(usertag);
+                            initializeWebSocket(usertag);
                         }
                     })
                     .catch(error => {
@@ -598,17 +688,49 @@
                 .catch(error => console.error('Error fetching incidents data:', error));
         }
 
-        document.addEventListener('DOMContentLoaded', function () {
+        function initializeWebSocket(username) {
             const chatContent = document.getElementById('chat-content');
             const chatInput = document.getElementById('chat-input');
             const chatSendBtn = document.getElementById('chat-send-btn');
 
-            // Función para agregar un mensaje al chat
-            function addMessageToChat(message, user, time, isUser = true) {
+            // WebSocket connection
+            let socket = new WebSocket("ws://snakernet.net:8080/publicappchat");
+
+            socket.onmessage = function(event) {
+                let messageData = event.data.split(': ');
+                let user = messageData[0];
+                let message = messageData[1];
+                let time = new Date().toLocaleTimeString();
+
+                addMessageToChat(message, user, time, user === username);
+            }
+
+            chatSendBtn.addEventListener('click', sendMessage);
+            chatInput.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+
+            function sendMessage() {
+                let user = username;
+                let message = chatInput.value;
+
+                if (message.trim() !== "") {
+                    let fullMessage = user + ": " + message;
+                    socket.send(fullMessage);
+                    chatInput.value = '';
+                    let time = new Date().toLocaleTimeString();
+                    addMessageToChat(message, user, time, true);
+                }
+            }
+
+            // Function to add a message to the chat
+            function addMessageToChat(message, user, time, isUser) {
                 const messageElement = document.createElement('div');
                 messageElement.classList.add('p-2', 'my-2', 'rounded', isUser ? 'bg-primary' : 'bg-light', isUser ? 'text-white' : 'text-dark');
+                messageElement.classList.add(isUser ? 'message-right' : 'message-left');
                 messageElement.style.maxWidth = '70%';
-                messageElement.style.alignSelf = isUser ? 'flex-end' : 'flex-start';
 
                 const timeElement = document.createElement('div');
                 timeElement.textContent = time;
@@ -621,63 +743,32 @@
                 const textElement = document.createElement('div');
                 textElement.textContent = message;
 
-                messageElement.appendChild(timeElement);
                 messageElement.appendChild(userElement);
                 messageElement.appendChild(textElement);
+                messageElement.appendChild(timeElement);
 
                 chatContent.appendChild(messageElement);
-                chatContent.scrollTop = chatContent.scrollHeight; // Desplazar hacia abajo al agregar un mensaje
+                chatContent.scrollTop = chatContent.scrollHeight; // Scroll down to the latest message
             }
+        }
 
-            // Función para generar mensajes de ejemplo
-            function generateExampleMessages() {
-                const exampleMessages = [
-                    { time: '10:00 AM', user: 'Usuario 1', message: 'Hola, ¿cómo estás?' },
-                    { time: '10:05 AM', user: 'Usuario 2', message: 'Bien, ¿y tú?' },
-                    { time: '10:10 AM', user: 'Usuario 1', message: 'Estoy bien, gracias.' },
-                    { time: '10:15 AM', user: 'Usuario 2', message: '¿Qué planes tienes para hoy?' },
-                    { time: '10:20 AM', user: 'Usuario 1', message: 'Tengo una reunión a las 11:00 AM.' },
-                    { time: '10:25 AM', user: 'Usuario 2', message: '¡Buena suerte en tu reunión!' },
-                    { time: '10:30 AM', user: 'Usuario 1', message: 'Gracias. ¿Y tú?' },
-                    { time: '10:35 AM', user: 'Usuario 2', message: 'Tengo que terminar un proyecto.' },
-                    { time: '10:40 AM', user: 'Usuario 1', message: 'Espero que todo salga bien.' },
-                    { time: '10:45 AM', user: 'Usuario 2', message: 'Gracias. ¡Nos vemos luego!' },
-                    { time: '10:50 AM', user: 'Usuario 1', message: '¡Adiós!' },
-                    // Añade más mensajes para probar el desplazamiento
-                    { time: '11:00 AM', user: 'Usuario 3', message: 'Hola a todos.' },
-                    { time: '11:05 AM', user: 'Usuario 4', message: 'Hola, ¿cómo estás?' },
-                    { time: '11:10 AM', user: 'Usuario 3', message: 'Estoy bien, ¿y tú?' },
-                    { time: '11:15 AM', user: 'Usuario 4', message: 'Bien, gracias.' },
-                    { time: '11:20 AM', user: 'Usuario 3', message: '¿Qué planes tienes para hoy?' },
-                    { time: '11:25 AM', user: 'Usuario 4', message: 'Tengo que trabajar en un proyecto.' },
-                    { time: '11:30 AM', user: 'Usuario 3', message: '¡Buena suerte con eso!' },
-                    { time: '11:35 AM', user: 'Usuario 4', message: 'Gracias. ¡Nos vemos luego!' },
-                    { time: '11:40 AM', user: 'Usuario 3', message: '¡Adiós!' }
-                ];
-
-                exampleMessages.forEach(msg => addMessageToChat(msg.message, msg.user, msg.time, msg.user === 'Usuario 1' || msg.user === 'Usuario 3'));
+        // Manejar el envío de mensajes
+        chatSendBtn.addEventListener('click', function () {
+            const message = chatInput.value.trim();
+            if (message) {
+                addMessageToChat(message, 'Tú', new Date().toLocaleTimeString(), true);
+                chatInput.value = '';
+                // Aquí puedes agregar la lógica para enviar el mensaje al servidor si es necesario
             }
-
-            // Manejar el envío de mensajes
-            chatSendBtn.addEventListener('click', function () {
-                const message = chatInput.value.trim();
-                if (message) {
-                    addMessageToChat(message, 'Tú', new Date().toLocaleTimeString(), true);
-                    chatInput.value = '';
-                    // Aquí puedes agregar la lógica para enviar el mensaje al servidor si es necesario
-                }
-            });
-
-            // Permitir enviar el mensaje al presionar Enter
-            chatInput.addEventListener('keypress', function (event) {
-                if (event.key === 'Enter') {
-                    chatSendBtn.click();
-                }
-            });
-
-            // Generar mensajes de ejemplo al cargar la página
-            generateExampleMessages();
         });
+
+        // Permitir enviar el mensaje al presionar Enter
+        chatInput.addEventListener('keypress', function (event) {
+            if (event.key === 'Enter') {
+                chatSendBtn.click();
+            }
+        });
+
     </script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/theme.js"></script>
