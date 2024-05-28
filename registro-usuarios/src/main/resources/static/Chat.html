@@ -25,6 +25,10 @@
             position: fixed;
             top: 0;
             left: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background-color: #343a40;
         }
 
         #content-wrapper {
@@ -49,23 +53,6 @@
             background-color: #fff;
         }
 
-        .message {
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-
-        .message.sent {
-            align-self: flex-end;
-            background-color: #e2f7e2;
-        }
-
-        .message.received {
-            align-self: flex-start;
-            background-color: #f1f1f1;
-        }
-
         #messageInputContainer {
             padding: 10px;
             background-color: #fff;
@@ -81,10 +68,86 @@
             flex: 1;
         }
 
-        .topbar {
-            position: fixed;
-            width: calc(100% - 250px);
-            z-index: 1;
+        .user-info {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background-color: #343a40;
+            border-top: 1px solid #444;
+            cursor: pointer;
+            position: absolute;
+            bottom: 40px;
+            width: 100%;
+        }
+
+        .user-info img {
+            border-radius: 50%;
+            margin-right: 10px;
+            width: 50px;
+            height: 50px;
+        }
+
+        .user-info span {
+            font-size: 1rem;
+            color: #ffffff;
+        }
+
+        .navbar-nav .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #ffffff;
+        }
+
+        .logout-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            background-color: #343a40;
+            border-top: 1px solid #444;
+            cursor: pointer;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+        }
+
+        .logout-button i {
+            color: #ffffff;
+        }
+
+        .contacts-list {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 10px;
+            max-height: 200px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            cursor: pointer;
+            background-color: #343a40;
+            color: #ffffff;
+            border-bottom: 1px solid #444;
+        }
+
+        .contact-item:hover {
+            background-color: #495057;
+        }
+
+        .contact-item img {
+            border-radius: 50%;
+            margin-right: 10px;
+            width: 40px;
+            height: 40px;
+        }
+
+        .contact-item span {
+            font-size: 1rem;
         }
     </style>
 </head>
@@ -92,203 +155,40 @@
 <body id="page-top">
     <div id="wrapper" class="d-flex">
         <nav class="navbar align-items-start sidebar sidebar-dark bg-gradient-primary p-0 navbar-dark" id="chatSidebar">
-            <div class="container-fluid p-0">
+            <div class="container-fluid d-flex flex-column p-0">
                 <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
                     <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-book-open"></i></div>
                     <div class="sidebar-brand-text mx-3"><span>ChatHub</span></div>
                 </a>
                 <hr class="sidebar-divider my-0">
-                <ul class="navbar-nav text-light">
+                <ul class="navbar-nav text-light flex-grow-1">
                     <li class="nav-item"><a class="nav-link" href="index.html"><i class="fas fa-home"></i><span>Inicio</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="profile.html"><i class="fas fa-user"></i><span>Perfil</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="table.html"><i class="fas fa-table"></i><span>Usuarios</span></a></li>
                     <hr class="sidebar-divider my-0">
-                    <li class="nav-item"><span class="nav-link text-light"><i class="fas fa-comments"></i><span>&nbsp;Chats</span></span></li>
+                    <li class="nav-item"><a class="nav-link" href="FaQ.html"><i class="fas fa-user-circle"></i><span>FaQ</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="Chat.html"><i class="fas fa-user-circle"></i><span>Chat</span></a></li>
                 </ul>
+                <div class="contacts-list" id="contactsList">
+                    <!-- Aquí se añadirán los contactos dinámicamente -->
+                </div>
+                <div class="user-info" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="" id="userImage" class="img-profile">
+                    <span id="userName">Cargando...</span>
+                </div>
+                <div class="logout-button">
+                    <a class="dropdown-item" href="#" onclick="logout()"><i class="fas fa-sign-out-alt fa-2x"></i></a>
+                </div>
             </div>
         </nav>
         <div class="d-flex flex-column flex-grow-1" id="content-wrapper">
-            <nav class="navbar navbar-expand bg-white shadow mb-4 topbar static-top navbar-light">
-                <div class="container-fluid">
-                    <button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
-                    <form class="d-none d-sm-inline-block me-auto ms-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <div class="input-group"></div>
-                    </form>
-                    <ul class="navbar-nav flex-nowrap ms-auto">
-                        <li class="nav-item dropdown d-sm-none no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><i class="fas fa-search"></i></a>
-                            <div class="dropdown-menu dropdown-menu-end p-3 animated--grow-in" aria-labelledby="searchDropdown">
-                                <form class="me-auto navbar-search w-100">
-                                    <div class="input-group"><input class="bg-light form-control border-0 small" type="text" placeholder="Search for ...">
-                                        <div class="input-group-append"><button class="btn btn-primary py-0" type="button"><i class="fas fa-search"></i></button></div>
-                                    </div>
-                                </form>
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown no-arrow mx-1">
-                            <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter">3+</span><i class="fas fa-bell fa-fw"></i></a>
-                                <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
-                                    <h6 class="dropdown-header">alerts center</h6><a class="dropdown-item d-flex align-items-center" href="#">
-                                        <div class="me-3">
-                                            <div class="bg-primary icon-circle"><i class="fas fa-file-alt text-white"></i></div>
-                                        </div>
-                                        <div><span class="small text-gray-500">December 12, 2019</span>
-                                            <p>A new monthly report is ready to download!</p>
-                                        </div>
-                                    </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                        <div class="me-3">
-                                            <div class="bg-success icon-circle"><i class="fas fa-donate text-white"></i></div>
-                                        </div>
-                                        <div><span class="small text-gray-500">December 7, 2019</span>
-                                            <p>$290.29 has been deposited into your account!</p>
-                                        </div>
-                                    </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                        <div class="me-3">
-                                            <div class="bg-warning icon-circle"><i class="fas fa-exclamation-triangle text-white"></i></div>
-                                        </div>
-                                        <div><span class="small text-gray-500">December 2, 2019</span>
-                                            <p>Spending Alert: We've noticed unusually high spending for your account.</p>
-                                        </div>
-                                    </a><a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown no-arrow mx-1">
-                            <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><i class="fas fa-envelope fa-fw"></i></a>
-                                <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
-                                    <h6 class="dropdown-header">alerts center</h6><a class="dropdown-item d-flex align-items-center" href="#">
-                                        <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar4.jpeg">
-                                            <div class="bg-success status-indicator"></div>
-                                        </div>
-                                        <div class="fw-bold">
-                                            <div class="text-truncate"><span>Hi there! I am wondering if you can help me with a problem I've been having.</span></div>
-                                            <p class="small text-gray-500 mb-0">Emily Fowler - 58m</p>
-                                        </div>
-                                    </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                        <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar2.jpeg">
-                                            <div class="status-indicator"></div>
-                                        </div>
-                                        <div class="fw-bold">
-                                            <div class="text-truncate"><span>I have the photos that you ordered last month!</span></div>
-                                            <p class="small text-gray-500 mb-0">Jae Chun - 1d</p>
-                                        </div>
-                                    </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                        <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar3.jpeg">
-                                            <div class="bg-warning status-indicator"></div>
-                                        </div>
-                                        <div class="fw-bold">
-                                            <div class="text-truncate"><span>Last month's report looks great, I am very happy with the progress so far, keep up the good work!</span></div>
-                                            <p class="small text-gray-500 mb-0">Morgan Alvarez - 2d</p>
-                                        </div>
-                                    </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                        <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar5.jpeg">
-                                            <div class="bg-success status-indicator"></div>
-                                        </div>
-                                        <div class="fw-bold">
-                                            <div class="text-truncate"><span>Am I a good boy? The reason I ask is because someone told me that people say this to all dogs, even if they aren't good...</span></div>
-                                            <p class="small text-gray-500 mb-0">Chicken the Dog · 2w</p>
-                                        </div>
-                                    </a><a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-                                </div>
-                            </div>
-                        </li>
-                        <div class="d-none d-sm-block topbar-divider"></div>
-                        <li class="nav-item dropdown no-arrow">
-                            <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="d-none d-lg-inline me-2 text-gray-600 small" id="userName">Cargando...</span><img class="border rounded-circle img-profile" src="" id="userImage"></a>
-                                <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="#"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a><a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Settings</a><a class="dropdown-item" href="#"><i class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity log</a>
-                                    <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
             <div id="content" class="flex-grow-1 d-flex flex-column">
                 <div id="messagesContainer">
-                    <!-- Example messages -->
-                    <div class="d-flex flex-column mb-4">
-                        <div class="message received mb-2">
-                            <strong>John Doe:</strong>
-                            <p>Hello! How are you?</p>
-                        </div>
-                        <div class="message sent mb-2">
-                            <strong>Me:</strong>
-                            <p>I'm good, thanks! How about you?</p>
-                        </div>
-                        <div class="message received mb-2">
-                            <strong>John Doe:</strong>
-                            <p>Doing well, thank you!</p>
-                        </div>
-                        <!-- Repeated example messages to demonstrate scrolling -->
-                        <div class="message received mb-2">
-                            <strong>John Doe:</strong>
-                            <p>What's your plan for today?</p>
-                        </div>
-                        <div class="message sent mb-2">
-                            <strong>Me:</strong>
-                            <p>Just working on a project, you?</p>
-                        </div>
-                        <div class="message received mb-2">
-                            <strong>John Doe:</strong>
-                            <p>Same here, working on some tasks.</p>
-                        </div>
-                        <div class="message received mb-2">
-                            <strong>John Doe:</strong>
-                            <p>How was your weekend?</p>
-                        </div>
-                        <div class="message sent mb-2">
-                            <strong>Me:</strong>
-                            <p>It was great, went hiking with friends. How about yours?</p>
-                        </div>
-                        <div class="message received mb-2">
-                            <strong>John Doe:</strong>
-                            <p>It was relaxing, spent some time with family.</p>
-                        </div>
-                        <div class="message sent mb-2">
-                            <strong>Me:</strong>
-                            <p>Sounds nice!</p>
-                        </div>
-                        <div class="message received mb-2">
-                            <strong>John Doe:</strong>
-                            <p>Indeed!</p>
-                        </div>
-                        <!-- More example messages -->
-                        <div class="message received mb-2">
-                            <strong>John Doe:</strong>
-                            <p>Any plans for the upcoming holiday?</p>
-                        </div>
-                        <div class="message sent mb-2">
-                            <strong>Me:</strong>
-                            <p>Thinking of visiting family. You?</p>
-                        </div>
-                        <div class="message received mb-2">
-                            <strong>John Doe:</strong>
-                            <p>Probably just staying home and relaxing.</p>
-                        </div>
-                        <div class="message received mb-2">
-                            <strong>John Doe:</strong>
-                            <p>Have you seen the latest movie?</p>
-                        </div>
-                        <div class="message sent mb-2">
-                            <strong>Me:</strong>
-                            <p>Yes, I watched it last weekend. It was great!</p>
-                        </div>
-                        <div class="message received mb-2">
-                            <strong>John Doe:</strong>
-                            <p>I haven't seen it yet. Maybe this weekend.</p>
-                        </div>
-                        <div class="message sent mb-2">
-                            <strong>Me:</strong>
-                            <p>You'll love it!</p>
-                        </div>
-                        <div class="message received mb-2">
-                            <strong>John Doe:</strong>
-                            <p>I'll take your word for it!</p>
-                        </div>
-                    </div>
+                    <!-- Aquí se mostrarán los mensajes -->
                 </div>
                 <div id="messageInputContainer">
-                    <input type="text" class="form-control" placeholder="Escribe un mensaje...">
-                    <button class="btn btn-primary" type="button">Enviar</button>
+                    <input type="text" class="form-control" placeholder="Escribe un mensaje..." id="chat-input">
+                    <button class="btn btn-primary" type="button" id="chat-send-btn">Enviar</button>
                 </div>
             </div>
         </div>
@@ -301,11 +201,125 @@
             } else {
                 redirectToLogin();
             }
+
+            const chatContent = document.getElementById('messagesContainer');
+            const chatInput = document.getElementById('chat-input');
+            const chatSendBtn = document.getElementById('chat-send-btn');
+            const contactsList = document.getElementById('contactsList');
+
+            const exampleContacts = [
+                { name: 'John Doe', imageUrl: 'assets/img/default.png' },
+                { name: 'Jane Smith', imageUrl: 'assets/img/default.png' },
+                { name: 'Robert Brown', imageUrl: 'assets/img/default.png' },
+                { name: 'Emily White', imageUrl: 'assets/img/default.png' },
+                { name: 'Michael Johnson', imageUrl: 'assets/img/default.png' },
+                { name: 'Jessica Lee', imageUrl: 'assets/img/default.png' },
+                { name: 'David Martin', imageUrl: 'assets/img/default.png' },
+                { name: 'Sarah Wilson', imageUrl: 'assets/img/default.png' },
+                { name: 'Chris Evans', imageUrl: 'assets/img/default.png' },
+                { name: 'Amy Brown', imageUrl: 'assets/img/default.png' },
+                { name: 'James Clark', imageUrl: 'assets/img/default.png' },
+                { name: 'Mary Lewis', imageUrl: 'assets/img/default.png' },
+            ];
+
+            // Función para agregar un contacto a la lista
+            function addContactToList(contact) {
+                const contactItem = document.createElement('div');
+                contactItem.classList.add('contact-item');
+                
+                const imgElement = document.createElement('img');
+                imgElement.src = contact.imageUrl;
+                imgElement.alt = 'Contact Image';
+                
+                const spanElement = document.createElement('span');
+                spanElement.textContent = contact.name;
+                
+                contactItem.appendChild(imgElement);
+                contactItem.appendChild(spanElement);
+                
+                contactsList.appendChild(contactItem);
+            }
+
+            // Añadir contactos de ejemplo a la lista al cargar la página
+            exampleContacts.forEach(contact => addContactToList(contact));
+
+            // Función para agregar un mensaje al chat
+            function addMessageToChat(message, user, time, isUser = true) {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('p-2', 'my-2', 'rounded', isUser ? 'bg-primary' : 'bg-light', isUser ? 'text-white' : 'text-dark');
+                messageElement.style.maxWidth = '70%';
+                messageElement.style.alignSelf = isUser ? 'flex-end' : 'flex-start';
+
+                const timeElement = document.createElement('div');
+                timeElement.textContent = time;
+                timeElement.classList.add('small', 'text-muted');
+
+                const userElement = document.createElement('div');
+                userElement.textContent = user;
+                userElement.classList.add('fw-bold');
+
+                const textElement = document.createElement('div');
+                textElement.textContent = message;
+
+                messageElement.appendChild(timeElement);
+                messageElement.appendChild(userElement);
+                messageElement.appendChild(textElement);
+
+                chatContent.appendChild(messageElement);
+                chatContent.scrollTop = chatContent.scrollHeight; // Desplazar hacia abajo al agregar un mensaje
+            }
+
+            // Función para generar mensajes de ejemplo
+            function generateExampleMessages() {
+                const exampleMessages = [
+                    { time: '10:00 AM', user: 'John Doe', message: 'Hello! How are you?' },
+                    { time: '10:05 AM', user: 'Me', message: 'I\'m good, thanks! How about you?' },
+                    { time: '10:10 AM', user: 'John Doe', message: 'Doing well, thank you!' },
+                    { time: '10:15 AM', user: 'John Doe', message: 'What\'s your plan for today?' },
+                    { time: '10:20 AM', user: 'Me', message: 'Just working on a project, you?' },
+                    { time: '10:25 AM', user: 'John Doe', message: 'Same here, working on some tasks.' },
+                    { time: '10:30 AM', user: 'John Doe', message: 'How was your weekend?' },
+                    { time: '10:35 AM', user: 'Me', message: 'It was great, went hiking with friends. How about yours?' },
+                    { time: '10:40 AM', user: 'John Doe', message: 'It was relaxing, spent some time with family.' },
+                    { time: '10:45 AM', user: 'Me', message: 'Sounds nice!' },
+                    { time: '10:50 AM', user: 'John Doe', message: 'Indeed!' },
+                    { time: '10:55 AM', user: 'John Doe', message: 'Any plans for the upcoming holiday?' },
+                    { time: '11:00 AM', user: 'Me', message: 'Thinking of visiting family. You?' },
+                    { time: '11:05 AM', user: 'John Doe', message: 'Probably just staying home and relaxing.' },
+                    { time: '11:10 AM', user: 'John Doe', message: 'Have you seen the latest movie?' },
+                    { time: '11:15 AM', user: 'Me', message: 'Yes, I watched it last weekend. It was great!' },
+                    { time: '11:20 AM', user: 'John Doe', message: 'I haven\'t seen it yet. Maybe this weekend.' },
+                    { time: '11:25 AM', user: 'Me', message: 'You\'ll love it!' },
+                    { time: '11:30 AM', user: 'John Doe', message: 'I\'ll take your word for it!' }
+                ];
+
+                exampleMessages.forEach(msg => addMessageToChat(msg.message, msg.user, msg.time, msg.user === 'Me'));
+            }
+
+            // Manejar el envío de mensajes
+            chatSendBtn.addEventListener('click', function () {
+                const message = chatInput.value.trim();
+                if (message) {
+                    addMessageToChat(message, 'Me', new Date().toLocaleTimeString(), true);
+                    chatInput.value = '';
+                    // Aquí puedes agregar la lógica para enviar el mensaje al servidor si es necesario
+                }
+            });
+
+            // Permitir enviar el mensaje al presionar Enter
+            chatInput.addEventListener('keypress', function (event) {
+                if (event.key === 'Enter') {
+                    chatSendBtn.click();
+                }
+            });
+
+            // Generar mensajes de ejemplo al cargar la página
+            generateExampleMessages();
         });
 
         function fetchUserData(token) {
             const userId = getUserIdFromToken(token);
-            console.log("UserID from token:", userId); // Debug: Verifica que el ID se extrae correctamente
+            console.log("UserID from token:", userId);
             if (userId) {
                 fetch(`/users/auth/${userId}`, {
                     method: 'GET',
@@ -315,17 +329,17 @@
                     }
                 })
                     .then(response => {
-                        console.log("Server response:", response); // Debug: Muestra la respuesta del servidor
+                        console.log("Server response:", response);
                         if (response.ok) {
                             return response.json();
                         } else if (response.status === 401) {
-                            redirectToLogin(); // Redirigir al inicio de sesión si el token expiró
+                            redirectToLogin();
                         } else {
                             throw new Error(`Failed to fetch user data: ${response.status} ${response.statusText}`);
                         }
                     })
                     .then(data => {
-                        console.log("User data received:", data); // Debug: Muestra los datos recibidos
+                        console.log("User data received:", data);
                         if (data) {
                             document.getElementById('userName').textContent = data.firstName + ' ' + data.lastName;
                             document.getElementById('userImage').src = data.imageUrl || 'assets/img/default.png';
@@ -338,7 +352,7 @@
                     });
             } else {
                 console.error('No user ID found in token');
-                document.getElementById('userName').textContent = "Error loading data"; // Mostrar mensaje de error en la UI
+                document.getElementById('userName').textContent = "Error loading data";
             }
         }
 
@@ -350,7 +364,7 @@
                     return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
                 }).join(''));
                 const decodedToken = JSON.parse(jsonPayload);
-                return decodedToken.sub; // Assuming 'sub' contains user ID
+                return decodedToken.sub;
             } catch (e) {
                 console.error('Error decoding token:', e);
                 return null;
@@ -358,7 +372,7 @@
         }
 
         function redirectToLogin() {
-            // window.location.href = '/login.html';
+            window.location.href = '/login.html';
         }
 
         function logout() {
