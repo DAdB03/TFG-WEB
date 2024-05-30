@@ -2,6 +2,7 @@ package com.snakernet.registrousuarios;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,11 @@ public class PrivateChatService {
     public List<PrivateMessage> getMessagesBetweenUsers(String fromUser, String toUser) {
         List<PrivateMessage> messages = privateMessageRepository.findByFromUserAndToUser(fromUser, toUser);
         messages.addAll(privateMessageRepository.findByToUserAndFromUser(fromUser, toUser));
-        return messages;
+        
+        // Ordenar los mensajes por timestamp
+        return messages.stream()
+                       .sorted((m1, m2) -> m1.getTimestamp().compareTo(m2.getTimestamp()))
+                       .collect(Collectors.toList());
     }
 
     public void saveMessage(String fromUser, String toUser, String content) {

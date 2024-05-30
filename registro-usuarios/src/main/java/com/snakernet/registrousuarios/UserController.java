@@ -1,4 +1,4 @@
-package com.snakernet.registrousuarios;
+ package com.snakernet.registrousuarios;
 
 import java.util.Collections;
 import java.util.List;
@@ -139,4 +139,13 @@ public class UserController {
         List<UserDto> userDTOs = usuarios.getContent().stream().map(UserDto::new).collect(Collectors.toList());
         return ResponseEntity.ok(userDTOs);
     }
+	
+	@GetMapping("/contact/list")
+	public ResponseEntity<List<UserDto>> contactos() {  
+	    List<User> usuarios = userService.listarTodosLosUsuarios();
+	    
+	    // Convertir la lista de usuarios a DTOs
+	    List<UserDto> userDTOs = usuarios.stream().map(UserDto::new).collect(Collectors.toList());
+	    return ResponseEntity.ok(userDTOs);
+	}
 }

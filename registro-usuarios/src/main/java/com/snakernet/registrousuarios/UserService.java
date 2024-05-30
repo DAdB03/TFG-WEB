@@ -1,5 +1,6 @@
 package com.snakernet.registrousuarios;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +33,9 @@ public class UserService {
 	
 	public Page<User> listarTodosLosUsuarios(Pageable pageable) {
         return userRepository.findAll(pageable);
+    }
+	
+	public List<User> listarTodosLosUsuarios() {
+        return userRepository.findAll();
     }
 }

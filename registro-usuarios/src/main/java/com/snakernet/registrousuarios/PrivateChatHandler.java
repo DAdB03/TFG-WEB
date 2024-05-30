@@ -1,10 +1,8 @@
 package com.snakernet.registrousuarios;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +12,14 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @Service
 public class PrivateChatHandler extends TextWebSocketHandler {
 
     private final Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     private PrivateChatService privateChatService;
@@ -31,8 +33,10 @@ public class PrivateChatHandler extends TextWebSocketHandler {
         // Recuperar mensajes antiguos entre los usuarios
         List<PrivateMessage> oldMessages = privateChatService.getMessagesBetweenUsers(fromUser, toUser);
         for (PrivateMessage message : oldMessages) {
-            String formattedTime = message.getTimestamp().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
-            String formattedMessage = message.getFromUser() + ": " + message.getContent() + " [" + formattedTime + "]";
+            String formattedMessage = String.format(
+                "{\"fromUser\":\"%s\", \"content\":\"%s\", \"timestamp\":\"%s\"}", 
+                message.getFromUser(), message.getContent(), message.getTimestamp().toString()
+            );
             session.sendMessage(new TextMessage(formattedMessage));
         }
     }
@@ -47,29 +51,51 @@ public class PrivateChatHandler extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         String payload = message.getPayload();
-        String[] parts = payload.split(": ", 2);
-        String fromUser = parts[0];
-        String content = parts[1];
+
+        // Parsear el JSON recibido
+        JsonNode jsonNode;
+        try {
+            jsonNode = objectMapper.readTree(payload);
+        } catch (Exception e) {
+            String errorMessage = "{\"error\": \"Mensaje mal formado.\"}";
+            session.sendMessage(new TextMessage(errorMessage));
+            return;
+        }
+
+        String fromUser = jsonNode.get("fromUser").asText();
+        String content = jsonNode.get("content").asText();
         String toUser = getUsername(session, "toUser");
 
         // Guardar mensaje en la base de datos
         privateChatService.saveMessage(fromUser, toUser, content);
 
-        // Enviar mensaje al usuario destinatario si está conectado
+        // Obtener el timestamp del mensaje guardado
         LocalDateTime now = LocalDateTime.now();
-        String formattedTime = now.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
-        TextMessage formattedMessage = new TextMessage(fromUser + ": " + content + " [" + formattedTime + "]");
 
+        // Formatear el mensaje con la fecha y hora
+        String formattedMessage = String.format(
+            "{\"fromUser\":\"%s\", \"content\":\"%s\", \"timestamp\":\"%s\"}", 
+            fromUser, content, now.toString()
+        );
+
+        // Enviar mensaje al usuario destinatario si está conectado
         WebSocketSession toSession = sessions.get(toUser + "-" + fromUser);
         if (toSession != null && toSession.isOpen()) {
-            toSession.sendMessage(formattedMessage);
+            toSession.sendMessage(new TextMessage(formattedMessage));
         }
 
         // Enviar mensaje al remitente para mostrar en su chat
-        session.sendMessage(formattedMessage);
+        session.sendMessage(new TextMessage(formattedMessage));
     }
 
     private String getUsername(WebSocketSession session, String param) {
-        return session.getUri().getQuery().split("&")[param.equals("fromUser") ? 0 : 1].split("=")[1];
+        String query = session.getUri().getQuery();
+        for (String paramPair : query.split("&")) {
+            String[] pair = paramPair.split("=");
+            if (pair.length == 2 && pair[0].equals(param)) {
+                return pair[1];
+            }
+        }
+        return null;
     }
 }

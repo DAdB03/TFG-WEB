@@ -12,27 +12,9 @@
     <link rel="stylesheet" href="assets/css/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/fonts/fontawesome-all.min.css">
     <link rel="stylesheet" href="assets/css/css/untitled.css">
+    <link rel="stylesheet" href="assets/DDP/css/DDP_login.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
-    <style>
-        .input-group .form-control {
-            border-right: none;
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
-        }
-        .input-group .btn {
-            border-left: none;
-            border-top-left-radius: 0;
-            border-bottom-left-radius: 0;
-            border-color: #ced4da;
-            color: #495057;
-            background-color: #fff;
-        }
-        .input-group .btn:hover {
-            background-color: #e9ecef;
-        }
-    </style>
 </head>
-
 <body class="bg-gradient-primary">
     <div class="container">
         <div class="row justify-content-center">
@@ -77,82 +59,9 @@
             </div>
         </div>
     </div>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Load credentials from localStorage if available
-            const rememberedEmail = localStorage.getItem("rememberedEmail");
-            const rememberedPassword = localStorage.getItem("rememberedPassword");
-
-            if (rememberedEmail && rememberedPassword) {
-                document.getElementById("exampleInputEmail").value = rememberedEmail;
-                document.getElementById("exampleInputPassword").value = rememberedPassword;
-                document.getElementById("formCheck-1").checked = true;
-            }
-        });
-
-        function login(event) {
-            event.preventDefault();
-            var email = document.getElementById("exampleInputEmail").value;
-            var password = document.getElementById("exampleInputPassword").value;
-            var rememberMe = document.getElementById("formCheck-1").checked;
-
-            fetch("/users/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({email: email, password: password}),
-            })
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    return response.text().then(text => {
-                        throw new Error(text);
-                    });
-                }
-            })
-            .then(data => {
-                if (data && data.jwtToken) {
-                    localStorage.setItem('jwtToken', data.jwtToken);
-
-                    if (rememberMe) {
-                        localStorage.setItem("rememberedEmail", email);
-                        localStorage.setItem("rememberedPassword", password);
-                    } else {
-                        localStorage.removeItem("rememberedEmail");
-                        localStorage.removeItem("rememberedPassword");
-                    }
-
-                    window.location.href = "/index.html";
-                } else {
-                    alert("No se pudo iniciar sesión correctamente. Por favor, intente de nuevo.");
-                }
-            })
-            .catch((error) => {
-                console.error("Error:", error);
-                document.getElementById('error').textContent = error.message;
-                document.getElementById('error').style.display= "block";
-            });
-        }
-
-        document.getElementById('togglePassword').addEventListener('click', function (e) {
-            const passwordInput = document.getElementById('exampleInputPassword');
-            const icon = e.currentTarget.querySelector('i');
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                icon.classList.remove('bi-eye');
-                icon.classList.add('bi-eye-slash');
-            } else {
-                passwordInput.type = 'password';
-                icon.classList.remove('bi-eye-slash');
-                icon.classList.add('bi-eye');
-            }
-        });
-    </script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/js/theme.js"></script>
+    <script src="assets/DDP/js/DDP_login.js"></script>
 </body>
-
 </html>

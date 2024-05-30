@@ -428,7 +428,7 @@
             if (token) {
                 fetchUserData(token);
             } else {
-      //          redirectToLogin();
+                redirectToLogin();
             }
         });
 
@@ -495,31 +495,6 @@
             localStorage.removeItem('jwtToken');
             redirectToLogin();
         }
-
-        document.getElementById('imageInput').addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const formData = new FormData();
-                formData.append('image', file);
-
-                fetch(`/users/auth/update-image/${getUserIdFromToken(localStorage.getItem('jwtToken'))}`, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        "Authorization": `Bearer ${localStorage.getItem('jwtToken')}`,
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.imageUrl) {
-                        document.getElementById('profileImage').src = data.imageUrl;
-                        document.getElementById('userImage').src = data.imageUrl;
-                        alert('Imagen actualizada correctamente.');
-                    }
-                })
-                .catch(error => console.error('Error uploading image:', error));
-            }
-        });
     </script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/theme.js"></script>

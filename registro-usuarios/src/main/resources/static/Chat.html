@@ -50,6 +50,9 @@
             overflow-y: auto;
             padding: 20px;
             background-color: #fff;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 60px; /* Ajusta este margen según la altura del messageInputContainer */
         }
 
         #messageInputContainer {
@@ -61,6 +64,7 @@
             bottom: 0;
             left: 250px;
             width: calc(100% - 250px);
+            height: 50px; /* Altura del contenedor de entrada de mensaje */
         }
 
         #messageInputContainer input {
@@ -71,8 +75,6 @@
             display: flex;
             align-items: center;
             padding: 15px;
-            background-color: #343a40;
-            border-top: 1px solid #444;
             cursor: pointer;
             position: absolute;
             bottom: 40px;
@@ -84,11 +86,13 @@
             margin-right: 10px;
             width: 50px;
             height: 50px;
+            margin-bottom: 55px;
         }
 
         .user-info span {
             font-size: 1rem;
             color: #ffffff;
+            margin-bottom: 55px;
         }
 
         .navbar-nav .nav-link {
@@ -104,8 +108,6 @@
             align-items: center;
             justify-content: center;
             padding: 15px;
-            background-color: #343a40;
-            border-top: 1px solid #444;
             cursor: pointer;
             position: absolute;
             bottom: 0;
@@ -117,11 +119,36 @@
             color: #ffffff;
         }
 
+        .logout-button:hover {
+            background-color: #47a8e9;
+        }
+
+        /* Estilos para navegadores Webkit (Chrome, Safari) */
+        .contacts-list::-webkit-scrollbar {
+            width: 10px; /* Ancho de la scrollbar */
+        }
+
+        .contacts-list::-webkit-scrollbar-track {
+            background: #4064d4; /* Color del fondo de la scrollbar */
+            border-radius: 10px; /* Radio del fondo de la scrollbar */
+        }
+
+        .contacts-list::-webkit-scrollbar-thumb {
+            background: #47a8e9; /* Color del pulgar de la scrollbar */
+            border-radius: 10px; /* Radio del pulgar de la scrollbar */
+        }
+
+        .contacts-list::-webkit-scrollbar-thumb:hover {
+            background: #47a8e9; /* Color del pulgar de la scrollbar cuando se pasa el mouse por encima */
+        }
+
         .contacts-list {
             flex-grow: 1;
             overflow-y: auto;
             padding: 10px;
             max-height: 300px;
+            scrollbar-color: #47a8e9 #4064d4;
+            margin-right: 5px;
         }
 
         .contact-item {
@@ -129,13 +156,11 @@
             align-items: center;
             padding: 10px;
             cursor: pointer;
-            background-color: #343a40;
             color: #ffffff;
-            border-bottom: 1px solid #444;
         }
 
         .contact-item:hover {
-            background-color: #495057;
+            background-color: #7f8183;
         }
 
         .contact-item img {
@@ -151,6 +176,31 @@
 
         .contact-item.active {
             background-color: #495057;
+        }
+
+        .message {
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            max-width: 60%;
+        }
+
+        .message.user {
+            background-color: #4064d4;
+            color: white;
+            align-self: flex-end;
+            text-align: right;
+        }
+
+        .message.other {
+            background-color: #f1f1f1;
+            color: black;
+            align-self: flex-start;
+            text-align: left;
+        }
+
+        .time {
+            color: black;
         }
     </style>
 </head>
@@ -168,7 +218,6 @@
                     <li class="nav-item"><a class="nav-link" href="index.html"><i class="fas fa-home"></i><span>Inicio</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="profile.html"><i class="fas fa-user"></i><span>Perfil</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="table.html"><i class="fas fa-table"></i><span>Usuarios</span></a></li>
-                    <hr class="sidebar-divider my-0">
                     <li class="nav-item"><a class="nav-link" href="FaQ.html"><i class="fas fa-user-circle"></i><span>FaQ</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="Chat.html"><i class="fas fa-user-circle"></i><span>Chat</span></a></li>
                 </ul>
@@ -197,7 +246,7 @@
         </div>
     </div>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+      document.addEventListener('DOMContentLoaded', function () {
             const token = localStorage.getItem('jwtToken');
             if (token) {
                 fetchUserData(token);
@@ -253,20 +302,37 @@
                 privateSocket = new WebSocket(`ws://snakernet.net:8080/ws/privateappchat?fromUser=${currentUser}&toUser=${username}`);
                 
                 privateSocket.onmessage = function(event) {
-                    const messageData = event.data.split(': ');
-                    const fromUser = messageData[0];
-                    const content = messageData[1];
-                    const time = new Date().toLocaleTimeString();
-                    
+                    let messageData;
+                    try {
+                        messageData = JSON.parse(event.data);
+                        console.info(event.data);
+                    } catch (e) {
+                        console.error("Error al parsear el mensaje:", e);
+                        return;
+                    }
+
+                    if (messageData.error) {
+                        console.error("Error del servidor:", messageData.error);
+                        return;
+                    }
+
+                    const fromUser = messageData.fromUser;
+                    const content = messageData.content;
+                    const time = new Date(messageData.timestamp).toLocaleTimeString();
+
                     addMessageToChat(content, fromUser, time, fromUser === currentUser);
                 };
 
                 chatSendBtn.onclick = function() {
                     const message = chatInput.value.trim();
                     if (message) {
-                        privateSocket.send(`${currentUser}: ${message}`);
+                        const messageData = {
+                            fromUser: currentUser,
+                            content: message,
+                            timestamp: new Date().toISOString()
+                        };
+                        privateSocket.send(JSON.stringify(messageData));
                         chatInput.value = '';
-                        addMessageToChat(message, 'Tú', new Date().toLocaleTimeString(), true);
                     }
                 };
             }
@@ -295,28 +361,28 @@
             }
 
             function fetchContacts() {
-                fetch('/users/table/list')
-                    .then(response => response.json())
-                    .then(users => {
-                        users
-                        .filter(user => user.username !== currentUser) // Filtrar el usuario actual
-                        .forEach(user => addContactToList({
-                            name: user.firstName + ' ' + user.lastName,
-                            imageUrl: user.imageUrl || 'assets/img/default.png',
-                            username: user.username
-                        }));
-                    });
-            }
+            fetch('/users/contact/list')
+                .then(response => response.json())
+                .then(users => {
+                    console.log(users)
+                    contactsList.innerHTML = ''; // Limpiar la lista antes de agregar nuevos contactos
+                    users
+                    .filter(user => user.username !== currentUser) // Filtrar el usuario actual
+                    .forEach(user => addContactToList({
+                        name: user.firstName + ' ' + user.lastName,
+                        imageUrl: user.imageUrl || 'assets/img/default.png',
+                        username: user.username
+                    }));
+                });
+        }
 
             function addMessageToChat(message, user, time, isUser = true) {
                 const messageElement = document.createElement('div');
-                messageElement.classList.add('p-2', 'my-2', 'rounded', isUser ? 'bg-primary' : 'bg-light', isUser ? 'text-white' : 'text-dark');
-                messageElement.style.maxWidth = '70%';
-                messageElement.style.alignSelf = isUser ? 'flex-end' : 'flex-start';
+                messageElement.classList.add('message', isUser ? 'user' : 'other');
 
                 const timeElement = document.createElement('div');
                 timeElement.textContent = time;
-                timeElement.classList.add('small', 'text-muted');
+                timeElement.classList.add('small', 'time');
 
                 const userElement = document.createElement('div');
                 userElement.textContent = user;
@@ -325,9 +391,9 @@
                 const textElement = document.createElement('div');
                 textElement.textContent = message;
 
-                messageElement.appendChild(timeElement);
                 messageElement.appendChild(userElement);
                 messageElement.appendChild(textElement);
+                messageElement.appendChild(timeElement);
 
                 chatContent.appendChild(messageElement);
                 chatContent.scrollTop = chatContent.scrollHeight;
@@ -346,16 +412,17 @@
                     return null;
                 }
             }
-
-            function redirectToLogin() {
-                window.location.href = '/login.html';
-            }
-
-            function logout() {
-                localStorage.removeItem('jwtToken');
-                redirectToLogin();
-            }
         });
+
+        function logout() {
+            localStorage.removeItem('jwtToken');
+            redirectToLogin();
+        }
+
+        function redirectToLogin() {
+            window.location.href = '/login.html';
+        }
+
     </script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/theme.js"></script>
