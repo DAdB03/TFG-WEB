@@ -64,11 +64,12 @@
             bottom: 0;
             left: 250px;
             width: calc(100% - 250px);
-            height: 50px; /* Altura del contenedor de entrada de mensaje */
+            height: 60px; /* Altura del contenedor de entrada de mensaje */
         }
 
         #messageInputContainer input {
             flex: 1;
+            margin-right: 15px;
         }
 
         .user-info {
@@ -202,6 +203,18 @@
         .time {
             color: black;
         }
+
+        .search-container {
+            padding: 10px;
+            display: flex;
+        }
+
+        .search-container input {
+            flex: 1;
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
     </style>
 </head>
 
@@ -221,6 +234,9 @@
                     <li class="nav-item"><a class="nav-link" href="FaQ.html"><i class="fas fa-user-circle"></i><span>FaQ</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="Chat.html"><i class="fas fa-user-circle"></i><span>Chat</span></a></li>
                 </ul>
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="Buscar contactos...">
+                </div>
                 <div class="contacts-list" id="contactsList">
                     <!-- Aquí se añadirán los contactos dinámicamente -->
                 </div>
@@ -262,8 +278,21 @@
             const chatInput = document.getElementById('chat-input');
             const chatSendBtn = document.getElementById('chat-send-btn');
             const contactsList = document.getElementById('contactsList');
+            const searchInput = document.getElementById('searchInput');
             let privateSocket = null;
             let currentUser = '';
+            let allContacts = []; // Variable para almacenar todos los contactos
+
+            searchInput.addEventListener('input', function() {
+                filterContacts(searchInput.value);
+            });
+
+            function filterContacts(query) {
+                const filteredContacts = allContacts.filter(contact => 
+                    contact.name.toLowerCase().includes(query.toLowerCase())
+                );
+                renderContacts(filteredContacts);
+            }
 
             function setActiveContact(contactElement) {
                 if (activeContact) {
@@ -274,25 +303,33 @@
             }
 
             function addContactToList(contact) {
-                const contactItem = document.createElement('div');
-                contactItem.classList.add('contact-item');
-                
-                const imgElement = document.createElement('img');
-                imgElement.src = contact.imageUrl;
-                imgElement.alt = 'Contact Image';
-                
-                const spanElement = document.createElement('span');
-                spanElement.textContent = contact.name;
-                
-                contactItem.appendChild(imgElement);
-                contactItem.appendChild(spanElement);
+                allContacts.push(contact); // Añadir el contacto a la lista de todos los contactos
+                renderContacts(allContacts); // Renderizar todos los contactos inicialmente
+            }
 
-                contactItem.addEventListener('click', () => {
-                    setActiveContact(contactItem);
-                    startPrivateChat(contact.username);
+            function renderContacts(contacts) {
+                contactsList.innerHTML = '';
+                contacts.forEach(contact => {
+                    const contactItem = document.createElement('div');
+                    contactItem.classList.add('contact-item');
+                    
+                    const imgElement = document.createElement('img');
+                    imgElement.src = contact.imageUrl;
+                    imgElement.alt = 'Contact Image';
+                    
+                    const spanElement = document.createElement('span');
+                    spanElement.textContent = contact.name;
+                    
+                    contactItem.appendChild(imgElement);
+                    contactItem.appendChild(spanElement);
+
+                    contactItem.addEventListener('click', () => {
+                        setActiveContact(contactItem);
+                        startPrivateChat(contact.username);
+                    });
+                    
+                    contactsList.appendChild(contactItem);
                 });
-                
-                contactsList.appendChild(contactItem);
             }
 
             function startPrivateChat(username) {
@@ -371,13 +408,14 @@
                 .then(users => {
                     console.log(users)
                     contactsList.innerHTML = ''; // Limpiar la lista antes de agregar nuevos contactos
-                    users
-                    .filter(user => user.username !== currentUser) // Filtrar el usuario actual
-                    .forEach(user => addContactToList({
-                        name: user.firstName + ' ' + user.lastName,
-                        imageUrl: user.imageUrl || 'assets/img/default.png',
-                        username: user.username
-                    }));
+                    allContacts = users
+                        .filter(user => user.username !== currentUser) // Filtrar el usuario actual
+                        .map(user => ({
+                            name: user.firstName + ' ' + user.lastName,
+                            imageUrl: user.imageUrl || 'assets/img/default.png',
+                            username: user.username
+                        }));
+                    renderContacts(allContacts);
                 });
         }
 
