@@ -49,7 +49,7 @@
                     <li class="nav-item"></li>
                     <li class="nav-item"><a class="nav-link" href="index.html"><i class="fas fa-home"></i><span>Inicio</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="profile.html"><i class="fas fa-user"></i><span>Perfil</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="table.html"><i class="fas fa-table"></i><span>Usuarios</span></a></li>
+                    <li class="nav-item" id="tableNavItem"><a class="nav-link" href="table.html"><i class="fas fa-table"></i><span>Usuarios</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="FaQ.html"><i class="fas fa-user-circle"></i><span>FaQ</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="Chat.html"><i class="fas fa-user-circle"></i><span>Chat</span></a></li>
                     </ul>
@@ -391,8 +391,10 @@
                         if (data) {
                             document.getElementById('userName').textContent = data.firstName + ' ' + data.lastName;
                             document.getElementById('userImage').src = data.imageUrl || 'assets/img/default.png';
-                            document.getElementById('userRole').textContent = data.roleName;
+                            document.getElementById('userRole').textContent = data.roleName;      
+                            showOrHideNavItems(data.roleName);
                         }
+
                     })
                     .catch(error => {
                         console.error('Error fetching user data:', error);
@@ -428,6 +430,20 @@
             localStorage.removeItem('jwtToken');
             redirectToLogin();
         }
+        
+        function showOrHideNavItems(role) {
+            const tableNavItem = document.getElementById('tableNavItem');
+            const tableNavItem2 = document.getElementById('tableNavItem2');
+            if (role === 'Director') {
+                tableNavItem.style.display = 'block';
+            } else if (role === 'Alumno') {
+                tableNavItem.style.display = 'none';
+            } else if (role === null) {
+                tableNavItem.style.display = 'none';
+                tableNavItem2.style.display = 'none';
+            }
+        }
+
     </script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/theme.js"></script>
