@@ -772,7 +772,8 @@
             chatSendBtn.addEventListener('click', function () {
                 const message = chatInput.value.trim();
                 if (message) {
-                    addMessageToChat(message, 'Tú', new Date().toLocaleTimeString(), true);
+                    const username = 'Tú'; // Aquí deberías obtener el nombre de usuario real
+                    addMessageToChat(message, username, new Date().toLocaleTimeString(), true);
                     chatInput.value = '';
                     // Aquí puedes agregar la lógica para enviar el mensaje al servidor si es necesario
                 }
@@ -785,6 +786,8 @@
                 }
             });
         });
+
+
 
 
 

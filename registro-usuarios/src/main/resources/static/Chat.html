@@ -121,6 +121,7 @@
             flex-grow: 1;
             overflow-y: auto;
             padding: 10px;
+            max-height: 300px;
         }
 
         .contact-item {
@@ -249,7 +250,7 @@
 
                 chatContent.innerHTML = ''; // Limpiar el contenedor de mensajes
 
-                privateSocket = new WebSocket(`ws://localhost:8080/ws/privateappchat?fromUser=${currentUser}&toUser=${username}`);
+                privateSocket = new WebSocket(`ws://snakernet.net:8080/ws/privateappchat?fromUser=${currentUser}&toUser=${username}`);
                 
                 privateSocket.onmessage = function(event) {
                     const messageData = event.data.split(': ');
