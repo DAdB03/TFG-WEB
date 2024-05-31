@@ -12,221 +12,19 @@
     <link rel="stylesheet" href="assets/css/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/fonts/fontawesome-all.min.css">
     <link rel="stylesheet" href="assets/css/css/untitled.css">
+    <link rel="stylesheet" href="assets/DDP/css/DDP_chat.css">
     <link rel="icon" href="assets/img/Icon.png" type="image/png">
-    <style>
-        body {
-            overflow: hidden;
-        }
-
-        #chatSidebar {
-            height: 100vh;
-            border-right: 1px solid #ddd;
-            width: 250px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            background-color: #343a40;
-        }
-
-        #content-wrapper {
-            margin-left: 250px;
-            width: calc(100% - 250px);
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-        }
-
-        #content {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            background-color: #f0f2f5;
-        }
-
-        #messagesContainer {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-            background-color: #fff;
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 60px; /* Ajusta este margen según la altura del messageInputContainer */
-        }
-
-        #messageInputContainer {
-            padding: 10px;
-            background-color: #fff;
-            border-top: 1px solid #ddd;
-            display: flex;
-            position: fixed;
-            bottom: 0;
-            left: 250px;
-            width: calc(100% - 250px);
-            height: 60px; /* Altura del contenedor de entrada de mensaje */
-        }
-
-        #messageInputContainer input {
-            flex: 1;
-            margin-right: 15px;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            cursor: pointer;
-            position: absolute;
-            bottom: 55px; /* Ajustar la distancia desde el fondo */
-            width: 100%;
-        }
-
-        .user-info img {
-            border-radius: 50%;
-            margin-right: 10px;
-            width: 50px;
-            height: 50px;
-        }
-
-        .user-details {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .user-name {
-            font-size: 1rem;
-            color: #ffffff;
-        }
-
-        .user-role {
-            font-size: 0.8rem;
-            color: #b0b0b0;
-        }
-
-        .logout-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 15px;
-            cursor: pointer;
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            text-align: center;
-        }
-
-        .logout-button i {
-            color: #ffffff;
-        }
-
-        .logout-button:hover {
-            background-color: #47a8e9;
-        }
-
-        /* Estilos para navegadores Webkit (Chrome, Safari) */
-        .contacts-list::-webkit-scrollbar {
-            width: 10px; /* Ancho de la scrollbar */
-        }
-
-        .contacts-list::-webkit-scrollbar-track {
-            background: #4064d4; /* Color del fondo de la scrollbar */
-            border-radius: 10px; /* Radio del fondo de la scrollbar */
-        }
-
-        .contacts-list::-webkit-scrollbar-thumb {
-            background: #47a8e9; /* Color del pulgar de la scrollbar */
-            border-radius: 10px; /* Radio del pulgar de la scrollbar */
-        }
-
-        .contacts-list::-webkit-scrollbar-thumb:hover {
-            background: #47a8e9; /* Color del pulgar de la scrollbar cuando se pasa el mouse por encima */
-        }
-
-        .contacts-list {
-            flex-grow: 1;
-            overflow-y: auto;
-            padding: 10px;
-            max-height: 300px;
-            scrollbar-color: #47a8e9 #4064d4;
-            margin-right: 5px;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            cursor: pointer;
-            color: #ffffff;
-        }
-
-        .contact-item:hover {
-            background-color: #47a8e9;
-        }
-
-        .contact-item img {
-            border-radius: 50%;
-            margin-right: 10px;
-            width: 40px;
-            height: 40px;
-        }
-
-        .contact-item span {
-            font-size: 1rem;
-        }
-
-        .contact-item.active {
-            background-color: #47a8e9;
-        }
-
-        .message {
-            padding: 10px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            max-width: 60%;
-        }
-
-        .message.user {
-            background-color: #4064d4;
-            color: white;
-            align-self: flex-end;
-            text-align: right;
-        }
-
-        .message.other {
-            background-color: #f1f1f1;
-            color: black;
-            align-self: flex-start;
-            text-align: left;
-        }
-
-        .time {
-            color: black;
-        }
-
-        .search-container {
-            padding: 10px;
-            display: flex;
-        }
-
-        .search-container input {
-            flex: 1;
-            padding: 5px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-    </style>
 </head>
-
 <body id="page-top">
     <div id="wrapper" class="d-flex">
         <nav class="navbar align-items-start sidebar sidebar-dark bg-gradient-primary p-0 navbar-dark" id="chatSidebar">
             <div class="container-fluid d-flex flex-column p-0">
-                <div class="container-fluid p-0"><a href="index.html" class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
-                    <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-book-open"></i></div>
-                    <div class="sidebar-brand-text mx-3" ><span>Chathub</span></div>
-                </a>
+                <div class="container-fluid p-0">
+                    <a href="index.html" class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0">
+                        <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-book-open"></i></div>
+                        <div class="sidebar-brand-text mx-3"><span>Chathub</span></div>
+                    </a>
+                </div>
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light flex-grow-1">
                     <li class="nav-item"><a class="nav-link" href="index.html"><i class="fas fa-home"></i><span>Inicio</span></a></li>
@@ -266,7 +64,7 @@
         </div>
     </div>
     <script>
-      document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function () {
             const token = localStorage.getItem('jwtToken');
             if (token) {
                 fetchUserData(token);
@@ -287,6 +85,30 @@
             searchInput.addEventListener('input', function() {
                 filterContacts(searchInput.value);
             });
+
+            chatInput.addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+
+            chatSendBtn.onclick = function() {
+                sendMessage();
+            };
+
+            function sendMessage() {
+                const message = chatInput.value.trim();
+                if (message) {
+                    const messageData = {
+                        fromUser: currentUser,
+                        content: message,
+                        timestamp: new Date().toISOString()
+                    };
+                    privateSocket.send(JSON.stringify(messageData));
+                    chatInput.value = '';
+                    scrollToBottom(); // Asegurar que el scroll se realiza después del renderizado
+                }
+            }
 
             function filterContacts(query) {
                 const filteredContacts = allContacts.filter(contact => 
@@ -363,19 +185,6 @@
 
                     addMessageToChat(content, fromUser, time, fromUser === currentUser);
                 };
-
-                chatSendBtn.onclick = function() {
-                    const message = chatInput.value.trim();
-                    if (message) {
-                        const messageData = {
-                            fromUser: currentUser,
-                            content: message,
-                            timestamp: new Date().toISOString()
-                        };
-                        privateSocket.send(JSON.stringify(messageData));
-                        chatInput.value = '';
-                    }
-                };
             }
 
             function fetchUserData(token) {
@@ -404,21 +213,21 @@
             }
 
             function fetchContacts() {
-            fetch('/users/contact/list')
-                .then(response => response.json())
-                .then(users => {
-                    console.log(users)
-                    contactsList.innerHTML = ''; // Limpiar la lista antes de agregar nuevos contactos
-                    allContacts = users
-                        .filter(user => user.username !== currentUser) // Filtrar el usuario actual
-                        .map(user => ({
-                            name: user.firstName + ' ' + user.lastName,
-                            imageUrl: user.imageUrl || 'assets/img/default.png',
-                            username: user.username
-                        }));
-                    renderContacts(allContacts);
-                });
-        }
+                fetch('/users/contact/list')
+                    .then(response => response.json())
+                    .then(users => {
+                        console.log(users)
+                        contactsList.innerHTML = ''; // Limpiar la lista antes de agregar nuevos contactos
+                        allContacts = users
+                            .filter(user => user.username !== currentUser) // Filtrar el usuario actual
+                            .map(user => ({
+                                name: user.firstName + ' ' + user.lastName,
+                                imageUrl: user.imageUrl || 'assets/img/default.png',
+                                username: user.username
+                            }));
+                        renderContacts(allContacts);
+                    });
+            }
 
             function addMessageToChat(message, user, time, isUser = true) {
                 const messageElement = document.createElement('div');
@@ -440,7 +249,9 @@
                 messageElement.appendChild(timeElement);
 
                 chatContent.appendChild(messageElement);
-                chatContent.scrollTop = chatContent.scrollHeight;
+
+                // Asegurarse de que el contenedor de mensajes se desplace hacia abajo
+                scrollToBottom(); // Asegurar que el scroll se realiza después del renderizado
             }
 
             function getUserIdFromToken(token) {
@@ -456,6 +267,13 @@
                     return null;
                 }
             }
+
+            function scrollToBottom() {
+                chatContent.scrollTop = chatContent.scrollHeight;
+            }
+
+            // Inicializar con un scroll al final para asegurar que empiece desde el último mensaje
+            scrollToBottom();
         });
 
         function logout() {
@@ -479,7 +297,6 @@
                 tableNavItem2.style.display = 'none';
             }
         }
-
     </script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/theme.js"></script>
