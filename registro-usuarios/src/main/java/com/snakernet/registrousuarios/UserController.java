@@ -108,7 +108,7 @@ public class UserController {
         UserInfo infoUsuario = infoUsuarioService.findByUsuarioId(id);
 
         UserDto userDto = new UserDto(user.getUsuario(), user.getFirstName(), user.getLastName(), infoUsuario.getImageUrl(), user.getEmail(),
-        		user.getUserInfo().getCentro(), user.getUserInfo().getCiudad(), user.getUserInfo().getDireccion(), user.getRole().getName());
+        		user.getUserInfo().getCentro(), user.getUserInfo().getCiudad(), user.getUserInfo().getDireccion(), user.getRole().getName(), user.getUserInfo().getCurso());
         return ResponseEntity.ok(userDto);
     }
 
@@ -128,17 +128,16 @@ public class UserController {
 	}
 
 	@GetMapping("/table/list")
-    public ResponseEntity<List<UserDto>> obtenerTodosLosUsuarios(
-            @RequestParam(defaultValue = "0") int page,  // Página actual, comenzando desde 0
-            @RequestParam(defaultValue = "5") int pageSize) {  // Cantidad de elementos por página
+	public ResponseEntity<List<UserDto>> obtenerTodosLosUsuarios(
+	        @RequestParam(defaultValue = "0") int page,  // Página actual, comenzando desde 0
+	        @RequestParam(defaultValue = "5") int pageSize) {  // Cantidad de elementos por página
 
-        Pageable pageable = PageRequest.of(page, pageSize);
-        Page<User> usuarios = userService.listarTodosLosUsuarios(pageable);
-        
-        // Convertir la lista de usuarios a DTOs
-        List<UserDto> userDTOs = usuarios.getContent().stream().map(UserDto::new).collect(Collectors.toList());
-        return ResponseEntity.ok(userDTOs);
-    }
+	    Pageable pageable = PageRequest.of(page, pageSize);
+	    Page<User> usuarios = userService.listarTodosLosUsuarios(pageable);
+	    
+	    List<UserDto> userDTOs = usuarios.getContent().stream().map(UserDto::new).collect(Collectors.toList());
+	    return ResponseEntity.ok(userDTOs);
+	}
 	
 	@GetMapping("/contact/list")
 	public ResponseEntity<List<UserDto>> contactos() {  

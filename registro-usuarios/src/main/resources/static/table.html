@@ -21,16 +21,16 @@
         }
     
         #userName {
-            display: block; /* Asegura que se muestren en líneas separadas */
-            text-align: center; /* Centra el texto */
+            display: block;
+            text-align: center;
             margin-right: 15px;
         }
     
         #userRole {
-            display: block; /* Asegura que se muestren en líneas separadas */
-            font-size: 0.8em; /* Tamaño más pequeño */
-            color: rgba(128, 128, 128, 0.7); /* Color gris y un poco difuminado */
-            text-align: right; /* Alinea a la derecha */
+            display: block;
+            font-size: 0.8em;
+            color: rgba(128, 128, 128, 0.7);
+            text-align: right;
             margin-right: 15px;
         }
     </style>
@@ -39,9 +39,9 @@
 <body id="page-top">
     <div id="wrapper">
         <nav class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark">
-            <div class="container-fluid p-0"><a href="index.html" class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+            <div class="container-fluid p-0"><a href="index.html" class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0">
                     <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-book-open"></i></div>
-                    <div class="sidebar-brand-text mx-3" ><span>Chathub</span></div>
+                    <div class="sidebar-brand-text mx-3"><span>Chathub</span></div>
                 </a>
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
@@ -60,7 +60,14 @@
                 <nav class="navbar navbar-expand bg-white shadow mb-4 topbar static-top navbar-light">
                     <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
                         <form class="d-none d-sm-inline-block me-auto ms-md-3 my-2 my-md-0 mw-100 navbar-search">
-                            <div class="input-group"></div>
+                            <div class="input-group">
+                                <input type="text" id="searchInput" class="form-control bg-light border-0 small" placeholder="Buscar..." aria-label="Search" oninput="handleSearch()">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="button" onclick="handleSearch()">
+                                        <i class="fas fa-search fa-sm"></i>
+                                    </button>
+                                </div>
+                            </div>
                         </form>
                         <ul class="navbar-nav flex-nowrap ms-auto">
                             <li class="nav-item dropdown d-sm-none no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><i class="fas fa-search"></i></a>
@@ -89,7 +96,8 @@
                             </li>
                         </ul>
                     </div>
-                </nav><div class="container-fluid">
+                </nav>
+                <div class="container-fluid">
                     <h3 class="text-dark mb-4">Usuarios</h3>
                     <div class="card shadow">
                         <div class="card-header py-3">
@@ -97,17 +105,9 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-6 text-nowrap">
-                                    <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"><label class="form-label form-label">Mostrar 
-                                        <select class="form-select-sm d-inline-block form-select" id="pageSizeSelect">
-                                                <option value="2">2</option>
-                                                <option value="5" selected="">5</option>
-                                                <option value="10">10</option>
-                                                <option value="100">100</option>
-                                            </select></label></div>
-                                </div>
+                                <div class="col-md-6 text-nowrap"></div>
                                 <div class="col-md-6">
-                                    <div class="text-md-end dataTables_filter" id="dataTable_filter"><label class="form-label form-label"><input class="form-control-sm form-control" type="search" aria-controls="dataTable" placeholder="Buscar"></label></div>
+                                    <div class="text-md-end dataTables_filter" id="dataTable_filter"></div>
                                 </div>
                             </div>
                             <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
@@ -119,7 +119,7 @@
                                             <th>Centro educativo</th>
                                             <th>Correo</th>
                                             <th>Role</th>
-                                            <th>Ciudad</th>
+                                            <th>Curso</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -132,15 +132,12 @@
                                             <td><strong>Centro educativo</strong></td>
                                             <td><strong>Correo</strong></td>
                                             <td><strong>Role</strong></td>
-                                            <td><strong>Ciudad</strong></td>
+                                            <td><strong>Curso</strong></td>
                                         </tr>
                                     </tfoot>
                                 </table>
                             </div>
                             <div class="row">
-                                <div class="col-md-6 align-self-center">
-                                    <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Mostrando 1 a 10 de 27</p>
-                                </div>
                                 <div class="col-md-6">
                                     <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
                                         <ul class="pagination">
@@ -165,24 +162,21 @@
         </div><a class="d-inline border rounded scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
     </div>
     <script>
+        let allUsers = [];
+        let filteredUsers = [];
+
         document.addEventListener('DOMContentLoaded', function () {
             const token = localStorage.getItem('jwtToken');
             if (token) {
                 fetchUserData(token);
-                fetchUsers(token, 10);
+                fetchUsers(token, 1, 5);
             } else {
                 redirectToLogin();
             }
         });
 
-        document.getElementById('pageSizeSelect').addEventListener('change', function() {
-            const token = localStorage.getItem('jwtToken');
-            let selectedSize = this.value;
-            fetchUsers(token, selectedSize);
-        });
         function fetchUserData(token) {
             const userId = getUserIdFromToken(token);
-            console.log("UserID from token:", userId); // Debug: Verifica que el ID se extrae correctamente
             if (userId) {
                 fetch(`/users/auth/${userId}`, {
                     method: 'GET',
@@ -191,36 +185,35 @@
                         "Content-Type": "application/json"
                     }
                 })
-                    .then(response => {
-                        console.log("Server response:", response); // Debug: Muestra la respuesta del servidor
-                        if (response.ok) {
-                            return response.json();
-                        } else if (response.status === 401) {
-                            redirectToLogin(); // Redirigir al inicio de sesión si el token expiró
-                        } else {
-                            throw new Error(`Failed to fetch user data: ${response.status} ${response.statusText}`);
-                        }
-                    })
-                    .then(data => {
-                        console.log("User data received:", data); // Debug: Muestra los datos recibidos
-                        if (data) {
-                            document.getElementById('userName').textContent = data.firstName + ' ' + data.lastName;
-                            document.getElementById('userImage').src = data.imageUrl || 'assets/img/default.png';
-                            document.getElementById('userRole').textContent = data.roleName || 'Role';
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error fetching user data:', error);
-                        document.getElementById('userName').textContent = "Error loading data";
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else if (response.status === 401) {
                         redirectToLogin();
-                    });
+                    } else {
+                        throw new Error(`Failed to fetch user data: ${response.status} ${response.statusText}`);
+                    }
+                })
+                .then(data => {
+                    if (data) {
+                        document.getElementById('userName').textContent = data.firstName + ' ' + data.lastName;
+                        document.getElementById('userImage').src = data.imageUrl || 'assets/img/default.png';
+                        document.getElementById('userRole').textContent = data.roleName || 'Role';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching user data:', error);
+                    document.getElementById('userName').textContent = "Error loading data";
+                    redirectToLogin();
+                });
             } else {
                 console.error('No user ID found in token');
-                document.getElementById('userName').textContent = "Error loading data"; // Mostrar mensaje de error en la UI
+                document.getElementById('userName').textContent = "Error loading data";
             }
         }
-        function fetchUsers(token, pageSize = 5) {  // Valor por defecto de 5
-            fetch(`/users/table/list?pageSize=${pageSize}`, {  // Envía el tamaño de página como parámetro de consulta
+
+        function fetchUsers(token, page, pageSize = 5) {
+            fetch(`/users/table/list?page=${page - 1}&pageSize=${pageSize}`, {
                 method: 'GET',
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -228,23 +221,37 @@
                 }
             })
             .then(response => {
-                console.log("Server response:", response); // Debug: Muestra la respuesta del servidor
                 if (response.ok) {
                     return response.json();
                 } else if (response.status === 401) {
-                    redirectToLogin(); // Redirigir al inicio de sesión si el token expiró
+                    redirectToLogin();
                 } else {
                     throw new Error(`Failed to fetch user data: ${response.status} ${response.statusText}`);
                 }
             })
             .then(users => {
-                console.log("User data received:", JSON.stringify(users, null, 2)); // Debug: Muestra los datos recibidos en formato legible
-                updateTable(users);
-                updateTableInfo(1, users.length);
+                allUsers = users;
+                filteredUsers = users; // Inicialmente, sin filtro
+                updateTable(filteredUsers);
+                updateTableInfo(page, filteredUsers.length);
             })
             .catch(error => {
                 console.error('Error fetching user data:', error);
             });
+        }
+
+        function handleSearch() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            filteredUsers = allUsers.filter(user => {
+                return (user.firstName || "").toLowerCase().includes(searchInput) ||
+                       (user.lastName || "").toLowerCase().includes(searchInput) ||
+                       (user.username || "").toLowerCase().includes(searchInput) ||
+                       (user.email || "").toLowerCase().includes(searchInput) ||
+                       (user.roleName || "").toLowerCase().includes(searchInput) ||
+                       (user.curso || "").toLowerCase().includes(searchInput);
+            });
+            updateTable(filteredUsers);
+            updateTableInfo(1, filteredUsers.length);
         }
 
         function updateTable(users) {
@@ -253,33 +260,25 @@
             users.forEach(user => {
                 let row = tableBody.insertRow();
 
-                // Crear celda para el nombre y la imagen
                 let cell1 = row.insertCell(0);
-                // Asegúrate de que userinfo y imageUrl existan, de lo contrario, usa una imagen por defecto
                 let imageUrl = user.imageUrl || 'assets/img/default.png';
                 cell1.innerHTML = `<img class="rounded-circle me-2" height="30" src="${imageUrl}" width="30">${user.firstName} ${user.lastName}`;
 
-                // Crear celda para el usuario
                 let cell2 = row.insertCell(1);
                 cell2.textContent = user.username || 'No disponible';
 
-                // Crear celda para el centro educativo
                 let cell3 = row.insertCell(2);
                 cell3.textContent = user.centro || 'No disponible';
 
-                // Crear celda para el email
                 let cell4 = row.insertCell(3);
                 cell4.textContent = user.email || 'No disponible';
 
-                // Crear celda para la dirección
                 let cell5 = row.insertCell(4);
                 cell5.textContent = user.roleName || 'No disponible';
 
-                // Crear celda para la ciudad
                 let cell6 = row.insertCell(5);
-                cell6.textContent = user.city || 'No disponible';
+                cell6.textContent = user.curso || 'No disponible';
             });
-
         }
 
         function getUserIdFromToken(token) {
@@ -290,16 +289,18 @@
                     return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
                 }).join(''));
                 const decodedToken = JSON.parse(jsonPayload);
-                return decodedToken.sub; // Assuming 'sub' contains user ID
+                return decodedToken.sub;
             } catch (e) {
                 console.error('Error decoding token:', e);
                 return null;
             }
         }
 
-        function updateTableInfo(startIndex, endIndex) {
+        function updateTableInfo(page, userCount) {
             const infoElement = document.getElementById('dataTable_info');
             if (infoElement) {
+                const startIndex = (page - 1) * 5 + 1;
+                const endIndex = startIndex + userCount - 1;
                 infoElement.textContent = `Mostrando ${startIndex} a ${endIndex}`;
             }
         }
@@ -313,8 +314,8 @@
             location.reload(true);
         }
     </script>
-<script src="assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="assets/js/theme.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/theme.js"></script>
 </body>
 
 </html>

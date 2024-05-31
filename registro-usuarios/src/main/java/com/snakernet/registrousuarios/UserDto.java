@@ -10,8 +10,9 @@ public class UserDto {
     private String centro;
     private String city;
     private String roleName;
+    private String curso;
 
-    public UserDto(String username, String firstName, String lastName, String imageUrl, String email, String centro, String ciudad, String address, String roleName) {
+    public UserDto(String username, String firstName, String lastName, String imageUrl, String email, String centro, String ciudad, String address, String roleName, String curso) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -21,6 +22,7 @@ public class UserDto {
         this.city = ciudad;
         this.address = address;
         this.roleName = roleName;
+        this.curso = curso;
     }
 
     public UserDto(User user) {
@@ -33,6 +35,7 @@ public class UserDto {
         this.city = user.getUserInfo() != null ? user.getUserInfo().getCiudad() : null;
         this.address = user.getUserInfo() != null ? user.getUserInfo().getDireccion() : null;
         this.roleName = user.getRole().getName();
+        this.curso = user.getUserInfo().getCurso();
     }
 
     public String getUsername() {
@@ -106,4 +109,12 @@ public class UserDto {
     public void setRoleName(String roleName) {
         this.roleName = roleName;
     }
+
+	public String getCurso() {
+		return curso;
+	}
+
+	public void setCurso(String curso) {
+		this.curso = curso;
+	}
 }

@@ -34,16 +34,19 @@ public class UserInfo {
     
     private String ciudad;
     
+    private String curso;
+    
     // Constructor, Getters y Setters
     
     public UserInfo() {
     }
 
-    public UserInfo(String imageUrl, String centro, String direccion, String ciudad) {
+    public UserInfo(String imageUrl, String centro, String direccion, String ciudad, String curso) {
         this.imageUrl = imageUrl;
         this.centro = centro;
         this.direccion = direccion;
         this.ciudad = ciudad;
+        this.curso = curso;
     }
 
     // Getters y Setters
@@ -95,4 +98,12 @@ public class UserInfo {
     public void setCiudad(String ciudad) {
         this.ciudad = ciudad;
     }
+
+	public String getCurso() {
+		return curso;
+	}
+
+	public void setCurso(String curso) {
+		this.curso = curso;
+	}
 }
