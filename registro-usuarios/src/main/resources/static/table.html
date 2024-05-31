@@ -140,12 +140,8 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
-                                        <ul class="pagination">
-                                            <li class="page-item disabled"><a class="page-link" href="#" aria-label="Previous"></a></li>
-                                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                            <li class="page-item"><a class="page-link" href="#" aria-label="Next"></a></li>
+                                        <ul class="pagination" id="pagination">
+                                            <!-- Paginación generada dinámicamente -->
                                         </ul>
                                     </nav>
                                 </div>
@@ -164,12 +160,14 @@
     <script>
         let allUsers = [];
         let filteredUsers = [];
+        const pageSize = 7; // Número de usuarios por página
+        let currentPage = 1;
 
         document.addEventListener('DOMContentLoaded', function () {
             const token = localStorage.getItem('jwtToken');
             if (token) {
                 fetchUserData(token);
-                fetchUsers(token, 1, 5);
+                fetchUsers(token);
             } else {
                 redirectToLogin();
             }
@@ -212,8 +210,8 @@
             }
         }
 
-        function fetchUsers(token, page, pageSize = 5) {
-            fetch(`/users/table/list?page=${page - 1}&pageSize=${pageSize}`, {
+        function fetchUsers(token) {
+            fetch(`/users/table/list?page=0&pageSize=1000`, {  // Obtener todos los usuarios y paginar en el cliente
                 method: 'GET',
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -232,8 +230,9 @@
             .then(users => {
                 allUsers = users;
                 filteredUsers = users; // Inicialmente, sin filtro
-                updateTable(filteredUsers);
-                updateTableInfo(page, filteredUsers.length);
+                updatePagination();
+                updateTable();
+                updateTableInfo();
             })
             .catch(error => {
                 console.error('Error fetching user data:', error);
@@ -250,14 +249,21 @@
                        (user.roleName || "").toLowerCase().includes(searchInput) ||
                        (user.curso || "").toLowerCase().includes(searchInput);
             });
-            updateTable(filteredUsers);
-            updateTableInfo(1, filteredUsers.length);
+            currentPage = 1; // Reiniciar a la primera página en cada búsqueda
+            updatePagination();
+            updateTable();
+            updateTableInfo();
         }
 
-        function updateTable(users) {
+        function updateTable() {
             const tableBody = document.getElementById('dataTable').getElementsByTagName('tbody')[0];
             tableBody.innerHTML = ''; // Limpiar las filas existentes
-            users.forEach(user => {
+
+            const start = (currentPage - 1) * pageSize;
+            const end = start + pageSize;
+            const usersToShow = filteredUsers.slice(start, end);
+
+            usersToShow.forEach(user => {
                 let row = tableBody.insertRow();
 
                 let cell1 = row.insertCell(0);
@@ -281,6 +287,45 @@
             });
         }
 
+        function updatePagination() {
+            const paginationElement = document.getElementById('pagination');
+            paginationElement.innerHTML = ''; // Limpiar la paginación existente
+
+            const pageCount = Math.ceil(filteredUsers.length / pageSize);
+
+            if (pageCount <= 1) {
+                return; // No mostrar paginación si no hay más de una página
+            }
+
+            for (let i = 1; i <= pageCount; i++) {
+                const pageItem = document.createElement('li');
+                pageItem.classList.add('page-item');
+                if (i === currentPage) {
+                    pageItem.classList.add('active');
+                }
+                const pageLink = document.createElement('a');
+                pageLink.classList.add('page-link');
+                pageLink.href = '#';
+                pageLink.textContent = i;
+                pageLink.onclick = function () {
+                    currentPage = i;
+                    updateTable();
+                    updateTableInfo();
+                };
+                pageItem.appendChild(pageLink);
+                paginationElement.appendChild(pageItem);
+            }
+        }
+
+        function updateTableInfo() {
+            const infoElement = document.getElementById('dataTable_info');
+            if (infoElement) {
+                const startIndex = (currentPage - 1) * pageSize + 1;
+                const endIndex = Math.min(startIndex + pageSize - 1, filteredUsers.length);
+                infoElement.textContent = `Mostrando ${startIndex} a ${endIndex} de ${filteredUsers.length}`;
+            }
+        }
+
         function getUserIdFromToken(token) {
             try {
                 const base64Url = token.split('.')[1];
@@ -293,15 +338,6 @@
             } catch (e) {
                 console.error('Error decoding token:', e);
                 return null;
-            }
-        }
-
-        function updateTableInfo(page, userCount) {
-            const infoElement = document.getElementById('dataTable_info');
-            if (infoElement) {
-                const startIndex = (page - 1) * 5 + 1;
-                const endIndex = startIndex + userCount - 1;
-                infoElement.textContent = `Mostrando ${startIndex} a ${endIndex}`;
             }
         }
 
