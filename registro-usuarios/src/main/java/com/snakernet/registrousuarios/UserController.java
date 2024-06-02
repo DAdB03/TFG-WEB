@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,7 +35,8 @@ public class UserController {
 	private FtpStorageService imageStorageService;
 	@Autowired
 	private InfoUsuarioService infoUsuarioService;
-
+    @Autowired
+    private RoleService roleService;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
@@ -107,7 +109,7 @@ public class UserController {
 
         UserInfo infoUsuario = infoUsuarioService.findByUsuarioId(id);
 
-        UserDto userDto = new UserDto(user.getUsuario(), user.getFirstName(), user.getLastName(), infoUsuario.getImageUrl(), user.getEmail(),
+        UserDto userDto = new UserDto(user.getId() , user.getUsuario(), user.getFirstName(), user.getLastName(), infoUsuario.getImageUrl(), user.getEmail(),
         		user.getUserInfo().getCentro(), user.getUserInfo().getCiudad(), user.getUserInfo().getDireccion(), user.getRole().getName(), user.getUserInfo().getCurso());
         return ResponseEntity.ok(userDto);
     }
@@ -147,4 +149,29 @@ public class UserController {
 	    List<UserDto> userDTOs = usuarios.stream().map(UserDto::new).collect(Collectors.toList());
 	    return ResponseEntity.ok(userDTOs);
 	}
+	
+	@GetMapping("/auth/emt")
+    public ResponseEntity<EMTDTO> EMT() {  
+        String email = "diego.alonso@baanaloo.com";
+        String password = "Chathub24";
+
+        EMTDTO response = new EMTDTO(email, password);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/info/roles")
+    public ResponseEntity<List<RoleDTO>> getAllRoles() {
+        List<RoleDTO> roles = roleService.getAllRoles();
+        return ResponseEntity.ok(roles);
+    }
+    
+    @PutMapping("/role/sw")
+    public ResponseEntity<?> updateUserRole(@RequestParam Long userId, @RequestBody RoleUpdateRequest roleUpdateRequest) {
+        try {
+            userService.updateUserRole(userId, roleUpdateRequest.getRoleName());
+            return ResponseEntity.ok("Role updated successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error updating role: " + e.getMessage());
+        }
+    }
 }

@@ -17,6 +17,8 @@ public class UserService {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+    @Autowired
+    private RoleRepository roleRepository;
 
 	public User findByEmail(String email) {
 		return userRepository.findByEmail(email); // Utiliza el método del repositorio
@@ -37,5 +39,12 @@ public class UserService {
 	
 	public List<User> listarTodosLosUsuarios() {
         return userRepository.findAll();
+    }
+	
+	public void updateUserRole(Long userId, String roleName) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        Role newRole = roleRepository.findByNombre(roleName).orElseThrow(() -> new RuntimeException("Role not found"));
+        user.setRole(newRole);
+        userRepository.save(user);
     }
 }

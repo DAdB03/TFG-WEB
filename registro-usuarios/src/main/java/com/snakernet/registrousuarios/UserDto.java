@@ -1,6 +1,7 @@
 package com.snakernet.registrousuarios;
 
 public class UserDto {
+	private Long id;
     private String username;
     private String firstName;
     private String lastName;
@@ -12,8 +13,9 @@ public class UserDto {
     private String roleName;
     private String curso;
 
-    public UserDto(String username, String firstName, String lastName, String imageUrl, String email, String centro, String ciudad, String address, String roleName, String curso) {
-        this.username = username;
+    public UserDto(Long id, String username, String firstName, String lastName, String imageUrl, String email, String centro, String ciudad, String address, String roleName, String curso) {
+        this.id = id;
+    	this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.imageUrl = imageUrl;
@@ -26,6 +28,7 @@ public class UserDto {
     }
 
     public UserDto(User user) {
+    	this.id = user.getId();
         this.username = user.getUsuario();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
@@ -116,5 +119,13 @@ public class UserDto {
 
 	public void setCurso(String curso) {
 		this.curso = curso;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 }

@@ -1,20 +1,7 @@
-document.addEventListener("DOMContentLoaded", function() {
-    // Load credentials from localStorage if available
-    const rememberedEmail = localStorage.getItem("rememberedEmail");
-    const rememberedPassword = localStorage.getItem("rememberedPassword");
-
-    if (rememberedEmail && rememberedPassword) {
-        document.getElementById("exampleInputEmail").value = rememberedEmail;
-        document.getElementById("exampleInputPassword").value = rememberedPassword;
-        document.getElementById("formCheck-1").checked = true;
-    }
-});
-
 function login(event) {
     event.preventDefault();
     var email = document.getElementById("exampleInputEmail").value;
     var password = document.getElementById("exampleInputPassword").value;
-    var rememberMe = document.getElementById("formCheck-1").checked;
 
     fetch("/users/login", {
         method: "POST",
@@ -35,15 +22,6 @@ function login(event) {
     .then(data => {
         if (data && data.jwtToken) {
             localStorage.setItem('jwtToken', data.jwtToken);
-
-            if (rememberMe) {
-                localStorage.setItem("rememberedEmail", email);
-                localStorage.setItem("rememberedPassword", password);
-            } else {
-                localStorage.removeItem("rememberedEmail");
-                localStorage.removeItem("rememberedPassword");
-            }
-
             window.location.href = "/index.html";
         } else {
             alert("No se pudo iniciar sesión correctamente. Por favor, intente de nuevo.");
