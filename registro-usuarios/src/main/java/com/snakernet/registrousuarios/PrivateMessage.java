@@ -7,90 +7,69 @@ import jakarta.persistence.Id;
 import java.time.LocalDateTime;
 
 /**
- * Clase que representa la entidad de un PrivateMessage.
- * Se utiliza para mapear la tabla private_message de la base de datos, que almacena mensajes privados.
- * Cada mensaje contiene un ID, el nombre de usuario del remitente, el nombre de usuario del destinatario, el contenido del mensaje y la fecha y hora del envío del mensaje.
+ * Representa un mensaje privado entre dos usuarios.
  */
 @Entity
 public class PrivateMessage {
 
-    /**
-     * Identificador único del mensaje privado.
-     * Este ID se genera automáticamente.
-     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    /**
-     * Nombre de usuario de la persona que envía el mensaje.
-     */
+    
     private String fromUser;
-
-    /**
-     * Nombre de usuario de la persona que recibe el mensaje.
-     */
     private String toUser;
-
-    /**
-     * Contenido del mensaje privado.
-     */
     private String content;
-
-    /**
-     * Fecha y hora en la que se envió el mensaje.
-     */
     private LocalDateTime timestamp;
 
     /**
-     * Obtiene el identificador del mensaje.
-     * 
-     * @return ID del mensaje
+     * Obtiene el ID del mensaje.
+     *
+     * @return el ID del mensaje
      */
     public Long getId() {
         return id;
     }
 
     /**
-     * Establece el identificador del mensaje.
-     * 
-     * @param ID a establecer
+     * Establece el ID del mensaje.
+     *
+     * @param id el nuevo ID del mensaje
      */
     public void setId(Long id) {
         this.id = id;
     }
 
     /**
-     * Obtiene el nombre de usuario del remitente del mensaje.
-     * 
-     * @return nombre de usuario del remitente del mensaje
+     * Obtiene el usuario remitente del mensaje.
+     *
+     * @return el usuario remitente
      */
     public String getFromUser() {
         return fromUser;
     }
 
     /**
-     * Establece el nombre de usuario del remitente del mensaje.
-     * 
-     * @param nombre de usuario del remitente del mensaje a establecer
+     * Establece el usuario remitente del mensaje.
+     *
+     * @param fromUser el nuevo usuario remitente
      */
     public void setFromUser(String fromUser) {
         this.fromUser = fromUser;
     }
 
     /**
-     * Obtiene el nombre de usuario del destinatario del mensaje.
-     * 
-     * @return nombre de usuario del destinatario del mensaje
+     * Obtiene el usuario destinatario del mensaje.
+     *
+     * @return el usuario destinatario
      */
     public String getToUser() {
         return toUser;
     }
 
     /**
-     * Establece el nombre de usuario del destinatario del mensaje.
-     * 
-     * @param nombre de usuario del destinatario del mensaje a establecer
+     * Establece el usuario destinatario del mensaje.
+     *
+     * @param toUser el nuevo usuario destinatario
      */
     public void setToUser(String toUser) {
         this.toUser = toUser;
@@ -98,8 +77,8 @@ public class PrivateMessage {
 
     /**
      * Obtiene el contenido del mensaje.
-     * 
-     * @return contenido del mensaje
+     *
+     * @return el contenido del mensaje
      */
     public String getContent() {
         return content;
@@ -107,26 +86,26 @@ public class PrivateMessage {
 
     /**
      * Establece el contenido del mensaje.
-     * 
-     * @param contenido del mensaje a establecer
+     *
+     * @param content el nuevo contenido del mensaje
      */
     public void setContent(String content) {
         this.content = content;
     }
 
     /**
-     * Obtiene la marca temporal en la que se envía el mensaje.
-     * 
-     * @return fecha y hora de envío del mensaje
+     * Obtiene el timestamp del mensaje.
+     *
+     * @return el timestamp del mensaje
      */
     public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
     /**
-     * Establece la marca temporal en la que se envía el mensaje.
-     * 
-     * @param fecha y hora temporal de envío del mensaje a establecer
+     * Establece el timestamp del mensaje.
+     *
+     * @param timestamp el nuevo timestamp del mensaje
      */
     public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;

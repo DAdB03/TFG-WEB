@@ -1,0 +1,110 @@
+.highlight-green {
+    color: green;
+    font-weight: bold;
+}
+
+.highlight-red {
+    color: red;
+    font-weight: bold;
+}
+
+.highlight-orange {
+    color: orange;
+    font-weight: bold;
+}
+
+.location-icon {
+    color: blue;
+    margin-left: 5px;
+}
+
+/* Agrega esta regla CSS para limitar el tamaño del componente de incidencias */
+#collapseIncidents {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* Estilos para el chat */
+#chat-content {
+    overflow-y: auto;
+    max-height: 300px;
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+.text-container {
+    display: flex;
+    flex-direction: column;
+}
+
+#userName {
+    display: block; /* Asegura que se muestren en líneas separadas */
+    text-align: center; /* Centra el texto */
+    margin-right: 15px;
+}
+
+#userRole {
+    display: block; /* Asegura que se muestren en líneas separadas */
+    font-size: 0.8em; /* Tamaño más pequeño */
+    color: rgba(128, 128, 128, 0.7); /* Color gris y un poco difuminado */
+    text-align: right; /* Alinea a la derecha */
+    margin-right: 15px;
+}
+
+.message-right {
+    align-self: flex-end;
+    text-align: right;
+    margin-left: auto;
+}
+
+.message-left {
+    align-self: flex-start;
+    text-align: left;
+    margin-right: auto;
+}
+
+#chat-content {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border: 1px solid #ddd;
+    overflow-y: auto;
+    max-height: 300px;
+}
+
+.p-2 {
+    padding: 0.5rem !important;
+}
+
+.my-2 {
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+}
+
+.rounded {
+    border-radius: 0.25rem !important;
+}
+
+.bg-primary {
+    background-color: #4064d4 !important;
+}
+
+.bg-light {
+    background-color: #f8f9fa !important;
+}
+
+.text-white {
+    color: #ffffff !important;
+}
+
+.text-dark {
+    color: #343a40 !important;
+}
+
+.fw-bold {
+    font-weight: bold !important;
+}
+
+.small {
+    font-size: 0.875rem !important;
+    color: #161718 !important;
+}

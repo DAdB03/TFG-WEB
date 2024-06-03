@@ -6,6 +6,9 @@ import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
+/**
+ * Configuración de WebSocket para la aplicación.
+ */
 @Configuration
 @EnableWebSocket
 public class WebSocketConfig implements WebSocketConfigurer {
@@ -16,6 +19,11 @@ public class WebSocketConfig implements WebSocketConfigurer {
     @Autowired
     private PrivateChatHandler privateChatHandler;
 
+    /**
+     * Registra los manejadores de WebSocket.
+     *
+     * @param registry el registro de manejadores de WebSocket
+     */
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry.addHandler(publicChatHandler, "/ws/publicappchat").setAllowedOrigins("*");

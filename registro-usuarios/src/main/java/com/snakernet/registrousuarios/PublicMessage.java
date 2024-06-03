@@ -1,73 +1,57 @@
 package com.snakernet.registrousuarios;
 
 import java.time.LocalDateTime;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 /**
- * Clase que representa la entidad de un PublicMessage.
- * Se utiliza para mapear la tabla public_message de la base de datos, que almacena mensajes públicos.
- * Cada mensaje contiene un ID, el nombre de usuario del emisor, el contenido del mensaje y la hora en que se envió el mensaje.
+ * Representa un mensaje público en el chat.
  */
 @Entity
 public class PublicMessage {
-    
-    /**
-     * Identificador único del mensaje público.
-     * Este ID se genera automáticamente.
-     */
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    /**
-     * Nombre de usuario de la persona que envía el mensaje.
-     */
     private String username;
-    
-    /**
-     * Contenido del mensaje público.
-     */
     private String content;
-    
-    /**
-     * Hora en que se envía el mensaje.
-     */
-    private LocalDateTime hora;
+    private LocalDateTime hora; // Campo para la hora del mensaje
 
     /**
-     * Obtiene el identificador del mensaje.
-     * 
-     * @return ID del mensaje
+     * Obtiene el ID del mensaje.
+     *
+     * @return el ID del mensaje
      */
     public Long getId() {
         return id;
     }
 
     /**
-     * Establece el identificador del mensaje.
-     * 
-     * @param id el ID a establecer
+     * Establece el ID del mensaje.
+     *
+     * @param id el nuevo ID del mensaje
      */
     public void setId(Long id) {
         this.id = id;
     }
 
     /**
-     * Obtiene el nombre de usuario del emisor del mensaje.
-     * 
-     * @return nombre de usuario del emisor del mensaje
+     * Obtiene el nombre de usuario que envió el mensaje.
+     *
+     * @return el nombre de usuario
      */
     public String getUsername() {
         return username;
     }
 
     /**
-     * Establece el nombre de usuario del autor del mensaje.
-     * 
-     * @param nombre de usuario del emisor del mensaje a establecer
+     * Establece el nombre de usuario que envió el mensaje.
+     *
+     * @param username el nuevo nombre de usuario
      */
     public void setUsername(String username) {
         this.username = username;
@@ -75,8 +59,8 @@ public class PublicMessage {
 
     /**
      * Obtiene el contenido del mensaje.
-     * 
-     * @return contenido del mensaje
+     *
+     * @return el contenido del mensaje
      */
     public String getContent() {
         return content;
@@ -84,26 +68,26 @@ public class PublicMessage {
 
     /**
      * Establece el contenido del mensaje.
-     * 
-     * @param contenido del mensaje a establecer
+     *
+     * @param content el nuevo contenido del mensaje
      */
     public void setContent(String content) {
         this.content = content;
     }
 
     /**
-     * Obtiene la hora en la que se envía el mensaje.
-     * 
-     * @return hora de envío del mensaje
+     * Obtiene la hora en que se envió el mensaje.
+     *
+     * @return la hora del mensaje
      */
     public LocalDateTime getHora() {
         return hora;
     }
 
     /**
-     * Establece la hora en que se envía el mensaje.
-     * 
-     * @param hora de envío del mensaje a establecer
+     * Establece la hora en que se envió el mensaje.
+     *
+     * @param hora la nueva hora del mensaje
      */
     public void setHora(LocalDateTime hora) {
         this.hora = hora;

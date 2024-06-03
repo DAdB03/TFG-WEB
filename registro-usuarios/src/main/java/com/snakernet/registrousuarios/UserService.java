@@ -9,39 +9,78 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+/**
+ * Servicio para gestionar la lógica relacionada con los usuarios.
+ */
 @Service
 public class UserService {
 
-	@Autowired
-	private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Autowired
     private RoleRepository roleRepository;
 
-	public User findByEmail(String email) {
-		return userRepository.findByEmail(email); // Utiliza el método del repositorio
-	}
-	
-	public Optional<User> findById(Long id) {
-	    return userRepository.findById(id);
-	}
+    /**
+     * Encuentra un usuario por su correo electrónico.
+     *
+     * @param email el correo electrónico del usuario
+     * @return el usuario con el correo electrónico dado, o null si no se encuentra
+     */
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
 
-	public User registerUser(User user) {
-		user.setPassword(passwordEncoder.encode(user.getPassword())); // Codifica la contraseña antes de guardarla
-		return userRepository.save(user); // Guarda el usuario en la base de datos
-	}
-	
-	public Page<User> listarTodosLosUsuarios(Pageable pageable) {
+    /**
+     * Encuentra un usuario por su ID.
+     *
+     * @param id el ID del usuario
+     * @return un Optional que contiene el usuario si se encuentra, o vacío si no se encuentra
+     */
+    public Optional<User> findById(Long id) {
+        return userRepository.findById(id);
+    }
+
+    /**
+     * Registra un nuevo usuario.
+     *
+     * @param user el usuario a registrar
+     * @return el usuario registrado
+     */
+    public User registerUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
+    }
+
+    /**
+     * Lista todos los usuarios de manera paginada.
+     *
+     * @param pageable la información de la paginación
+     * @return una página de usuarios
+     */
+    public Page<User> listarTodosLosUsuarios(Pageable pageable) {
         return userRepository.findAll(pageable);
     }
-	
-	public List<User> listarTodosLosUsuarios() {
+
+    /**
+     * Lista todos los usuarios.
+     *
+     * @return una lista de todos los usuarios
+     */
+    public List<User> listarTodosLosUsuarios() {
         return userRepository.findAll();
     }
-	
-	public void updateUserRole(Long userId, String roleName) {
+
+    /**
+     * Actualiza el rol de un usuario.
+     *
+     * @param userId el ID del usuario
+     * @param roleName el nuevo nombre del rol
+     */
+    public void updateUserRole(Long userId, String roleName) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         Role newRole = roleRepository.findByNombre(roleName).orElseThrow(() -> new RuntimeException("Role not found"));
         user.setRole(newRole);
