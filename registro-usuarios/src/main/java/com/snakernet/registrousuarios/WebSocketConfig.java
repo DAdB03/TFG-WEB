@@ -11,14 +11,14 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 public class WebSocketConfig implements WebSocketConfigurer {
 
     @Autowired
-    private PublicChatHandeler publicChatHandeler;
+    private PublicChatHandler publicChatHandler;
 
     @Autowired
     private PrivateChatHandler privateChatHandler;
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(publicChatHandeler, "/ws/publicappchat").setAllowedOrigins("*");
+        registry.addHandler(publicChatHandler, "/ws/publicappchat").setAllowedOrigins("*");
         registry.addHandler(privateChatHandler, "/ws/privateappchat").setAllowedOrigins("*");
     }
 }

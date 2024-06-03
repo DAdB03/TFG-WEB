@@ -21,8 +21,8 @@ public class WebSocketApp implements WebSocketConfigurer {
     }
 
     @Bean
-    public PublicChatHandeler chatHandler() {
-        return new PublicChatHandeler();
+    public PublicChatHandler chatHandler() {
+        return new PublicChatHandler();
     }
 
 }
