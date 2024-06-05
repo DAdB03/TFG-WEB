@@ -1,7 +1,7 @@
 # Proyecto de Java con SpringBoot: CHATHUB
 
 >[!NOTE]
->## Sistema de Gestión AWS
+>## Sistema de comunicaciones internas
 >Este proyecto contiene una infraestructura back y front, la cual gestiona una "redsocial" enfocada para los institutos de la comunidad de madrid.
 
 >[!CAUTION]
@@ -16,22 +16,21 @@
 
 >[!IMPORTANT]
 > Es necesario crear un archivo application.properties con ciertos datos:
->
->spring.application.name=CHATHUB
->
->spring.datasource.url=[CONEXIÓN AL GESTOR DE BBDD]
->spring.datasource.username=[USUARIO BBDD]
->spring.datasource.password=[CONTRASEÑA BBDD]
->spring.jpa.hibernate.ddl-auto=update
->spring.jpa.properties.hibernate.dialect=[DIALECTO DEL LA BBDD "MariaDB" o "MySQL"]
->
->spring.main.allow-circular-references=true
->jwt.secret=[CONTRASEÑA EN BASE64 PARA CIFRAR LOS JWT]
->ftp.user=[USUARIO FTP]
->ftp.pass=[CONTRASEÑA FTP]
->
->spring.servlet.multipart.max-file-size=[TAMAÑO MAXIMO DE ARCHIVOS]
->spring.servlet.multipart.max-request-size=[TAMAÑO MAXIMO DE REQUEST "Se recomienda que sea lo mismo que de archivo"]
+
+```bash
+  spring.application.name=CHATHUB
+  spring.datasource.url=[CONEXIÓN AL GESTOR DE BBDD]
+  spring.datasource.username=[USUARIO BBDD]
+  spring.datasource.password=[CONTRASEÑA BBDD]
+  spring.jpa.hibernate.ddl-auto=update
+  spring.jpa.properties.hibernate.dialect=[DIALECTO DEL LA BBDD "MariaDB" o "MySQL"]
+  spring.main.allow-circular-references=true
+  jwt.secret=[CONTRASEÑA EN BASE64 PARA CIFRAR LOS JWT]
+  ftp.user=[USUARIO FTP]
+  ftp.pass=[CONTRASEÑA FTP]
+  spring.servlet.multipart.max-file-size=[TAMAÑO MAXIMO DE ARCHIVOS]
+  spring.servlet.multipart.max-request-size=[TAMAÑO MAXIMO DE REQUEST "Se recomienda que sea lo mismo que de archivo"]
+```
 
 ## Autores
 
