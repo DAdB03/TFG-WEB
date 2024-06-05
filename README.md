@@ -15,7 +15,7 @@
 > Es necesario [Java JDK](https://www.oracle.com/es/java/technologies/downloads/).
 
 >[!IMPORTANT]
-> Es necesario crear un archivo application.properties con ciertos datos:
+> Es necesario crear un archivo application.properties el cual se tiene que situar en la carpeta resources del proyecto:
 
 ```bash
   spring.application.name=CHATHUB
