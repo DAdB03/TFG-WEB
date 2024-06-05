@@ -34,6 +34,6 @@
 
 ## Autores
 
-* **Daniel Rodriguez** - *Developer Back-Front* - [SnakerRB](https://github.com/SnakerRB)
+* **Daniel Rodriguez** - *Developer Back-end & Front-end* - [SnakerRB](https://github.com/SnakerRB)
 * **Diego Alonso** - *Developer Front & Back-end helper* - [DAdB03](https://github.com/DAdB03)
 * **Pedro Cuadrado** - *Documentation Manager & Back-end helper* - [PECULOCU5](https://github.com/PECULOCU5)
