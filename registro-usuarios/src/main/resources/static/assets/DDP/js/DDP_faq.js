@@ -76,11 +76,20 @@ function logout() {
 function showOrHideNavItems(role) {
     const tableNavItem = document.getElementById('tableNavItem');
     const tableNavItem2 = document.getElementById('tableNavItem2');
+    const linkref = document.getElementById('link-ref');
+    
     if (role === 'Director') {
         tableNavItem.style.display = 'block';
+        linkref.setAttribute('href', 'table.html'); 
+    } else if (role === 'Profesor') {
+        tableNavItem.style.display = 'block';
+        linkref.setAttribute('href', 'table2.html');
     } else if (role === 'Alumno') {
         tableNavItem.style.display = 'none';
     } else if (role === null) {
+        tableNavItem.style.display = 'none';
+        tableNavItem2.style.display = 'none';
+    } else {
         tableNavItem.style.display = 'none';
         tableNavItem2.style.display = 'none';
     }

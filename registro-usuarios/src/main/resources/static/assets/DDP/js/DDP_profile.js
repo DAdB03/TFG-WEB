@@ -10,15 +10,20 @@ document.addEventListener('DOMContentLoaded', function () {
 function showOrHideNavItems(role) {
     const tableNavItem = document.getElementById('tableNavItem');
     const tableNavItem2 = document.getElementById('tableNavItem2');
-    const alertmsgbutt = document.getElementById('alertmsg');
-    const alertgenbutt = document.getElementById('alertgen');
+    const linkref = document.getElementById('link-ref');
+    
     if (role === 'Director') {
         tableNavItem.style.display = 'block';
+        linkref.setAttribute('href', 'table.html'); 
+    } else if (role === 'Profesor') {
+        tableNavItem.style.display = 'block';
+        linkref.setAttribute('href', 'table2.html');
     } else if (role === 'Alumno') {
         tableNavItem.style.display = 'none';
     } else if (role === null) {
-        alertmsgbutt.style.display = 'none';
-        alertgenbutt.style.display = 'none';
+        tableNavItem.style.display = 'none';
+        tableNavItem2.style.display = 'none';
+    } else {
         tableNavItem.style.display = 'none';
         tableNavItem2.style.display = 'none';
     }

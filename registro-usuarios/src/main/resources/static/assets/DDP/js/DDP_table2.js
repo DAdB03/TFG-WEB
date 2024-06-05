@@ -7,92 +7,77 @@ document.addEventListener('DOMContentLoaded', function () {
     const token = localStorage.getItem('jwtToken');
     if (token) {
         fetchUserData(token);
-        fetchRoles(token).then(() => {
-            fetchUsers(token);
-        });
+        fetchUsers(token);
     } else {
         redirectToLogin();
     }
 });
 
-async function fetchRoles(token) {
-    try {
-        const response = await fetch('/users/info/roles', {
+function fetchUserData(token) {
+    const userId = getUserIdFromToken(token);
+    if (userId) {
+        fetch(`/users/auth/${userId}`, {
             method: 'GET',
             headers: {
                 "Authorization": `Bearer ${token}`,
                 "Content-Type": "application/json"
             }
-        });
-        if (!response.ok) {
-            throw new Error(`Error fetching roles: ${response.status} ${response.statusText}`);
-        }
-        const roles = await response.json();
-        window.roles = roles;
-    } catch (error) {
-        console.error('Error loading roles:', error);
-    }
-}
-
-async function fetchUserData(token) {
-    const userId = getUserIdFromToken(token);
-    if (userId) {
-        try {
-            const response = await fetch(`/users/auth/${userId}`, {
-                method: 'GET',
-                headers: {
-                    "Authorization": `Bearer ${token}`,
-                    "Content-Type": "application/json"
-                }
-            });
+        })
+        .then(response => {
             if (response.ok) {
-                const data = await response.json();
-                document.getElementById('userName').textContent = data.firstName + ' ' + data.lastName;
-                document.getElementById('userImage').src = data.imageUrl || 'assets/img/default.png';
-                document.getElementById('userRole').textContent = data.roleName || 'Role';
+                return response.json();
             } else if (response.status === 401) {
                 redirectToLogin();
             } else {
                 throw new Error(`Failed to fetch user data: ${response.status} ${response.statusText}`);
             }
-        } catch (error) {
+        })
+        .then(data => {
+            if (data) {
+                document.getElementById('userName').textContent = data.firstName + ' ' + data.lastName;
+                document.getElementById('userImage').src = data.imageUrl || 'assets/img/default.png';
+                document.getElementById('userRole').textContent = data.roleName || 'Role';
+            }
+        })
+        .catch(error => {
             console.error('Error fetching user data:', error);
             document.getElementById('userName').textContent = "Error loading data";
             redirectToLogin();
-        }
+        });
     } else {
         console.error('No user ID found in token');
         document.getElementById('userName').textContent = "Error loading data";
     }
 }
 
-async function fetchUsers(token) {
-    try {
-        const response = await fetch('/users/table/list?page=0&pageSize=1000', {
-            method: 'GET',
-            headers: {
-                "Authorization": `Bearer ${token}`,
-                "Content-Type": "application/json"
-            }
-        });
+function fetchUsers(token) {
+    fetch(`/users/table/list?page=0&pageSize=1000`, {  // Obtener todos los usuarios y paginar en el cliente
+        method: 'GET',
+        headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+        }
+    })
+    .then(response => {
         if (response.ok) {
-            const users = await response.json();
-            console.log(users); // Verifica que los usuarios tienen un id
-            allUsers = users;
-            filteredUsers = users; // Inicialmente, sin filtro
-            updatePagination();
-            updateTable();
-            updateTableInfo();
+            return response.json();
         } else if (response.status === 401) {
             redirectToLogin();
         } else {
             throw new Error(`Failed to fetch user data: ${response.status} ${response.statusText}`);
         }
-    } catch (error) {
+    })
+    .then(users => {
+        allUsers = users;
+        filteredUsers = users; // Inicialmente, sin filtro
+        updatePagination();
+        updateTable();
+        updateTableInfo();
+    })
+    .catch(error => {
         console.error('Error fetching user data:', error);
-    }
+    });
 }
-
 
 function handleSearch() {
     const searchInput = document.getElementById('searchInput').value.toLowerCase();
@@ -121,8 +106,6 @@ function updateTable() {
     const usersToShow = filteredUsers.slice(start, end);
 
     usersToShow.forEach(user => {
-        console.log('User data:', user); // Verifica que el usuario tiene un id
-
         let row = tableBody.insertRow();
 
         let cell1 = row.insertCell(0);
@@ -139,53 +122,11 @@ function updateTable() {
         cell4.textContent = user.email || 'No disponible';
 
         let cell5 = row.insertCell(4);
-        cell5.innerHTML = renderRoleSelect(user.roleName, user.id); // Aquí deberíamos tener user.id
+        cell5.textContent = user.roleName || 'No disponible';
 
         let cell6 = row.insertCell(5);
         cell6.textContent = user.curso || 'No disponible';
     });
-}
-
-function renderRoleSelect(currentRoleName, userId) {
-    if (!userId) {
-        console.error('Invalid userId:', userId);
-        return '<select disabled><option value="">Invalid User</option></select>';
-    }
-
-    let options = window.roles.map(role => {
-        return `<option value="${role.nombre}" ${role.nombre === currentRoleName ? 'selected' : ''}>${role.nombre}</option>`;
-    }).join('');
-
-    return `<select onchange="handleRoleChange(event, ${userId})">${options}</select>`;
-}
-
-async function handleRoleChange(event, userId) {
-    const newRoleName = event.target.value;
-    const token = localStorage.getItem('jwtToken');
-
-    if (!userId || userId === 'undefined') {
-        console.error('Invalid userId:', userId);
-        return;
-    }
-
-    try {
-        const response = await fetch(`/users/role/sw?userId=${userId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({ roleName: newRoleName })
-        });
-
-        if (response.ok) {
-            console.log('Role updated successfully');
-        } else {
-            console.error('Error updating role:', response.statusText);
-        }
-    } catch (error) {
-        console.error('Error updating role:', error);
-    }
 }
 
 function updatePagination() {
